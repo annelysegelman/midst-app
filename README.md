@@ -1,5 +1,5 @@
 ## Install
-`$ yarn global add electron`
+`yarn global add electron`
 
 ## Dev
 `NODE_ENV=development electron midst`
