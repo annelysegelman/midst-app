@@ -1,0 +1,307 @@
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.midst {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(238, 233, 233);
+}
+
+.title-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 25px;
+  font-family: 'HelveticaNeueLTStd-Lt';
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-align: center;
+  line-height: 25px;
+  user-select: none;
+  -webkit-app-region: drag;
+}
+
+.midst-toolbar {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  height: 24px; /* Match height of Quill snow theme toolbar. */
+}
+
+.midst-toolbar button { /* Match style of Quill snow theme toolbar buttons. */
+  display: inline-block;
+  width: 28px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  margin: 3px;
+  outline: none;
+}
+
+.midst-toolbar button svg,
+.midst-toolbar button img {
+  width: 19px;
+  height: 19px;
+  transition: all 500ms;
+}
+
+.ql-toolbar.ql-snow {
+  position: absolute;
+  top: 30px;
+  left: 5px;
+  padding: 0;
+  border: 0;
+}
+
+.midst-toolbar button.deactivated {
+  opacity: 0.2;
+}
+
+.toolbars-fade {
+  transition: opacity 500ms;
+}
+
+.focus-mode .toolbars-fade {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#editor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 170px);
+  box-sizing: border-box;
+  padding: 50px;
+  font-family: 'Arial';
+  border: 0;
+}
+
+.midst-slider {
+  position: absolute;
+  bottom: 0;
+  left: 60px;
+  width: calc(100% - 100px);
+  height: 50px;
+}
+
+.midst-slider .slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: gray;
+  border: 0;
+}
+
+.midst-slider .slider .progress {
+  position: relative;
+  border-radius: 3px;
+}
+
+.midst-slider .slider .progress::after {
+  display: block;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  border: 3px solid black;
+  background: white;
+  content: ' ';
+  transition: all 150ms;
+  transform-origin: center;
+}
+
+.midst-slider .slider:active .progress::after {
+  transform: scaleX(1.2) scaleY(1.2);
+}
+
+.draft-markers {
+  position: absolute;
+  bottom: 53px;
+  left: -2.5px;
+  width: 100%;
+  height: 10px;
+}
+
+.draft-markers .draft-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid black;
+  margin-left: -7px;
+}
+
+.draft-marker-label {
+  position: absolute;
+  bottom: calc(100% + 13px);
+  left: calc(50% - 40px);
+  font-size: 11px;
+  font-family: 'HelveticaNeueLTStd-Lt';
+  width: 80px;
+  height: 10px;
+  line-height: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+}
+
+.draft-marker-label input {
+  display: none;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  text-align: center;
+}
+
+.draft-marker-label input:focus,
+.draft-marker-label input:active {
+  outline: none;
+}
+
+.draft-marker-label span {
+  display: inline;
+}
+
+.draft-marker-label.editing,
+.editing .draft-marker-label {
+  height: 14px;
+  line-height: 14px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 5px;
+}
+
+.draft-marker-label.editing span,
+.editing .draft-marker-label span {
+  display: none;
+}
+
+.draft-marker-label.editing input,
+.editing .draft-marker-label input {
+  display: inline-block;
+}
+
+#quill-toolbar {
+  border: 0;
+  left: 0;
+}
+
+#quill-toolbar * {
+  color: #333;
+  outline: none;
+  stroke: #333;
+  border: 0;
+}
+
+#quill-toolbar .ql-bold {
+  fill: none;
+}
+
+.highlighted svg {
+  stroke: #ff0000;
+}
+
+.toolbars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 74px;
+}
+
+.ql-snow .ql-picker.ql-font {
+  width: 140px;
+}
+
+.main {
+  position: fixed;
+  top: 75px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 74px);
+  transition: width 250ms;
+  border-right: 1px solid #000;
+}
+
+.main.drawer-open {
+  width: calc(100vw - 200px);
+}
+
+.drawer {
+  overflow: hidden;
+  position: fixed;
+  top: 75px;
+  left: 100vw;
+  width: 200px;
+  height: calc(100vh - 74px);
+  transition: width 250ms;
+  border-top: 1px solid #000;
+  font-family: 'HelveticaNeueLTStd-Lt';
+  font-size: 10px;
+  opacity: 0;
+  transition: all 250ms;
+}
+
+.drawer.open {
+  left: calc(100vw - 200px);
+  opacity: 1;
+}
+
+.marker-list-item {
+  position: relative;
+  margin: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #000;
+  cursor: pointer;
+}
+
+.marker-list-item-delete {
+  float: right;
+  font-size: 9px;
+  text-decoration: underline;
+}
+
+.marker-list-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #000;
+}
+
+.marker-list-control {
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+
+.drawer .draft-marker-label {
+  display: inline;
+  position: static;
+  text-align: left;
+}
+
+.drawer .draft-marker-label input {
+  width: 100px;
+  height: 10px;
+  padding: 0;
+  text-align: left;
+}
