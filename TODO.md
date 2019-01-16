@@ -6,22 +6,22 @@
 http://hem.rocks/files/midst-builds/Midst_build_1546836592571.zip
  -->
 
-
-## CRITICAL Bugs (Necessary for pilot!)
+## Ready for review
 1. App should give a warning if quitting with unsaved changes!
-
-
-## Bugs (Necessary for pilot!)
 1. Drawer bug: Opening the drawer opens drawer + timeline (correct), but then typing while drawer is open makes timeline disappear but drawer stays open.
 1. Drawer bug: Deleting all draft markers makes drawer stuck open. IRL deleting all markers should automatically close the drawer.
 1. When adding a draft marker: default name should appear (Highlighted please!) eg "draft 1"
 1. Timeline mode bug: arrow nav in timeline mode is broken (it moves the cursor backwards/forwards in the type window, instead of moving the timeline backwards/forwards). Click+drag in timeline works fine.
 1. Doing some user guesswork here but, imo: Draft marker names: Draft markers should be numbered in the order they were created, but, Deleting a draft marker should NEVER Change the name of any past/future Draft markers.
 - Right now, for example, if i make markers 1-5, then delete #3, the marker that was #4 is now renamed #3, and #5 is renamed #4.... this could get very confusing for the writer, no? Better imo to simply have (in that instance, e.g.) Draft 1, Draft 2, Draft 4, and Draft 5, w/ no draft 3 marker?
+1. #FFFAFA bg color plz thx
+
+## CRITICAL Bugs (Necessary for pilot!)
+
+## Bugs (Necessary for pilot!)
 1. In drawer, no way to navigate to Markers that have long names, because clicking anywhere on the marker name just makes me rename it instead of navigating to it. Imo a nice solution here: Add little flag icons to left of each name (like bullet points almost). Click on little flag icon @ left of marker name to navigate to marker; click on name to rename; and click on delete icon (Little red X or little trash can.. we don't need whole word "delete") to the right of the name to delete marker. Leaving a bit of white space between flag icon / marker name / delete icon.
 1. Need a way to undo/redo draft marker actions (particularly deleting them by accident).
 1. Highlighted text should stay highlighted while changing the font, font size
-1. #FFFAFA bg color plz thx
 1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason.
 1. Bug when editing in timeline mode: Enter timeline mode; scroll back using arrow keys (not click and drag). Cursor currently defaults to right BEFORE the last character typed in any given frame. This is weird. Cursor should ideally default to remain in last position (prior to entering timeline mode), or, if this isn't possible, at least default to AFTER the last character typed (not before).
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
@@ -30,13 +30,7 @@ http://hem.rocks/files/midst-builds/Midst_build_1546836592571.zip
 
 ## Minor/lower-priority bugsas
 1. Timeline handle should be all the way to the right (top of stack) when entering timeline mode
-
-
-## Ready for Review
-
-
-## In Progress
-
+1. Saving a new document does nothing. In trad. writing apps saving a new empty document redirects the user to a "save as" window. This problem will be solved by adding the "multiple windows" feature. If "save" redirects to "save as" in the current implementation then an internal flag called "hasUnsavedChanges" will need to be set to true by default, which will break a bunch of other functions in the current, monowindow implementation. (Likewise "open" should open a new window, not overwrite a blank empty document.)
 
 ## To Do (Hopefully for pilot!)
 1. Add shortcut for navigating the timeline in Replay Mode: DOWN ARROW jumps forward to NEXT draft marker sequentially; UP arrow jumps backwards to PREVIOUS draft marker.

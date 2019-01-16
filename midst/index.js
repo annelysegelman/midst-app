@@ -78,7 +78,7 @@ global['openFile'] = () => {
         data = false
       }
 
-      mainWindow.webContents.send('fileopened', {fileName, data, path: filePaths[0]})
+      mainWindow.webContents.send('fileOpened', {fileName, data, path: filePaths[0]})
     }
   })
 }
@@ -136,27 +136,27 @@ const menu = (mainWindow) => {
       {role: 'hideothers'},
       {role: 'unhide'},
       {type: 'separator'},
-      {label: 'Quit', accelerator: 'Cmd+Q', click: () => mainWindow.webContents.send('menu:quit')},
+      {label: 'Quit', accelerator: 'Cmd+Q', click: () => mainWindow.webContents.send('menu.quit')},
     ]
   }
 
   const fileMenu = {
     label: 'File',
     submenu: [
-      {label: 'New', accelerator: 'Cmd+N', click: () => mainWindow.webContents.send('menu:newfile')},
+      {label: 'New', accelerator: 'Cmd+N', click: () => mainWindow.webContents.send('menu.newFile')},
       {type: 'separator'},
-      {label: 'Open...', accelerator: 'Cmd+O', click: () => mainWindow.webContents.send('menu:openfile')},
+      {label: 'Open...', accelerator: 'Cmd+O', click: () => mainWindow.webContents.send('menu.openFile')},
       {type: 'separator'},
-      {label: 'Save', accelerator: 'Cmd+S', click: () => mainWindow.webContents.send('menu:savefile')},
-      {label: 'Save As...', accelerator: 'Shift+Cmd+S', click: () => mainWindow.webContents.send('menu:savefileas')},
+      {label: 'Save', accelerator: 'Cmd+S', click: () => mainWindow.webContents.send('menu.saveFile')},
+      {label: 'Save As...', accelerator: 'Shift+Cmd+S', click: () => mainWindow.webContents.send('menu.saveFileAs')},
     ],
   }
 
   const editMenu = {
     label: 'Edit',
     submenu: [
-      { label: 'Step Back', accelerator: 'Cmd+Z', click: () => mainWindow.webContents.send('menu:undo')},
-      { label: 'Step Forward', accelerator: 'Shift+Cmd+Z', click: () => mainWindow.webContents.send('menu:redo')},
+      { label: 'Step Back', accelerator: 'Cmd+Z', click: () => mainWindow.webContents.send('menu.undo')},
+      { label: 'Step Forward', accelerator: 'Shift+Cmd+Z', click: () => mainWindow.webContents.send('menu.redo')},
       { type: 'separator' },
       { label: 'Cut', accelerator: 'Command+X', selector: 'cut:' },
       { label: 'Copy', accelerator: 'Command+C', selector: 'copy:' },
@@ -169,11 +169,11 @@ const menu = (mainWindow) => {
   const viewMenu = {
     label: 'View',
     submenu: [
-      { label: 'Activate Responsive Scrolling', click: () => mainWindow.webContents.send('menu:responsiveScrollingOn')},
-      { label: 'Deactivate Responsive Scrolling', click: () => mainWindow.webContents.send('menu:responsiveScrollingOff')},
+      { label: 'Activate Responsive Scrolling', click: () => mainWindow.webContents.send('menu.responsiveScrollingOn')},
+      { label: 'Deactivate Responsive Scrolling', click: () => mainWindow.webContents.send('menu.responsiveScrollingOff')},
       // { type: 'separator' },
-      // { label: 'Open Drawer', click: () => mainWindow.webContents.send('menu:openDrawer') },
-      // { label: 'Close Drawer', click: () => mainWindow.webContents.send('menu:closeDrawer') },
+      // { label: 'Open Drawer', click: () => mainWindow.webContents.send('menu.openDrawer') },
+      // { label: 'Close Drawer', click: () => mainWindow.webContents.send('menu.closeDrawer') },
     ]
   }
 

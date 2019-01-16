@@ -16,21 +16,21 @@ class Midst extends React.Component {
 // Initial State
 // ================================================================================
     this.initialState = {
+      creatingDraftMarker: false,
+      drawerOpen: false,
+      editingDraftMarker: null,
+      fileAbsPath: false,
       focusMode: false,
+      hasUnsavedChanges: false,
+      index: 0,
+      markers: [],
       replayMode: false,
       replayModeOpenedFromDrawer: false,
-      title: 'Untitled',
-      index: 0,
-      stack: [],
-      markers: [],
-      hasUnsavedChanges: false,
-      fileAbsPath: false,
-      creatingDraftMarker: false,
       responsiveScrolling: true,
-      editingDraftMarker: null,
-      drawerOpen: false,
-      showDraftMarkers: true,
       showDraftMarkerLabels: true,
+      showDraftMarkers: true,
+      stack: [],
+      title: 'Untitled',
     }
 
     this.state = JSON.parse(JSON.stringify(this.initialState))
@@ -39,20 +39,22 @@ class Midst extends React.Component {
 // Bound Methods
 // ================================================================================
     this.cancelExitFocusModeIntent = this.cancelExitFocusModeIntent.bind(this)
+    this.closeDrawer = this.closeDrawer.bind(this)
     this.createDraftMarker = this.createDraftMarker.bind(this)
-    this.editDraftMarkerLabel = this.editDraftMarkerLabel.bind(this)
     this.deleteDraftMarker = this.deleteDraftMarker.bind(this)
     this.draftMarkerLabelOnKeyDown = this.draftMarkerLabelOnKeyDown.bind(this)
+    this.editDraftMarkerLabel = this.editDraftMarkerLabel.bind(this)
     this.exitFocusModeIntent = this.exitFocusModeIntent.bind(this)
+    this.newFile = this.newFile.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
     this.openDrawer = this.openDrawer.bind(this)
-    this.closeDrawer = this.closeDrawer.bind(this)
-    this.newFile = this.newFile.bind(this)
-    this.save = this.save.bind(this)
-    this.saveAs = this.saveAs.bind(this)
+    this.openFile = this.openFile.bind(this)
+    this.quit = this.quit.bind(this)
+    this.saveFile = this.saveFile.bind(this)
+    this.saveFileAs = this.saveFileAs.bind(this)
     this.sliderOnChange = this.sliderOnChange.bind(this)
-    this.toggleFocusMode = this.toggleFocusMode.bind(this)
     this.toggleDrawerOpen = this.toggleDrawerOpen.bind(this)
+    this.toggleFocusMode = this.toggleFocusMode.bind(this)
     this.toggleReplayMode = this.toggleReplayMode.bind(this)
 
 // ================================================================================
@@ -86,30 +88,40 @@ class Midst extends React.Component {
 // Lifecycle
 // ================================================================================
   componentDidMount() {
+    document.getElementById('editor').addEventListener('keydown', evt => {
+      if ((evt.key === 'z' || evt.key === 'Z') && evt.metaKey) {
+        evt.stopImmediatePropagation()
+      }
+    })
+
+    document.getElementById('editor').addEventListener('click', evt => {
+      if (this.state.creatingDraftMarker) {
+        this.exitReplayMode()
+        this.setState({
+          editingDraftMarker: null,
+          creatingDraftMarker: false,
+        })
+      }
+    })
+
     this.setUpQuill()
 
-    ipc.on('menu:newfile', this.newFile)
-    ipc.on('menu:openfile', () => remote.getGlobal('openFile')())
-    ipc.on('menu:savefile', this.save)
-    ipc.on('menu:quit', () => remote.getGlobal('quit')(this.state.hasUnsavedChanges))
-    ipc.on('menu:savefileas', this.saveAs)
-    ipc.on('menu:step-back', this.step(-1))
-    ipc.on('menu:step-forward', this.step(1))
-    ipc.on('menu:responsiveScrollingOn', () => this.setState({ responsiveScrolling: true }))
-    ipc.on('menu:responsiveScrollingOff', () => this.setState({ responsiveScrolling: false }))
-    ipc.on('menu:openDrawer', this.openDrawer)
-    ipc.on('menu:closeDrawer', this.closeDrawer)
-    ipc.on('fileopened', (evt, fileData) => this.load(fileData))
+    ipc.on('fileOpened', (evt, fileData) => this.load(fileData))
+    ipc.on('menu.newFile', this.newFile)
+    ipc.on('menu.openFile', this.openFile)
+    ipc.on('menu.quit', this.quit)
+    ipc.on('menu.responsiveScrollingOff', () => this.setState({ responsiveScrolling: false }))
+    ipc.on('menu.responsiveScrollingOn', () => this.setState({ responsiveScrolling: true }))
+    ipc.on('menu.saveFile', this.saveFile)
+    ipc.on('menu.saveFileAs', this.saveFileAs)
+    ipc.on('menu.stepBack', this.step(-1))
+    ipc.on('menu.stepForward', this.step(1))
 
     document.body.addEventListener('keydown', this.onKeyDown)
 
     // setTimeout(() => {
     //   this.load({"data":{"meta":{"markers":[{"index":67,"name":"asdfasdfasdf"},{"index":85,"name":null}]},"stack":[{"content":{"ops":[{"insert":"a\n"}]},"time":1546722744011},{"content":{"ops":[{"insert":"as\n"}]},"time":1546722744122},{"content":{"ops":[{"insert":"asd\n"}]},"time":1546722744126},{"content":{"ops":[{"insert":"asdf\n"}]},"time":1546722744252},{"content":{"ops":[{"insert":"asdfa\n"}]},"time":1546722744336},{"content":{"ops":[{"insert":"asdfad\n"}]},"time":1546722744452},{"content":{"ops":[{"insert":"asdfad \n"}]},"time":1546722744493},{"content":{"ops":[{"insert":"asdfad a\n"}]},"time":1546722744644},{"content":{"ops":[{"insert":"asdfad as\n"}]},"time":1546722744712},{"content":{"ops":[{"insert":"asdfad asd\n"}]},"time":1546722744731},{"content":{"ops":[{"insert":"asdfad asdf\n"}]},"time":1546722744828},{"content":{"ops":[{"insert":"asdfad asdf \n"}]},"time":1546722744912},{"content":{"ops":[{"insert":"asdfad asdf a\n"}]},"time":1546722744952},{"content":{"ops":[{"insert":"asdfad asdf as\n"}]},"time":1546722745061},{"content":{"ops":[{"insert":"asdfad asdf asd\n"}]},"time":1546722745089},{"content":{"ops":[{"insert":"asdfad asdf asdf\n"}]},"time":1546722745185},{"content":{"ops":[{"insert":"asdfad asdf asdf \n"}]},"time":1546722745272},{"content":{"ops":[{"insert":"asdfad asdf asdf a\n"}]},"time":1546722745316},{"content":{"ops":[{"insert":"asdfad asdf asdf as\n"}]},"time":1546722745433},{"content":{"ops":[{"insert":"asdfad asdf asdf asd\n"}]},"time":1546722745440},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf\n"}]},"time":1546722745569},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf \n"}]},"time":1546722745604},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf a\n"}]},"time":1546722745684},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf as\n"}]},"time":1546722745773},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asd\n"}]},"time":1546722745785},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf\n"}]},"time":1546722745871},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf \n"}]},"time":1546722745960},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf a\n"}]},"time":1546722746012},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf as\n"}]},"time":1546722746094},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asd\n"}]},"time":1546722746128},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf\n"}]},"time":1546722746197},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf \n"}]},"time":1546722746256},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf a\n"}]},"time":1546722746353},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf as\n"}]},"time":1546722746428},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asd\n"}]},"time":1546722746437},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf\n"}]},"time":1546722746541},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf \n"}]},"time":1546722746613},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf a\n"}]},"time":1546722746653},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf as\n"}]},"time":1546722746760},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asd\n"}]},"time":1546722746768},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf\n"}]},"time":1546722746885},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf \n"}]},"time":1546722746960},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf a\n"}]},"time":1546722747020},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf ad\n"}]},"time":1546722747147},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf ads\n"}]},"time":1546722747152},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf\n"}]},"time":1546722747213},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf \n"}]},"time":1546722747325},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf a\n"}]},"time":1546722747377},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf ad\n"}]},"time":1546722747509},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf ads\n"}]},"time":1546722747516},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf adsf\n"}]},"time":1546722747609},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf adsf \n"}]},"time":1546722747741},{"content":{"ops":[{"insert":"a\n"}]},"time":1546722755538},{"content":{"ops":[{"insert":"as\n"}]},"time":1546722755637},{"content":{"ops":[{"insert":"asd\n"}]},"time":1546722755668},{"content":{"ops":[{"insert":"asdf\n"}]},"time":1546722755817},{"content":{"ops":[{"insert":"asdfa\n"}]},"time":1546722755827},{"content":{"ops":[{"insert":"asdfas\n"}]},"time":1546722755918},{"content":{"ops":[{"insert":"asdfasd\n"}]},"time":1546722755952},{"content":{"ops":[{"insert":"asdfasdf\n"}]},"time":1546722756014},{"content":{"ops":[{"insert":"asdfasdfa\n"}]},"time":1546722756106},{"content":{"ops":[{"insert":"asdfasdfas\n"}]},"time":1546722756185},{"content":{"ops":[{"insert":"asdfasdfasd\n"}]},"time":1546722756208},{"content":{"ops":[{"insert":"asdfasdfasd \n"}]},"time":1546722756321},{"content":{"ops":[{"insert":"asdfasdfasd M\n"}]},"time":1546722756934},{"content":{"ops":[{"insert":"asdfasdfasd MA\n"}]},"time":1546722756974},{"content":{"ops":[{"insert":"asdfasdfasd MAR\n"}]},"time":1546722757130},{"content":{"ops":[{"insert":"asdfasdfasd MARK\n"}]},"time":1546722757282},{"content":{"ops":[{"insert":"asdfasdfasd MARK \n"}]},"time":1546722759004},{"content":{"ops":[{"insert":"asdfasdfasd MARK a\n"}]},"time":1546722759112},{"content":{"ops":[{"insert":"asdfasdfasd MARK as\n"}]},"time":1546722759205},{"content":{"ops":[{"insert":"asdfasdfasd MARK asd\n"}]},"time":1546722759248},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdf\n"}]},"time":1546722759327},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfa\n"}]},"time":1546722759384},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfas\n"}]},"time":1546722759477},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasd\n"}]},"time":1546722759494},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdf\n"}]},"time":1546722759562},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfa\n"}]},"time":1546722759710},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfas\n"}]},"time":1546722759738},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasd\n"}]},"time":1546722759753},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf\n"}]},"time":1546722759853},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf \n"}]},"time":1546722759964},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf M\n"}]},"time":1546722760572},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MA\n"}]},"time":1546722760609},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MAR\n"}]},"time":1546722760770},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK\n"}]},"time":1546722761005},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK \n"}]},"time":1546722763257},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK a\n"}]},"time":1546722763556},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK as\n"}]},"time":1546722763651},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asd\n"}]},"time":1546722763700},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdf\n"}]},"time":1546722763817},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfa\n"}]},"time":1546722763862},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfas\n"}]},"time":1546722763962},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasd\n"}]},"time":1546722763988},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdf\n"}]},"time":1546722764041},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdfa\n"}]},"time":1546722764149},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdfas\n"}]},"time":1546722764228},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdfasd\n"}]},"time":1546722764284},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdfasdf\n"}]},"time":1546722764376},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdfasdfa\n"}]},"time":1546741544539},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdfasdfas\n"}]},"time":1546741544659}]},"fileName":"Untitled.midst","path":"/Users/tony/Desktop/Untitled.midst"})
     // }, 250)
-  }
-
-  componentWillUnmount() {
-    document.body.addEventListener('keydown', this.onKeyDown)
   }
 
 // ================================================================================
@@ -121,7 +133,7 @@ class Midst extends React.Component {
   }
 
   onKeyDown(evt) {
-    const { index, stack, focusMode, replayMode, creatingDraftMarker, editingDraftMarkerLabel } = this.state
+    const { index, stack, focusMode, replayMode, creatingDraftMarker, editingDraftMarker } = this.state
     switch (evt.keyCode) {
       case 27:
         if (focusMode) {
@@ -145,13 +157,13 @@ class Midst extends React.Component {
 
         break
       case 37:
-        if (replayMode && index > 0 && !!editingDraftMarkerLabel) {
+        if (replayMode && index > 0 && !editingDraftMarker && !creatingDraftMarker) {
           evt.stopPropagation()
           this.setPos(index - 1)
         }
         break
       case 39:
-        if (replayMode && index < stack.length && !!editingDraftMarkerLabel) {
+        if (replayMode && index < stack.length && !editingDraftMarker && !creatingDraftMarker) {
           evt.stopPropagation()
           this.setPos(index + 1)
         }
@@ -193,27 +205,42 @@ class Midst extends React.Component {
     }
   }
 
-  async newFile() {
+  async checkForUnsavedChanges(message) {
     if (this.state.hasUnsavedChanges) {
       const res = await remote.getGlobal('confirm')(
-        'The current document contains unsaved changes. Start a new one anyway?',
+        message || 'The current document contains unsaved changes. Proceed anyway?',
         ['Ok', 'Cancel'],
       )
 
-      if (res === 1) return
+      if (res === 1) return false
     }
 
+    return true
+  }
+
+  async openFile() {
+    if (!await this.checkForUnsavedChanges()) return
+    remote.getGlobal('openFile')()
+  }
+
+  async newFile() {
+    if (!await this.checkForUnsavedChanges()) return
     this.setState(this.initialState)
     this.quill.setContents([])
   }
 
-  async save () {
+  async quit() {
+    if (!await this.checkForUnsavedChanges()) return
+    remote.getGlobal('quit')()
+  }
+
+  async saveFile () {
     const { fileAbsPath, stack, hasUnsavedChanges, markers } = this.state
 
     if (!hasUnsavedChanges) return
 
     if (!fileAbsPath) {
-      this.saveAs()
+      this.saveFileAs()
     }
 
     else {
@@ -222,7 +249,7 @@ class Midst extends React.Component {
     }
   }
 
-  async saveAs () {
+  async saveFileAs () {
     const { stack, markers } = this.state
     const fileInfo = await remote.getGlobal('saveFileAs')({ stack, meta: { markers }})
 
@@ -312,7 +339,9 @@ class Midst extends React.Component {
   editDraftMarkerLabel(markerNo, inDrawer) {
     return () => {
       const id = 'draft-marker-' + markerNo + (inDrawer ? '-in-drawer' : '')
-      this.setState({ editingDraftMarker: markerNo + (inDrawer ? '-drawer' : '') })
+      this.setState({ editingDraftMarker: markerNo + (inDrawer ? '-drawer' : '') }, () => {
+        console.log(this.state.editingDraftMarker)
+      })
       setTimeout(() => {
         document.getElementById(id).focus()
         document.getElementById(id).select()
@@ -354,22 +383,6 @@ class Midst extends React.Component {
   }
 
   setUpQuill() {
-    document.getElementById('editor').addEventListener('keydown', evt => {
-      if ((evt.key === 'z' || evt.key === 'Z') && evt.metaKey) {
-        evt.stopImmediatePropagation()
-      }
-    })
-
-    document.getElementById('editor').addEventListener('click', evt => {
-      if (this.state.creatingDraftMarker) {
-        this.exitReplayMode()
-        this.setState({
-          editingDraftMarker: null,
-          creatingDraftMarker: false,
-        })
-      }
-    })
-
     this.quill = new Quill('#editor', {
       theme: 'snow',
       modules: {
@@ -405,6 +418,7 @@ class Midst extends React.Component {
         stack,
         hasUnsavedChanges: true,
         replayMode: false,
+        drawerOpen: false,
         creatingDraftMarker: false,
         editingDraftMarker: null,
       })
@@ -455,7 +469,7 @@ class Midst extends React.Component {
 
     if (markerIndices.indexOf(realIndex) >= 0) return
 
-    this.setState({ markers: markers.concat([{ index: realIndex, name: null }]) }, () => {
+    this.setState({ markers: markers.concat([{ index: realIndex, name: 'Draft ' + (markers.length + 1) }]) }, () => {
       this.editDraftMarkerLabel(this.state.markers.length - 1)()
     })
 
@@ -471,10 +485,13 @@ class Midst extends React.Component {
   }
 
   deleteDraftMarker(timelineIndex) {
-    const { markers } = this.state
+    const { markers, drawerOpen } = this.state
     const markerIndex = this.markerIndexFromTimelineIndex(timelineIndex)
     markers.splice(markerIndex, 1)
     this.setState({ markers })
+    if (drawerOpen && markers.length < 1) {
+      this.exitReplayMode()
+    }
   }
 
   applyFormat(formatName) {
@@ -491,10 +508,6 @@ class Midst extends React.Component {
           break
       }
     }
-  }
-
-  draftMarkerName(name, markerNo) {
-    return name || 'Draft ' + (markerNo + 1)
   }
 
 // ================================================================================
@@ -653,7 +666,7 @@ class Midst extends React.Component {
     },
       e('span', {
         onClick: this.editDraftMarkerLabel(markerNo, inDrawer),
-      }, this.draftMarkerName(name, markerNo)),
+      }, name),
       e('input', {
         id: 'draft-marker-' + markerNo + (inDrawer ? '-in-drawer' : ''),
         defaultValue: name,
