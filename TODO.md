@@ -6,6 +6,13 @@
 ?
  -->
 
+## DESIGN/UX THOUGHTS, IDEAS, QUESTIONS FOR DESIGN MEETING
+1. Advice on our icons?
+1. Advice on our ux in general? 
+1. Advice on how we can design the drawer so that it doesn't interfere w/ text when the text has long lines?
+1. Advice on incorporating logo and/or other styling in a way that looks nice?
+
+
 ## ?
 1. PC build capability? (Would be helpful for prototype testing/pilot phase)
 
@@ -19,6 +26,7 @@
 
 ## Mid-priority bugs
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
+1. Not sure we have answer to this yet but: Transparent drawer design doesn't work when we have long text
 
 ## Low-priority bugs
 1. In drawer, no way to navigate to Markers that have long names, because clicking anywhere on the marker name just makes me rename it instead of navigating to it. Imo a nice solution here: Add little flag icons to left of each name (like bullet points almost). Click on little flag icon @ left of marker name to navigate to marker; click on name to rename; and click on delete icon (Little red X or little trash can.. we don't need whole word "delete") to the right of the name to delete marker. Leaving a bit of white space between flag icon / marker name / delete icon.
