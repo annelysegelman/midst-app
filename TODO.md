@@ -1,14 +1,21 @@
 
 # MIDST TO-DO
 
-<!-- *LAST UPDATE: Jason, Jan 16 2019 -->
+<!-- *LAST UPDATE: Annelyse, Jan 18 2019 -->
 <!-- *CURRENT STAGING BUILD: http://hem.rocks/files/midst-builds/Midst_build_1547650260598.zip
 ?
  -->
 
+## ?
+1. PC build capability? (Would be helpful for prototype testing/pilot phase)
+
 ## CRITICAL bugs
+1. Unsaved changes bug: App should give the "yo are u sure? u have unsaved changes dude" warning when opening a previously-saved Midst document while the currently-open document has unsaved changes. HOWEVER, NOTE: This bug is critical BUT is totally irrelevant once the user is allowed to open documents (new or previously-saved) in new Midst windows, since the bug is only happening because the doc with unsaved changes gets "replaced" by the opened doc in this use case. So if you'd rather build that "multiple windows" feature & ignore this bug that is ok too!
 
 ## High-priority bugs
+1. Save button icon doesn't work (tho command+s shortcut works).
+1. You fixed the bug where past/future markers might accidentally get Renamed when adding or deleting markers—this is awesome! However: Marker default names still behave strangely. For example, say I make marker 1, 2, 3, 4, and 5, then delete markers 2-4. The next marker I make is somehow labeled Draft 3 (when it should be 6), the following is Draft 4 (when it should be 7), and then the next is auto-labeled Draft 5 (when it should be 8, and also, i already have a Draft 5 so this is very confusing!). Similarly, if I make marker 1 then marker 2, then delete the Draft 1 marker, the next marker i make will be labeled Draft 2 (leaving me with two Draft 2 markers).
+- Related: I think maybe we should fix these numbers AND I'm thinking maybe we should just get rid of the word "Draft" altogether and simply have them say 1, 2, 3, 4, 5, et al? Because it occurs to me that, if you want, you can use these features to mark 'drafts', but if you want, you could treat it more like 'huh here's a cool idea, i just want to "put a pin in it" and maybe come back to it later even tho i wanna delete it now."' What do you think?
 
 ## Mid-priority bugs
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
@@ -16,7 +23,7 @@
 ## Low-priority bugs
 1. In drawer, no way to navigate to Markers that have long names, because clicking anywhere on the marker name just makes me rename it instead of navigating to it. Imo a nice solution here: Add little flag icons to left of each name (like bullet points almost). Click on little flag icon @ left of marker name to navigate to marker; click on name to rename; and click on delete icon (Little red X or little trash can.. we don't need whole word "delete") to the right of the name to delete marker. Leaving a bit of white space between flag icon / marker name / delete icon.
 1. Need a way to undo/redo draft marker actions (particularly deleting them by accident).
-1. Highlighted text should stay highlighted while changing the font, font size
+1. Highlighted text should stay visibly highlighted while changing the font, font size—clicking into the menu to, say, open the font or font size choices, shouldn't un-highlight selected text.
 1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason.
 1. Bug when editing in timeline mode: Enter timeline mode; scroll back using arrow keys (not click and drag). Cursor currently defaults to right BEFORE the last character typed in any given frame. This is weird. Cursor should ideally default to remain in last position (prior to entering timeline mode), or, if this isn't possible, at least default to AFTER the last character typed (not before).
 1. Long draft marker names in timeline are a problem. Try opaque backgrounds for marker names!
@@ -26,15 +33,7 @@
 1. Timeline handle should be all the way to the right (top of stack) when entering timeline mode
 
 ## Ready for Review
-1. App should give a warning if quitting with unsaved changes!
-1. Drawer bug: Deleting all draft markers makes drawer stuck open. IRL deleting all markers should automatically close the drawer.
-1. Menuing bugs (do your best / to be elaborated on after ARG receives the next build)
-1. Timeline mode bug: arrow nav in timeline mode is broken (it moves the cursor backwards/forwards in the type window, instead of moving the timeline backwards/forwards). Click+drag in timeline works fine.
-1. Drawer bug: Opening the drawer opens drawer + timeline (correct), but then typing while drawer is open makes timeline disappear but drawer stays open.
-1. When adding a draft marker: default name should appear (Highlighted please!) eg "draft 1"
-1. Doing some user guesswork here but, imo: Draft marker names: Draft markers should be numbered in the order they were created, but, Deleting a draft marker should NEVER Change the name of any past/future Draft markers.
-- Right now, for example, if i make markers 1-5, then delete #3, the marker that was #4 is now renamed #3, and #5 is renamed #4.... this could get very confusing for the writer, no? Better imo to simply have (in that instance, e.g.) Draft 1, Draft 2, Draft 4, and Draft 5, w/ no draft 3 marker?
-1. #FFFAFA bg color plz thx
+
 
 ## In Progress
 
@@ -110,7 +109,12 @@
 
 ## Regression tests /// Requirements graveyard for future bug checks; DO NOT DELETE
 
-
+1. Drawer: Deleting all markers should automatically close the drawer.
+1. Drawer: Opening drawer opens drawer & timeline.
+1. Timeline: click and drag + arrow key navigation.
+1. Markers: default name should appear (Highlighted please!) eg "draft 1"
+1. Markers: Draft markers should be numbered in the order they were created, but, Deleting a draft marker should NEVER Change the name of any past/future Draft markers.
+1. Warnings: App should give a warning if quitting with unsaved changes! (Both when opening a new blank doc & when quitting app.)
 1. Bug: When copying and pasting text from an outside source (eg a website) into Midst, Midst should only save Midst-compatible formatting.
 1. ALL means of exiting Draft Marker creation (& going back to type mode, natch) should cause the flag icon to turn grey again.
 1. When adding a draft marker: Flag icon should turn red (then go pale-grey "unactivated" after the Timeline disappears); Timeline Mode icon should NOT turn red (since user is not actually entering timeline mode, just adding a marker).
