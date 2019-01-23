@@ -6,32 +6,39 @@
 ?
  -->
 
-## DESIGN/UX THOUGHTS, IDEAS, QUESTIONS FOR DESIGN MEETING
-1. Advice on our icons?
-1. Advice on our ux in general?
-1. Advice on how we can design the drawer so that it doesn't interfere w/ text when the text has long lines?
-1. Advice on incorporating logo and/or other styling in a way that looks nice?
 
-## ?
-1. PC build capability? (Would be helpful for prototype testing/pilot phase)
+
+## Request: change icons
+1. From upper left to upper right (group these together as indicated by bullets:
+- M icon 
+- Open document, Save document
+- Font stuff
+- Eyeball 
+- Flag, Timeline, Drawer
+1. REPLACE "L C R" with standard text alignment icons please!
+
 
 ## CRITICAL bugs
 None.
 
 ## High-priority bugs
-1. You fixed the bug where past/future markers might accidentally get Renamed when adding or deleting markers—this is awesome! However: Marker default names still behave strangely. For example, say I make marker 1, 2, 3, 4, and 5, then delete markers 2-4. The next marker I make is somehow labeled Draft 3 (when it should be 6), the following is Draft 4 (when it should be 7), and then the next is auto-labeled Draft 5 (when it should be 8, and also, i already have a Draft 5 so this is very confusing!). Similarly, if I make marker 1 then marker 2, then delete the Draft 1 marker, the next marker i make will be labeled Draft 2 (leaving me with two Draft 2 markers).
-- Related: I think maybe we should fix these numbers AND I'm thinking maybe we should just get rid of the word "Draft" altogether and simply have them say 1, 2, 3, 4, 5, et al? Because it occurs to me that, if you want, you can use these features to mark 'drafts', but if you want, you could treat it more like 'huh here's a cool idea, i just want to "put a pin in it" and maybe come back to it later even tho i wanna delete it now."' What do you think?
+1. Draft markers: Default names always count up.
+1. Long draft marker names in timeline are a problem. Try opaque backgrounds for marker names (currently highlighted marker)
+1. Highlighted text should stay visibly highlighted while changing the font, font size—clicking into the menu to, say, open the font or font size choices, shouldn't un-highlight selected text.
+1. Bug: Changing font / changing font size doesn't always work.
+1. Bug: Type stuff. Click draft marker icon to add marker. Then WITHOUT TYPING ANYTHING, click the draft marker icon again. You have just added 2 markers right next to each other! This is bad. Make sure flag icon can't be clicked immediately after you click it (i.e. when it is red it shouldn't be clickable).
 
 ## Mid-priority bugs
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
 
+## High-priority feature request
+1. Allow user to have multiple Midst documents/windows (in any combination of saved & unsaved) open at the same time
+
 ## Low-priority bugs
 1. In drawer, no way to navigate to Markers that have long names, because clicking anywhere on the marker name just makes me rename it instead of navigating to it. Imo a nice solution here: Add little flag icons to left of each name (like bullet points almost). Click on little flag icon @ left of marker name to navigate to marker; click on name to rename; and click on delete icon (Little red X or little trash can.. we don't need whole word "delete") to the right of the name to delete marker. Leaving a bit of white space between flag icon / marker name / delete icon.
 1. Need a way to undo/redo draft marker actions (particularly deleting them by accident).
-1. Highlighted text should stay visibly highlighted while changing the font, font size—clicking into the menu to, say, open the font or font size choices, shouldn't un-highlight selected text.
 1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason.
 1. Bug when editing in timeline mode: Enter timeline mode; scroll back using arrow keys (not click and drag). Cursor currently defaults to right BEFORE the last character typed in any given frame. This is weird. Cursor should ideally default to remain in last position (prior to entering timeline mode), or, if this isn't possible, at least default to AFTER the last character typed (not before).
-1. Long draft marker names in timeline are a problem. Try opaque backgrounds for marker names!
 1. Right-click on a draft marker in the timeline --> Delete option
 
 ## Lowest priority bugs
@@ -45,10 +52,10 @@ None.
 ## In Progress
 
 ## To Do (Hopefully for pilot!)
+1. PC build capability? (Would be helpful for prototype testing/pilot phase)
 1. Add shortcut for navigating the timeline in Replay Mode: DOWN ARROW jumps forward to NEXT draft marker sequentially; UP arrow jumps backwards to PREVIOUS draft marker.
 1. Add shortcut: Command+ makes text in window bigger, command- makes it smaller (as in chrome when reading a website).
 1. Edit > Insert Draft Marker menu item (Cmd+M).
-1. Allow user to have multiple Midst documents/windows (in any combination of saved & unsaved) open at the same time
 1. On quit menu prompt for unsaved changes, add option to "Save and Quit" (current options are just "quit" or "cancel").
 1. Adding a new draft marker: We can maybe have some little animation here, a little glow that means "something happened!"
 - Draft marker flag CURRENTLY being added could be red (like the nav icon); previous markers already existing can be black/static.
@@ -66,6 +73,9 @@ None.
 ## Design To-Dos (Not for pilot / defer plz)
 1. Choose icons, woooo
 1. Develop moar interactions
+
+## Future TODO
+1. Licensing/app expiration / antipiracy stuff?
 
 
 ## -----------everything below this line is low priority-------------
