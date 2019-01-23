@@ -8,25 +8,22 @@
 
 ## DESIGN/UX THOUGHTS, IDEAS, QUESTIONS FOR DESIGN MEETING
 1. Advice on our icons?
-1. Advice on our ux in general? 
+1. Advice on our ux in general?
 1. Advice on how we can design the drawer so that it doesn't interfere w/ text when the text has long lines?
 1. Advice on incorporating logo and/or other styling in a way that looks nice?
-
 
 ## ?
 1. PC build capability? (Would be helpful for prototype testing/pilot phase)
 
 ## CRITICAL bugs
-1. Unsaved changes bug: App should give the "yo are u sure? u have unsaved changes dude" warning when opening a previously-saved Midst document while the currently-open document has unsaved changes. HOWEVER, NOTE: This bug is critical BUT is totally irrelevant once the user is allowed to open documents (new or previously-saved) in new Midst windows, since the bug is only happening because the doc with unsaved changes gets "replaced" by the opened doc in this use case. So if you'd rather build that "multiple windows" feature & ignore this bug that is ok too!
+None.
 
 ## High-priority bugs
-1. Save button icon doesn't work (tho command+s shortcut works).
 1. You fixed the bug where past/future markers might accidentally get Renamed when adding or deleting markers—this is awesome! However: Marker default names still behave strangely. For example, say I make marker 1, 2, 3, 4, and 5, then delete markers 2-4. The next marker I make is somehow labeled Draft 3 (when it should be 6), the following is Draft 4 (when it should be 7), and then the next is auto-labeled Draft 5 (when it should be 8, and also, i already have a Draft 5 so this is very confusing!). Similarly, if I make marker 1 then marker 2, then delete the Draft 1 marker, the next marker i make will be labeled Draft 2 (leaving me with two Draft 2 markers).
 - Related: I think maybe we should fix these numbers AND I'm thinking maybe we should just get rid of the word "Draft" altogether and simply have them say 1, 2, 3, 4, 5, et al? Because it occurs to me that, if you want, you can use these features to mark 'drafts', but if you want, you could treat it more like 'huh here's a cool idea, i just want to "put a pin in it" and maybe come back to it later even tho i wanna delete it now."' What do you think?
 
 ## Mid-priority bugs
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
-1. Not sure we have answer to this yet but: Transparent drawer design doesn't work when we have long text
 
 ## Low-priority bugs
 1. In drawer, no way to navigate to Markers that have long names, because clicking anywhere on the marker name just makes me rename it instead of navigating to it. Imo a nice solution here: Add little flag icons to left of each name (like bullet points almost). Click on little flag icon @ left of marker name to navigate to marker; click on name to rename; and click on delete icon (Little red X or little trash can.. we don't need whole word "delete") to the right of the name to delete marker. Leaving a bit of white space between flag icon / marker name / delete icon.
@@ -41,7 +38,9 @@
 1. Timeline handle should be all the way to the right (top of stack) when entering timeline mode
 
 ## Ready for Review
-
+1. Unsaved changes bug: App should give the "yo are u sure? u have unsaved changes dude" warning when opening a previously-saved Midst document while the currently-open document has unsaved changes. HOWEVER, NOTE: This bug is critical BUT is totally irrelevant once the user is allowed to open documents (new or previously-saved) in new Midst windows, since the bug is only happening because the doc with unsaved changes gets "replaced" by the opened doc in this use case. So if you'd rather build that "multiple windows" feature & ignore this bug that is ok too!
+1. Save button icon doesn't work (tho command+s shortcut works).
+1. Not sure we have answer to this yet but: Transparent drawer design doesn't work when we have long text
 
 ## In Progress
 
