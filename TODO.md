@@ -1,22 +1,23 @@
 
 # MIDST TO-DO
 
-<!-- *LAST UPDATE: Annelyse, Jan 18 2019 -->
-<!-- *CURRENT STAGING BUILD: http://hem.rocks/files/midst-builds/Midst_build_1547650260598.zip
-?
+<!-- *LAST UPDATE: Jason, Jan 27 2019 -->
+<!-- *CURRENT STAGING BUILD:
+
+http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1548609346895.zip
+
  -->
 
 ## CRITICAL bugs
-None.
+1. None
 
-## Needs Further Explanation
+## Needs Explanation
 1. Bug: Changing font / changing font size doesn't always work.
 
 ## High-priority bugs
 1. Highlighted text should stay visibly highlighted while changing the font, font size—clicking into the menu to, say, open the font or font size choices, shouldn't un-highlight selected text.
 
 ## Mid-priority bugs
-1. When deleting a draft marker from the drawer, the scrubber position should not change.
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
 
 ## High-priority feature request
@@ -32,20 +33,21 @@ None.
 ## Lowest priority bugs
 1. Timeline handle should be all the way to the right (top of stack) when entering timeline mode
 
-## Ready for Review
+## Ready for Review (*Arg has not reviewed cuz she doesn't have a build)
 1. Unsaved changes bug: App should give the "yo are u sure? u have unsaved changes dude" warning when opening a previously-saved Midst document while the currently-open document has unsaved changes. HOWEVER, NOTE: This bug is critical BUT is totally irrelevant once the user is allowed to open documents (new or previously-saved) in new Midst windows, since the bug is only happening because the doc with unsaved changes gets "replaced" by the opened doc in this use case. So if you'd rather build that "multiple windows" feature & ignore this bug that is ok too!
 1. Save button icon doesn't work (tho command+s shortcut works).
 1. Not sure we have answer to this yet but: Transparent drawer design doesn't work when we have long text
 1. From upper left to upper right (group these together as indicated by bullets:
-- M icon
+- M icon (use placeholder or just forget this one for now!)
 - Open document, Save document
-- Font stuff
+- Font stuff in the middle
 - Eyeball
 - Flag, Timeline, Drawer
-1. REPLACE "L C R" with standard text alignment icons please!
+1. REPLACE "L C R" with standard text alignment icons please (they don't have to be fancy)!
+1. Format stabilization. Future versions/builds of Midst should be backwards compatible with previous versions.
+1. Bug: Type stuff. Click draft marker icon to add marker. Then WITHOUT TYPING ANYTHING, click the draft marker icon again. You have just added 2 markers right next to each other! This is bad. Make sure flag icon can't be clicked immediately after you click it (i.e. when it is red it shouldn't be clickable).
 1. Draft markers: Default names always count up.
 1. Long draft marker names in timeline are a problem. Try opaque backgrounds for marker names (currently highlighted marker)
-1. Bug: Type stuff. Click draft marker icon to add marker. Then WITHOUT TYPING ANYTHING, click the draft marker icon again. You have just added 2 markers right next to each other! This is bad. Make sure flag icon can't be clicked immediately after you click it (i.e. when it is red it shouldn't be clickable).
 
 ## In Progress
 
