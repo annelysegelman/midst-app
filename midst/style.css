@@ -33,8 +33,15 @@ body {
 .midst-toolbar {
   position: absolute;
   top: 30px;
-  right: 10px;
   height: 24px; /* Match height of Quill snow theme toolbar. */
+}
+
+.midst-toolbar--left {
+  left: 10px;
+}
+
+.midst-toolbar--right {
+  right: 10px;
 }
 
 .midst-toolbar button { /* Match style of Quill snow theme toolbar buttons. */
@@ -52,6 +59,19 @@ body {
   width: 19px;
   height: 19px;
   transition: all 500ms;
+}
+
+.midst-toolbar button.logo {
+  position: relative;
+}
+
+.midst-toolbar button.logo img {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  filter: invert(100%);
 }
 
 .ql-toolbar.ql-snow {
@@ -85,6 +105,7 @@ body {
   padding: 50px;
   font-family: 'Arial';
   border: 0;
+  transform: width 250ms;
 }
 
 .midst-slider {
@@ -198,9 +219,22 @@ body {
   display: inline-block;
 }
 
+.draft-markers .draft-marker.active {
+  z-index: 9999;
+}
+
+.draft-markers .draft-marker.active .draft-marker-label {
+  padding: 5px 0;
+  border: 1px solid #333;
+  border-radius: 10px;
+  background: #fff;
+}
+
 #quill-toolbar {
+  position: absolute;
+  top: 27px;
+  left: 120px;
   border: 0;
-  left: 0;
 }
 
 #quill-toolbar * {
@@ -240,7 +274,8 @@ body {
   border-right: 1px solid #000;
 }
 
-.main.drawer-open {
+.main.drawer-open,
+.main.drawer-open #editor {
   width: calc(100vw - 200px);
 }
 
@@ -304,4 +339,10 @@ body {
   height: 10px;
   padding: 0;
   text-align: left;
+}
+
+.temp-align-icon {
+  width: 16px;
+  height: 16px;
+  filter: saturate(0);
 }

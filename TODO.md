@@ -6,29 +6,17 @@
 ?
  -->
 
-
-
-## Request: change icons
-1. From upper left to upper right (group these together as indicated by bullets:
-- M icon 
-- Open document, Save document
-- Font stuff
-- Eyeball 
-- Flag, Timeline, Drawer
-1. REPLACE "L C R" with standard text alignment icons please!
-
-
 ## CRITICAL bugs
 None.
 
-## High-priority bugs
-1. Draft markers: Default names always count up.
-1. Long draft marker names in timeline are a problem. Try opaque backgrounds for marker names (currently highlighted marker)
-1. Highlighted text should stay visibly highlighted while changing the font, font size—clicking into the menu to, say, open the font or font size choices, shouldn't un-highlight selected text.
+## Needs Further Explanation
 1. Bug: Changing font / changing font size doesn't always work.
-1. Bug: Type stuff. Click draft marker icon to add marker. Then WITHOUT TYPING ANYTHING, click the draft marker icon again. You have just added 2 markers right next to each other! This is bad. Make sure flag icon can't be clicked immediately after you click it (i.e. when it is red it shouldn't be clickable).
+
+## High-priority bugs
+1. Highlighted text should stay visibly highlighted while changing the font, font size—clicking into the menu to, say, open the font or font size choices, shouldn't un-highlight selected text.
 
 ## Mid-priority bugs
+1. When deleting a draft marker from the drawer, the scrubber position should not change.
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
 
 ## High-priority feature request
@@ -48,6 +36,16 @@ None.
 1. Unsaved changes bug: App should give the "yo are u sure? u have unsaved changes dude" warning when opening a previously-saved Midst document while the currently-open document has unsaved changes. HOWEVER, NOTE: This bug is critical BUT is totally irrelevant once the user is allowed to open documents (new or previously-saved) in new Midst windows, since the bug is only happening because the doc with unsaved changes gets "replaced" by the opened doc in this use case. So if you'd rather build that "multiple windows" feature & ignore this bug that is ok too!
 1. Save button icon doesn't work (tho command+s shortcut works).
 1. Not sure we have answer to this yet but: Transparent drawer design doesn't work when we have long text
+1. From upper left to upper right (group these together as indicated by bullets:
+- M icon
+- Open document, Save document
+- Font stuff
+- Eyeball
+- Flag, Timeline, Drawer
+1. REPLACE "L C R" with standard text alignment icons please!
+1. Draft markers: Default names always count up.
+1. Long draft marker names in timeline are a problem. Try opaque backgrounds for marker names (currently highlighted marker)
+1. Bug: Type stuff. Click draft marker icon to add marker. Then WITHOUT TYPING ANYTHING, click the draft marker icon again. You have just added 2 markers right next to each other! This is bad. Make sure flag icon can't be clicked immediately after you click it (i.e. when it is red it shouldn't be clickable).
 
 ## In Progress
 

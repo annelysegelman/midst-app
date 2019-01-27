@@ -124,6 +124,10 @@ class Midst extends React.Component {
     // }, 250)
   }
 
+  componentDidUpdate() {
+    // console.log(this.state.editingDraftMarker)
+  }
+
 // ================================================================================
 // Handlers
 // ================================================================================
@@ -278,7 +282,7 @@ class Midst extends React.Component {
   enterReplayMode() {
     this.setState({
       replayMode: true,
-      creatingDraftMarker: false,
+      // creatingDraftMarker: false,
       editingDraftMarker: null,
     })
     this.setPos(this.state.stack.length - 1)
@@ -286,10 +290,13 @@ class Midst extends React.Component {
   }
 
   exitReplayMode() {
+    if (this.state.creatingDraftMarker) return
+
     this.setState({
       replayMode: false,
       drawerOpen: false,
     })
+
     this.setPos(this.state.stack.length - 1)
   }
 
@@ -339,15 +346,15 @@ class Midst extends React.Component {
   editDraftMarkerLabel(markerNo, inDrawer) {
     return () => {
       const id = 'draft-marker-' + markerNo + (inDrawer ? '-in-drawer' : '')
-      this.setState({ editingDraftMarker: markerNo + (inDrawer ? '-drawer' : '') }, () => {
-        console.log(this.state.editingDraftMarker)
-      })
+
+      this.setState({ editingDraftMarker: markerNo + (inDrawer ? '-drawer' : '') })
+
       setTimeout(() => {
         document.getElementById(id).focus()
         document.getElementById(id).select()
         this.quill.disable()
       })
-      document.getElementById(id).addEventListener('blur', () => {
+      document.getElementById(id).addEventListener('blur', (evt) => {
         this.saveDraftMarkerLabel(markerNo, inDrawer)
       })
     }
@@ -367,7 +374,11 @@ class Midst extends React.Component {
   saveDraftMarkerLabel(markerNo, inDrawer) {
     const { markers, creatingDraftMarker } = this.state
     const id = 'draft-marker-' + markerNo + (inDrawer ? '-in-drawer' : '')
-    markers[markerNo].name = document.getElementById(id).value
+
+
+    if (document.getElementById(id).value !== 'Draft ' + (markerNo + 1)) {
+      markers[markerNo].name = document.getElementById(id).value
+    }
 
     this.setState({
       markers,
@@ -469,13 +480,16 @@ class Midst extends React.Component {
 
     if (markerIndices.indexOf(realIndex) >= 0) return
 
-    this.setState({ markers: markers.concat([{ index: realIndex, name: 'Draft ' + (markers.length + 1) }]) }, () => {
+    this.setState({
+      creatingDraftMarker: true,
+      markers: markers.concat([{ index: realIndex, name: null }]),
+    }, () => {
+      console.log(this.state.creatingDraftMarker)
       this.editDraftMarkerLabel(this.state.markers.length - 1)()
     })
 
     if (!replayMode) {
       this.enterReplayMode()
-      this.setState({ creatingDraftMarker: true })
     }
   }
 
@@ -505,6 +519,9 @@ class Midst extends React.Component {
           break
         case 'align-right':
           this.quill.format('align', 'right', 'user')
+          break
+        case 'align-justify':
+          this.quill.format('align', 'justify', 'user')
           break
       }
     }
@@ -550,15 +567,39 @@ class Midst extends React.Component {
       e('button', {
         className: 'align-left',
         onClick: this.applyFormat('align-left')
-      }, 'L'),
+      },
+        e('img', {
+          className: 'temp-align-icon',
+          src: 'align-left.png',
+        })
+      ),
       e('button', {
         className: 'align-center',
         onClick: this.applyFormat('align-center')
-      }, 'C'),
+      },
+        e('img', {
+          className: 'temp-align-icon',
+          src: 'align-center.png',
+        }),
+      ),
       e('button', {
         className: 'align-right',
         onClick: this.applyFormat('align-right')
-      }, 'R'),
+      },
+        e('img', {
+          className: 'temp-align-icon',
+          src: 'align-right.png',
+        })
+      ),
+      e('button', {
+        className: 'align-justify',
+        onClick: this.applyFormat('align-justify')
+      },
+        e('img', {
+          className: 'temp-align-icon',
+          src: 'align-justify.png',
+        })
+      ),
     )
   }
 
@@ -581,24 +622,38 @@ class Midst extends React.Component {
     )
   }
 
-  midstToolbar() {
+  midstToolbarLeft() {
     const { hasUnsavedChanges, stack, replayMode, markers, index, creatingDraftMarker } = this.state
     const markerIndices = markers.map(marker => marker.index)
 
-    return e('div', { className: 'midst-toolbar' },
+    return e('div', { className: 'midst-toolbar midst-toolbar--left' },
+      e('button', { className: 'logo' },
+        e('img', { src: 'm.png' }),
+      ),
+      e('button', {
+        onClick: () => remote.getGlobal('openFile')(),
+      }, e(Folder)),
+      e('button', {
+        className: !hasUnsavedChanges ? 'deactivated' : '',
+        onClick: this.saveFile,
+      }, e(Save)),
+    )
+  }
+
+  midstToolbarRight() {
+    const { stack, replayMode, markers, index, creatingDraftMarker } = this.state
+    const markerIndices = markers.map(marker => marker.index)
+
+    return e('div', { className: 'midst-toolbar midst-toolbar--right' },
+      e('button', {
+        onClick: this.toggleFocusMode,
+      }, e(Eye)),
       e('button', {
         className: 'draft-marker' +
           (markerIndices.indexOf(index) >= 0 && !creatingDraftMarker ? ' deactivated' : '') +
           (creatingDraftMarker ? ' highlighted' : ''),
-        onClick: this.createDraftMarker,
+        onMouseDown: !creatingDraftMarker ? this.createDraftMarker : null,
       }, e(Flag)),
-      e('button', {
-        className: !hasUnsavedChanges ? 'deactivated' : '',
-        onClick: this.save,
-      }, e(Save)),
-      e('button', {
-        onClick: () => remote.getGlobal('openFile')(),
-      }, e(Folder)),
       e('button', {
         className:
           'replay-button'
@@ -607,9 +662,6 @@ class Midst extends React.Component {
         ,
         onClick: this.toggleReplayMode,
       }, e(Rewind)),
-      e('button', {
-        onClick: this.toggleFocusMode,
-      }, e(Eye)),
       e('button', {
         className: (markers.length < 1 ? ' deactivated' : ''),
         onClick: markers.length ? this.toggleDrawerOpen : null,
@@ -639,20 +691,23 @@ class Midst extends React.Component {
   }
 
   draftMarkers() {
-    const { markers, stack, editingDraftMarker, showDraftMarkerLabels } = this.state
+    const { markers, stack, editingDraftMarker, showDraftMarkerLabels, index: currentTimelinePosition } = this.state
     return e('div', {
       className: 'draft-markers'
     },
-      markers.map(({index, name}) => {
+      markers.map(({index, name}, markerNo) => {
         return e('div', {
           key: index,
-          className: 'draft-marker' + (editingDraftMarker === index ? ' editing' : ''),
+          className: 'draft-marker'
+            + (editingDraftMarker === index ? ' editing' : '')
+            + (currentTimelinePosition === index ? ' active' : '')
+          ,
           style: {
             left: (index / stack.length * 100) + '%',
           },
           onClick: () => this.goTo(index),
         },
-          showDraftMarkerLabels ? this.draftMarkerLabel(name, index) : null,
+          showDraftMarkerLabels ? this.draftMarkerLabel(name || 'Draft ' + (markerNo + 1), index) : null,
         )
       })
     )
@@ -677,13 +732,15 @@ class Midst extends React.Component {
 
   drawer() {
     const { drawerOpen, markers, showDraftMarkers, showDraftMarkerLabels } = this.state
-    const reversedMarkers = [].concat(markers).reverse()
-    const fooMarkers = reversedMarkers
-      .concat(reversedMarkers)
-      .concat(reversedMarkers)
-      .concat(reversedMarkers)
-      .concat(reversedMarkers)
-      .concat(reversedMarkers)
+
+    const markersWithDefaultNames = []
+
+    for (const markerNo in markers) {
+      markersWithDefaultNames[markerNo] = Object.assign({}, markers[markerNo])
+      markersWithDefaultNames[markerNo].name = markersWithDefaultNames.name || 'Draft ' + (parseInt(markerNo, 10) + 1)
+    }
+
+    const reversedMarkers = [].concat(markersWithDefaultNames).reverse()
 
     return e('div', {
       className: 'drawer' + (drawerOpen ? ' open' : '')
@@ -732,8 +789,9 @@ class Midst extends React.Component {
           onMouseLeave: this.cancelExitFocusModeIntent,
         },
           e('div', { className: 'toolbars-fade' },
+            this.midstToolbarLeft(),
             this.quillToolbar(),
-            this.midstToolbar(),
+            this.midstToolbarRight(),
           ),
         ),
         e('div', { className: 'main' + (drawerOpen ? ' drawer-open' : '') },
