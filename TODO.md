@@ -1,21 +1,25 @@
 
 # MIDST TO-DO
 
-<!-- *LAST UPDATE: Jason, Jan 27 2019 -->
+<!-- *LAST UPDATE: Annelyse, Jan 27 2019 -->
 <!-- *CURRENT STAGING BUILD:
 
 http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1548609346895.zip
 
  -->
 
+
+## New bugs (to discuss?)
+1. Draft marker default names are very screwed up. I recommend we do a quick screen share. To DIY: type stuff, add like 4 different markers, then go to the drawer and try to change a marker name. The marker name will highlight when you click on it, to allow you to edit it, but the highlighted name will suddenly change as soon as it gets highlighted. For example, if you click on "Draft 3" in the drawer, as soon as you highlight the name it will temporarily change to "Draft 1", then back to "Draft 3" once you click out of the edit area. And then the name of the "Draft 3" marker (which you just clicked on and didn't even edit) will STAY as "Draft 1" in the Timeline, renaming itself. There are other bugs like this, if you screenshare with me or if you just play around with adding markers, deleting them, and editing their names in both the drawer and the timeline you'll see what's going on.
+1. I thought we were trying the "draft markers always count up" thing? But now we're back to the old "if you add draft markers 1, 2, and 3, then delete 2, Draft 3 marker renames itself to Draft 2" system——I can't tell if this is a bug or if you want me to just pilot the app with this system in place. I can test it like this if you want! But it doesn't make that much sense to me.
+
 ## CRITICAL bugs
 1. None
 
-## Needs Explanation
-1. Bug: Changing font / changing font size doesn't always work.
-
 ## High-priority bugs
 1. Highlighted text should stay visibly highlighted while changing the font, font size—clicking into the menu to, say, open the font or font size choices, shouldn't un-highlight selected text.
+1. Unsaved changes: App should give the "yo are u sure? u have unsaved changes dude" warning when opening a previously-saved Midst document while the currently-open document has unsaved changes. 
+1. Draft markers: Default names always count up.
 
 ## Mid-priority bugs
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
@@ -24,6 +28,7 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1548609346895.zip
 1. Allow user to have multiple Midst documents/windows (in any combination of saved & unsaved) open at the same time
 
 ## Low-priority bugs
+1. Bug: Type stuff. Click draft marker icon to add marker. Then WITHOUT TYPING ANYTHING, click the draft marker icon again. You have just added 2 markers right next to each other! This is bad. Make sure flag icon can't be clicked immediately after you click it (i.e. when it is red it shouldn't be clickable).
 1. In drawer, no way to navigate to Markers that have long names, because clicking anywhere on the marker name just makes me rename it instead of navigating to it. Imo a nice solution here: Add little flag icons to left of each name (like bullet points almost). Click on little flag icon @ left of marker name to navigate to marker; click on name to rename; and click on delete icon (Little red X or little trash can.. we don't need whole word "delete") to the right of the name to delete marker. Leaving a bit of white space between flag icon / marker name / delete icon.
 1. Need a way to undo/redo draft marker actions (particularly deleting them by accident).
 1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason.
@@ -33,21 +38,8 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1548609346895.zip
 ## Lowest priority bugs
 1. Timeline handle should be all the way to the right (top of stack) when entering timeline mode
 
-## Ready for Review (*Arg has not reviewed cuz she doesn't have a build)
-1. Unsaved changes bug: App should give the "yo are u sure? u have unsaved changes dude" warning when opening a previously-saved Midst document while the currently-open document has unsaved changes. HOWEVER, NOTE: This bug is critical BUT is totally irrelevant once the user is allowed to open documents (new or previously-saved) in new Midst windows, since the bug is only happening because the doc with unsaved changes gets "replaced" by the opened doc in this use case. So if you'd rather build that "multiple windows" feature & ignore this bug that is ok too!
-1. Save button icon doesn't work (tho command+s shortcut works).
-1. Not sure we have answer to this yet but: Transparent drawer design doesn't work when we have long text
-1. From upper left to upper right (group these together as indicated by bullets:
-- M icon (use placeholder or just forget this one for now!)
-- Open document, Save document
-- Font stuff in the middle
-- Eyeball
-- Flag, Timeline, Drawer
-1. REPLACE "L C R" with standard text alignment icons please (they don't have to be fancy)!
-1. Format stabilization. Future versions/builds of Midst should be backwards compatible with previous versions.
-1. Bug: Type stuff. Click draft marker icon to add marker. Then WITHOUT TYPING ANYTHING, click the draft marker icon again. You have just added 2 markers right next to each other! This is bad. Make sure flag icon can't be clicked immediately after you click it (i.e. when it is red it shouldn't be clickable).
-1. Draft markers: Default names always count up.
-1. Long draft marker names in timeline are a problem. Try opaque backgrounds for marker names (currently highlighted marker)
+## Ready for Review 
+
 
 ## In Progress
 
@@ -126,6 +118,8 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1548609346895.zip
 
 ## Regression tests /// Requirements graveyard for future bug checks; DO NOT DELETE
 
+
+1. Drawer: Opening drawer should push long lines aside (not overlap them).
 1. Drawer: Deleting all markers should automatically close the drawer.
 1. Drawer: Opening drawer opens drawer & timeline.
 1. Timeline: click and drag + arrow key navigation.
