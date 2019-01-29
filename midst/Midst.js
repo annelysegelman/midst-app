@@ -347,14 +347,17 @@ class Midst extends React.Component {
   editDraftMarkerLabel(timelineIndex, inDrawer) {
     return () => {
       const id = 'draft-marker-' + timelineIndex + (inDrawer ? '-in-drawer' : '')
+      const marker = _.find(this.state.markers, { index: timelineIndex })
 
       this.setState({ editingDraftMarker: timelineIndex + (inDrawer ? '-drawer' : '') })
 
       setTimeout(() => {
+        document.getElementById(id).value = marker.name || marker.defaultName
         document.getElementById(id).focus()
         document.getElementById(id).select()
         this.quill.disable()
       })
+
       document.getElementById(id).addEventListener('blur', (evt) => {
         this.saveDraftMarkerLabel(timelineIndex, inDrawer)
       })
@@ -646,7 +649,7 @@ class Midst extends React.Component {
         e('img', { src: 'm.png' }),
       ),
       e('button', {
-        onClick: () => remote.getGlobal('openFile')(),
+        onClick: this.openFile,
       }, e(Folder)),
       e('button', {
         className: !hasUnsavedChanges ? 'deactivated' : '',
@@ -729,6 +732,9 @@ class Midst extends React.Component {
   }
 
   draftMarkerLabel(name, timelineIndex, inDrawer) {
+
+    inDrawer && console.log(name)
+
     return e('div', {
       className: 'draft-marker-label' + (this.state.editingDraftMarker === timelineIndex + (inDrawer ? '-drawer' : '') ? ' editing' : ''),
       onClick: (evt) => evt.stopPropagation()
@@ -738,7 +744,6 @@ class Midst extends React.Component {
       }, name),
       e('input', {
         id: 'draft-marker-' + timelineIndex + (inDrawer ? '-in-drawer' : ''),
-        defaultValue: name,
         onKeyDown: this.draftMarkerLabelOnKeyDown(timelineIndex),
       }),
     )
@@ -746,15 +751,7 @@ class Midst extends React.Component {
 
   drawer() {
     const { drawerOpen, markers, showDraftMarkers, showDraftMarkerLabels } = this.state
-
-    const markersWithDefaultNames = []
-
-    for (const markerNo in markers) {
-      markersWithDefaultNames[markerNo] = Object.assign({}, markers[markerNo])
-      markersWithDefaultNames[markerNo].name = markersWithDefaultNames.name || 'Draft ' + (parseInt(markerNo, 10) + 1)
-    }
-
-    const reversedMarkers = [].concat(markersWithDefaultNames).reverse()
+    const reversedMarkers = [].concat(markers).reverse()
 
     return e('div', {
       className: 'drawer' + (drawerOpen ? ' open' : '')

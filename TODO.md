@@ -1,26 +1,25 @@
 
-# MIDST TO-DO
+# MIDST TODO
 
 <!-- *LAST UPDATE: Jason, Jan 29 2019 -->
 <!-- *CURRENT STAGING BUILD:
 
-http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1548609346895.zip
+http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1548783498251.zip
 
  -->
 
-
-## New bugs (to discuss?)
-1. As it turns out, backwards-compatibility will have to be part of a larger feature scope. The developer workflow should be, 1) Introduce (or discover) a breaking change. 2) Load an old file. 3) Write some kind of parsing logic that "upgrades" that file on the fly, and at least makes it viewable. 4) Make it so users get a warning that their file will need to be upgraded and re-saved. In the case of our own testing files, I can just upgrade those files by hand. The question is when to schedule this feature for release? Seems like the app should be more stable and already have been given to a first round of testers, or even later, or else we'll be writing parsing logic for a bunch of old file formats that nobody has. (For example: The two Draft Marker issues below require the addition of a meta-field to the main "app meta" –not-breaking– _but also_ a meta-field to each draft marker itself –breaking–.)
-1. Draft marker default names are very screwed up. I recommend we do a quick screen share. To DIY: type stuff, add like 4 different markers, then go to the drawer and try to change a marker name. The marker name will highlight when you click on it, to allow you to edit it, but the highlighted name will suddenly change as soon as it gets highlighted. For example, if you click on "Draft 3" in the drawer, as soon as you highlight the name it will temporarily change to "Draft 1", then back to "Draft 3" once you click out of the edit area. And then the name of the "Draft 3" marker (which you just clicked on and didn't even edit) will STAY as "Draft 1" in the Timeline, renaming itself. There are other bugs like this, if you screenshare with me or if you just play around with adding markers, deleting them, and editing their names in both the drawer and the timeline you'll see what's going on.
-1. I thought we were trying the "draft markers always count up" thing? But now we're back to the old "if you add draft markers 1, 2, and 3, then delete 2, Draft 3 marker renames itself to Draft 2" system——I can't tell if this is a bug or if you want me to just pilot the app with this system in place. I can test it like this if you want! But it doesn't make that much sense to me.
+## To Discuss...
+1. Re: Current build. I hope I got it right this time! Thanks for bearing with me. It's probably still got bugs, but hopefully is on the right track.
+1. Re: Current build. Create a few draft markers, scrub back in the timeline. The next default draft marker number is lower than the future markers. Is this okay?
+1. Re: Current build. Draft markers now keep track of their "birth name" so at any time in the future, (no matter how much adding/deleting/renaming of other markers) if you click in a draft marker that was, say, number 10, and press delete, then press enter (thus entering null text) the marker's name will revert to "Draft 10". Is this okay?
+1. Re: Current build. Type "Once, twice, three times, four." then scrub back to "Once, twice, three times, " and type "five." Then scrub back to before " five." You will see "Once, twice, three times, four." again. Do the same but place draft markers on the last letter of every word. Does the behavior of the draft markers make sense as you scrub around in the timeline?
+1. As it turns out, backwards-compatibility will have to be part of a larger feature scope. The developer workflow should be, 1) Introduce (or discover) a breaking change. 2) Load an old file. 3) Write some kind of parsing logic that "upgrades" that file on the fly, and at least makes it viewable. 4) Make it so users get a warning that their file will need to be upgraded and re-saved. In the case of our own testing files, I can just upgrade those files by hand. The question is when to schedule this feature for release? Seems like the app should be more stable and already have been given to a first round of testers, or even later, or else we'll be writing parsing logic for a bunch of old file formats that nobody has. (For example: The two Draft Marker issues below require the addition of a meta-field to the main "app meta" –not-breaking– _but also_ a meta-field to each draft marker itself –breaking–)
 
 ## CRITICAL bugs
 1. None
 
 ## High-priority bugs
 1. Highlighted text should stay visibly highlighted while changing the font, font size—clicking into the menu to, say, open the font or font size choices, shouldn't un-highlight selected text.
-1. Unsaved changes: App should give the "yo are u sure? u have unsaved changes dude" warning when opening a previously-saved Midst document while the currently-open document has unsaved changes.
-1. Draft markers: Default names always count up.
 
 ## Mid-priority bugs
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
@@ -40,7 +39,10 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1548609346895.zip
 1. Timeline handle should be all the way to the right (top of stack) when entering timeline mode
 
 ## Ready for Review
-
+1. Draft marker default names are very screwed up. I recommend we do a quick screen share. To DIY: type stuff, add like 4 different markers, then go to the drawer and try to change a marker name. The marker name will highlight when you click on it, to allow you to edit it, but the highlighted name will suddenly change as soon as it gets highlighted. For example, if you click on "Draft 3" in the drawer, as soon as you highlight the name it will temporarily change to "Draft 1", then back to "Draft 3" once you click out of the edit area. And then the name of the "Draft 3" marker (which you just clicked on and didn't even edit) will STAY as "Draft 1" in the Timeline, renaming itself. There are other bugs like this, if you screenshare with me or if you just play around with adding markers, deleting them, and editing their names in both the drawer and the timeline you'll see what's going on.
+1. Draft markers: Default names always count up /
+1. I thought we were trying the "draft markers always count up" thing? But now we're back to the old "if you add draft markers 1, 2, and 3, then delete 2, Draft 3 marker renames itself to Draft 2" system——I can't tell if this is a bug or if you want me to just pilot the app with this system in place. I can test it like this if you want! But it doesn't make that much sense to me.
+1. Unsaved changes: App should give the "yo are u sure? u have unsaved changes dude" warning when opening a previously-saved Midst document while the currently-open document has unsaved changes.
 
 ## In Progress
 
