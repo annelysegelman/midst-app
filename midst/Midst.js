@@ -31,6 +31,7 @@ class Midst extends React.Component {
       showDraftMarkers: true,
       stack: [],
       title: 'Untitled',
+      highestEverDraftNumber: 0,
     }
 
     this.state = JSON.parse(JSON.stringify(this.initialState))
@@ -343,11 +344,11 @@ class Midst extends React.Component {
     this.quill.setSelection(length, 1)
   }
 
-  editDraftMarkerLabel(markerNo, inDrawer) {
+  editDraftMarkerLabel(timelineIndex, inDrawer) {
     return () => {
-      const id = 'draft-marker-' + markerNo + (inDrawer ? '-in-drawer' : '')
+      const id = 'draft-marker-' + timelineIndex + (inDrawer ? '-in-drawer' : '')
 
-      this.setState({ editingDraftMarker: markerNo + (inDrawer ? '-drawer' : '') })
+      this.setState({ editingDraftMarker: timelineIndex + (inDrawer ? '-drawer' : '') })
 
       setTimeout(() => {
         document.getElementById(id).focus()
@@ -355,29 +356,34 @@ class Midst extends React.Component {
         this.quill.disable()
       })
       document.getElementById(id).addEventListener('blur', (evt) => {
-        this.saveDraftMarkerLabel(markerNo, inDrawer)
+        this.saveDraftMarkerLabel(timelineIndex, inDrawer)
       })
     }
   }
 
-  draftMarkerLabelOnKeyDown(markerNo) {
+  draftMarkerLabelOnKeyDown(timelineIndex) {
     return (evt) => {
       evt.stopPropagation()
       if (evt.keyCode === 13) {
         setTimeout(() => {
-          this.saveDraftMarkerLabel(markerNo)
+          this.saveDraftMarkerLabel(timelineIndex)
         })
       }
     }
   }
 
-  saveDraftMarkerLabel(markerNo, inDrawer) {
+  saveDraftMarkerLabel(timelineIndex, inDrawer) {
     const { markers, creatingDraftMarker } = this.state
-    const id = 'draft-marker-' + markerNo + (inDrawer ? '-in-drawer' : '')
+    const id = 'draft-marker-' + timelineIndex + (inDrawer ? '-in-drawer' : '')
+    const inputValue = document.getElementById(id).value
+    const marker = _.find(markers, { index: timelineIndex })
 
+    if (inputValue === '') {
+      marker.name = marker.defaultName
+    }
 
-    if (document.getElementById(id).value !== 'Draft ' + (markerNo + 1)) {
-      markers[markerNo].name = document.getElementById(id).value
+    else {
+      marker.name = inputValue
     }
 
     this.setState({
@@ -473,8 +479,17 @@ class Midst extends React.Component {
     })
   }
 
+  draftMarkerModel(realIndex) {
+    const defaultName = 'Draft ' + (this.state.highestEverDraftNumber + 1)
+    return {
+      index: realIndex,
+      defaultName,
+      name: defaultName,
+    }
+  }
+
   createDraftMarker() {
-    const { markers, index, replayMode } = this.state
+    const { markers, index, replayMode, highestEverDraftNumber } = this.state
     const markerIndices = markers.map(marker => marker.index)
     const realIndex = index + 1
 
@@ -482,10 +497,10 @@ class Midst extends React.Component {
 
     this.setState({
       creatingDraftMarker: true,
-      markers: markers.concat([{ index: realIndex, name: null }]),
+      highestEverDraftNumber: highestEverDraftNumber + 1,
+      markers: markers.concat([this.draftMarkerModel(realIndex)]),
     }, () => {
-      console.log(this.state.creatingDraftMarker)
-      this.editDraftMarkerLabel(this.state.markers.length - 1)()
+      this.editDraftMarkerLabel(realIndex)()
     })
 
     if (!replayMode) {
@@ -714,18 +729,17 @@ class Midst extends React.Component {
   }
 
   draftMarkerLabel(name, timelineIndex, inDrawer) {
-    const markerNo = this.markerIndexFromTimelineIndex(timelineIndex)
     return e('div', {
-      className: 'draft-marker-label' + (this.state.editingDraftMarker === markerNo + (inDrawer ? '-drawer' : '') ? ' editing' : ''),
+      className: 'draft-marker-label' + (this.state.editingDraftMarker === timelineIndex + (inDrawer ? '-drawer' : '') ? ' editing' : ''),
       onClick: (evt) => evt.stopPropagation()
     },
       e('span', {
-        onClick: this.editDraftMarkerLabel(markerNo, inDrawer),
+        onClick: this.editDraftMarkerLabel(timelineIndex, inDrawer),
       }, name),
       e('input', {
-        id: 'draft-marker-' + markerNo + (inDrawer ? '-in-drawer' : ''),
+        id: 'draft-marker-' + timelineIndex + (inDrawer ? '-in-drawer' : ''),
         defaultValue: name,
-        onKeyDown: this.draftMarkerLabelOnKeyDown(markerNo),
+        onKeyDown: this.draftMarkerLabelOnKeyDown(timelineIndex),
       }),
     )
   }
