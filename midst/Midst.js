@@ -239,8 +239,13 @@ class Midst extends React.Component {
     remote.getGlobal('quit')()
   }
 
+  midstFileModel() {
+    const { stack, markers, highestEverDraftNumber } = this.state
+    return  { stack, meta: { markers, highestEverDraftNumber }}
+  }
+
   async saveFile () {
-    const { fileAbsPath, stack, hasUnsavedChanges, markers } = this.state
+    const { fileAbsPath, hasUnsavedChanges } = this.state
 
     if (!hasUnsavedChanges) return
 
@@ -249,14 +254,14 @@ class Midst extends React.Component {
     }
 
     else {
-      remote.getGlobal('saveFile')(fileAbsPath, { stack, meta: { markers }})
+      remote.getGlobal('saveFile')(fileAbsPath, this.midstFileModel())
       this.setState({hasUnsavedChanges: false})
     }
   }
 
   async saveFileAs () {
     const { stack, markers } = this.state
-    const fileInfo = await remote.getGlobal('saveFileAs')({ stack, meta: { markers }})
+    const fileInfo = await remote.getGlobal('saveFileAs')(this.midstFileModel())
 
     if (!fileInfo) return
 
@@ -273,6 +278,7 @@ class Midst extends React.Component {
       index: fileData.data.length,
       stack: fileData.data.stack,
       markers: fileData.data.meta.markers,
+      highestEverDraftNumber: fileData.data.meta.highestEverDraftNumber,
       hasUnsavedChanges: false,
       fileAbsPath: fileData.path,
     }, () => {

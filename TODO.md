@@ -166,3 +166,7 @@ later.)
 ## Responsive scrolling requirements (for future bug checks?)
 1. In Timeline Mode, the portion of the document being "worked on" in the replay should always be visible. This scrolling/adjustment should be as gentle/subtle/graceful/undistracting as possible — not jumpy feeling (even though edits maybe jumpy), ideally.
 1. Note that we want responsive scrolling both WITHIN THE APP (in Timeline Mode) and ON THE WEBSITE (when readers play back poems —— note that poems published on the website are just effectively "always in Timeline Mode", but with additional features like timestamps visible).
+
+## For the Future...
+
+Brain dump, will expand later! full compliment of keyboard shortcuts, draft marker synopses, draft marker thumbnail previews, GitHub-style diff comparison between drafts, support for touch gestures and Surface Dial, limited mobile version, cloud storage...
