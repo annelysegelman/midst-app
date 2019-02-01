@@ -32,6 +32,7 @@ class Midst extends React.Component {
       stack: [],
       title: 'Untitled',
       highestEverDraftNumber: 0,
+      currentSelection: null,
     }
 
     this.state = JSON.parse(JSON.stringify(this.initialState))
@@ -260,7 +261,6 @@ class Midst extends React.Component {
   }
 
   async saveFileAs () {
-    const { stack, markers } = this.state
     const fileInfo = await remote.getGlobal('saveFileAs')(this.midstFileModel())
 
     if (!fileInfo) return
@@ -289,7 +289,6 @@ class Midst extends React.Component {
   enterReplayMode() {
     this.setState({
       replayMode: true,
-      // creatingDraftMarker: false,
       editingDraftMarker: null,
     })
     this.setPos(this.state.stack.length - 1)
@@ -414,7 +413,7 @@ class Midst extends React.Component {
       modules: {
         toolbar: '#quill-toolbar',
       },
-      formats: ['bold', 'italic', 'underline', 'align', 'size', 'font'],
+      formats: ['bold', 'italic', 'underline', 'align', 'size', 'font', 'background'],
     })
 
     const Font = Quill.import('formats/font')
@@ -449,6 +448,28 @@ class Midst extends React.Component {
         editingDraftMarker: null,
       })
     })
+
+    this.quill.on('selection-change', (range) => {
+      this.setState({ currentSelection: range })
+    })
+
+    const pickers = document.querySelectorAll('.ql-picker')
+
+    for (const picker of pickers) {
+      picker.addEventListener('mousedown', () => {
+        console.log('??')
+        const { currentSelection } = this.state
+        if (currentSelection) {
+          this.quill.formatText(
+            currentSelection.index,
+            currentSelection.length,
+            'background',
+            'red',
+            'api',
+          )
+        }
+      })
+    }
   }
 
   exitFocusModeIntent() {
