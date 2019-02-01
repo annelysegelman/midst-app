@@ -348,3 +348,14 @@ body {
   height: 16px;
   filter: saturate(0);
 }
+
+.picker-panic-guard {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 20px);
+  /* background: red;
+  opacity: 0.3; */
+  z-index: 9999;
+}

@@ -449,6 +449,13 @@ class Midst extends React.Component {
         editingDraftMarker: null,
       })
     })
+
+    const pickers = document.querySelectorAll('.ql-picker')
+    for (const picker of pickers) {
+      picker.addEventListener('mousedown', () => {
+        this.setState({ pickerIsOpen: !this.state.pickerIsOpen })
+      })
+    }
   }
 
   exitFocusModeIntent() {
@@ -791,7 +798,7 @@ class Midst extends React.Component {
 // Render
 // ================================================================================
   render() {
-    const { focusMode, title, drawerOpen } = this.state
+    const { focusMode, title, drawerOpen, pickerIsOpen } = this.state
 
     return (
       e('div', {
@@ -812,6 +819,12 @@ class Midst extends React.Component {
           ),
         ),
         e('div', { className: 'main' + (drawerOpen ? ' drawer-open' : '') },
+          pickerIsOpen ? e('div', {
+            className: 'picker-panic-guard',
+            onClick: (e) => {
+              this.setState({ pickerIsOpen: false })
+            }
+          }) : null,
           e('div', { id: 'editor' }),
           this.slider(),
         ),
