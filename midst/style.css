@@ -347,15 +347,3 @@ body {
   height: 16px;
   filter: saturate(0);
 }
-
-.picker-guard {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-  background: red;
-  opacity: 0.2;
-  user-select: none;
-}
