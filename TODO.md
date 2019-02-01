@@ -1,10 +1,10 @@
 
 # MIDST TODO
 
-<!-- *LAST UPDATE: Jason, Jan 29 2019 // Annelyse, Jan 29, 2019 -->
+<!-- *LAST UPDATE: Jason, Feb 1, 2019 -->
 <!-- *CURRENT STAGING BUILD:
 
-http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1548783498251.zip
+http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 
  -->
 
