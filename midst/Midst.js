@@ -33,6 +33,7 @@ class Midst extends React.Component {
       title: 'Untitled',
       highestEverDraftNumber: 0,
       currentSelection: null,
+      pickerIsOpen: false,
     }
 
     this.state = JSON.parse(JSON.stringify(this.initialState))
@@ -448,28 +449,6 @@ class Midst extends React.Component {
         editingDraftMarker: null,
       })
     })
-
-    this.quill.on('selection-change', (range) => {
-      this.setState({ currentSelection: range })
-    })
-
-    const pickers = document.querySelectorAll('.ql-picker')
-
-    for (const picker of pickers) {
-      picker.addEventListener('mousedown', () => {
-        console.log('??')
-        const { currentSelection } = this.state
-        if (currentSelection) {
-          this.quill.formatText(
-            currentSelection.index,
-            currentSelection.length,
-            'background',
-            'red',
-            'api',
-          )
-        }
-      })
-    }
   }
 
   exitFocusModeIntent() {

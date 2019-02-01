@@ -88,6 +88,7 @@ body {
 
 .toolbars-fade {
   transition: opacity 500ms;
+  user-select: none;
 }
 
 .focus-mode .toolbars-fade {
