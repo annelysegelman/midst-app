@@ -12,19 +12,13 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1548783498251.zip
 ## Questions for R01 User Tests (for Annelyse; Jason, feel free to add questions/concerns you want me to address with our user tests here!)
 1. Is it annoying not to allow blank/null draft marker names?
 
-
 ## To Discuss...
-
-
-
-
 
 ## CRITICAL bugs
 1. None
 
 ## High-priority bugs
-1. Highlighted text should stay visibly highlighted while changing the font, font size, alignment, etc. Clicking into the menu to, say, open the font or font size choices, shouldn't un-highlight selected text.
-1. Highest ever draft marker field is not populating from saved files.
+1. None
 
 ## Mid-priority bugs
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
@@ -41,8 +35,8 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1548783498251.zip
 1. Timeline handle should be all the way to the right (top of stack) when entering timeline mode
 
 ## Ready for Review
-1. :)
-
+1. Highlighted text should stay visibly highlighted while changing the font, font size, alignment, etc. Clicking into the menu to, say, open the font or font size choices, shouldn't un-highlight selected text.
+1. Highest ever draft marker field is not populating from saved files.
 
 ## In Progress
 
