@@ -16,6 +16,16 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 ## CRITICAL bugs
 1. None
 
+## High-priority feature request: Web display engine
+1. :') 
+
+## High-priority feature request: Timeline fixes
+1. Reduce vertical space that the timeline takes up (i.e. plz make less white space above where the Markers end).
+1. UX/design thought: the fat bottom margin of the app is making it slightly annoying to write in; i feel like i can’t see enough of my poem at once. rather than having the bottom of the app always have this fat margin, could we simply have no bottom margin (as in most text editors… check out Textedit)——& the timeline/markers section will simply, when opened, “slide up” from the bottom of the app (with an opaque background, simply ‘covering’ whatever text is beneath it, as opposed to ‘pushing’ the text aside like the drawer does)?
+- New TL should COVER/OVERLAP existing text, not 'push' it upwards
+- New TL can be slightly transparent and/or blur any text visible underneath it. (KEEP IN MIND we still want it to be very easy to read the draft marker names & not look visually cluttered... so can't be TOO transparent)
+
+
 ## High-priority bugs
 1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason.
 1. NOTE: The bug appears to actually be that after changing ANY aspect of text formatting (font, font size, bold/italics/underline... alignment seems ok tho), then inserting line breaks, then going up to the "middle space" between the two paragraphs, the font simply reverts to default in all its attributes (12pt helvetica non-bold/italic/underlined). This is now a high priority bug as it makes editing + adding new stanzas quite annoying. 
@@ -24,6 +34,7 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
 
 ## Low-priority bugs
+1. Previously-saved document "sometimes autoscrolls (down) right after opening, making it seem like the poem starts on a different line." All documents should open at top of stack/frame 0, scrolled all the way up.
 1. Bug: Type stuff. Click draft marker icon to add marker. Then WITHOUT TYPING ANYTHING, click the draft marker icon again. You have just added 2 markers right next to each other! This is bad. Make sure flag icon can't be clicked immediately after you click it (i.e. when it is red it shouldn't be clickable).
 1. In drawer, no way to navigate to Markers that have long names, because clicking anywhere on the marker name just makes me rename it instead of navigating to it. Imo a nice solution here: Add little flag icons to left of each name (like bullet points almost). Click on little flag icon @ left of marker name to navigate to marker; click on name to rename; and click on delete icon (Little red X or little trash can.. we don't need whole word "delete") to the right of the name to delete marker. Leaving a bit of white space between flag icon / marker name / delete icon.
 1. Need a way to undo/redo draft marker actions (particularly deleting them by accident).
@@ -165,3 +176,4 @@ later.)
 ## For the Future...
 
 Brain dump, will expand later! full compliment of keyboard shortcuts, draft marker synopses, draft marker thumbnail previews, GitHub-style diff comparison between drafts, support for touch gestures and Surface Dial, limited mobile version, cloud storage...
+Precise scrubbing in timeline mode: shift-drag or command-drag (a la Final Cut Pro).
