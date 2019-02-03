@@ -6,7 +6,9 @@ class Midst extends React.Component {
 // Default Props
 // ================================================================================
   static get defaultProps() {
-    return {}
+    return {
+      isPlayer: false,
+    }
   }
 
   constructor(props) {
@@ -16,6 +18,7 @@ class Midst extends React.Component {
 // Initial State
 // ================================================================================
     this.initialState = {
+      author: 'Anonymous',
       creatingDraftMarker: false,
       drawerOpen: false,
       editingDraftMarker: null,
@@ -31,6 +34,7 @@ class Midst extends React.Component {
       showDraftMarkers: true,
       stack: [],
       title: 'Untitled',
+      displayTitle: 'Untitled',
       highestEverDraftNumber: 0,
       currentSelection: null,
       pickerIsOpen: false,
@@ -242,8 +246,8 @@ class Midst extends React.Component {
   }
 
   midstFileModel() {
-    const { stack, markers, highestEverDraftNumber } = this.state
-    return  { stack, meta: { markers, highestEverDraftNumber }}
+    const { stack, markers, highestEverDraftNumber, author, displayTitle } = this.state
+    return  { stack, meta: { markers, highestEverDraftNumber, author, displayTitle }}
   }
 
   async saveFile () {
@@ -278,6 +282,8 @@ class Midst extends React.Component {
       title: fileData.fileName.replace(this.FILE_EXT, ''),
       index: fileData.data.length,
       stack: fileData.data.stack,
+      author: fileData.data.meta.author,
+      displayTitle: fileData.data.meta.displayTitle,
       markers: fileData.data.meta.markers,
       highestEverDraftNumber: fileData.data.meta.highestEverDraftNumber,
       hasUnsavedChanges: false,
@@ -798,11 +804,15 @@ class Midst extends React.Component {
 // Render
 // ================================================================================
   render() {
+    const { isPlayer } = this.props
     const { focusMode, title, drawerOpen, pickerIsOpen } = this.state
+    const isApp = !isPlayer
 
     return (
       e('div', {
-        className: 'midst' + (focusMode ? ' focus-mode' : ''),
+        className: 'midst'
+          + (focusMode ? ' focus-mode' : '')
+          + (isPlayer ? ' player' : ''),
       },
         e('div', {
           className: 'title-bar',
@@ -812,11 +822,11 @@ class Midst extends React.Component {
           onMouseEnter: this.exitFocusModeIntent,
           onMouseLeave: this.cancelExitFocusModeIntent,
         },
-          e('div', { className: 'toolbars-fade' },
+          isApp ? e('div', { className: 'toolbars-fade' },
             this.midstToolbarLeft(),
             this.quillToolbar(),
             this.midstToolbarRight(),
-          ),
+          ) : e('div', { id: 'quill-toolbar' }),
         ),
         e('div', { className: 'main' + (drawerOpen ? ' drawer-open' : '') },
           pickerIsOpen ? e('div', {
