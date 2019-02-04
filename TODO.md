@@ -1,7 +1,7 @@
 
 # MIDST TODO
 
-<!-- *LAST UPDATE: Jason, Feb 1, 2019 -->
+<!-- *LAST UPDATE: Annelyse, Feb 1, 2019 -->
 <!-- *CURRENT STAGING BUILD:
 
 http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
@@ -11,6 +11,7 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 
 ## Questions for R01 User Tests (for Annelyse; Jason, feel free to add questions/concerns you want me to address with our user tests here!)
 1. Is it annoying not to allow blank/null draft marker names?
+1. https://testflight.apple.com/join/uHZjhXy0 ?
 
 ## To Discuss...
 1. See "Handling Large Files" below...
@@ -19,9 +20,21 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 ## CRITICAL bugs
 1. None
 
+## High-priority feature request: Web display engine
+1. :')
+
+## High-priority feature request: Timeline fixes
+1. Reduce vertical space that the timeline takes up (i.e. plz make less white space above where the Markers end).
+1. UX/design thought: the fat bottom margin of the app is making it slightly annoying to write in; i feel like i can’t see enough of my poem at once. rather than having the bottom of the app always have this fat margin, could we simply have no bottom margin (as in most text editors… check out Textedit)——& the timeline/markers section will simply, when opened, “slide up” from the bottom of the app (with an opaque background, simply ‘covering’ whatever text is beneath it, as opposed to ‘pushing’ the text aside like the drawer does)?
+- New TL should COVER/OVERLAP existing text, not 'push' it upwards
+- New TL can be slightly transparent and/or blur any text visible underneath it. (KEEP IN MIND we still want it to be very easy to read the draft marker names & not look visually cluttered... so can't be TOO transparent)
+
 ## High-priority bugs
 1. Open "Big Medium.midst" and create a draft marker. Marker default name is "Draft NaN".
+1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason.
+1. NOTE: The bug appears to actually be that after changing ANY aspect of text formatting (font, font size, bold/italics/underline... alignment seems ok tho), then inserting line breaks, then going up to the "middle space" between the two paragraphs, the font simply reverts to default in all its attributes (12pt helvetica non-bold/italic/underlined). This is now a high priority bug as it makes editing + adding new stanzas quite annoying.
 
+---
 ## High Priority Feature/Bug: Handling Large Files
 1. Large files can still choke the editor. Open "Big Medium.midst" and try to type in it, there is a lag between when a key is pressed and when the letter appears on the screen.
 
@@ -35,15 +48,16 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 – Simply don't record every change, like every 10th change or so. (?!)
 – Show the user a message that this is a long file and to choose a time range to open. (?!)
 
+---
+
 ## Mid-priority bugs
-1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
+None.
 
 ## Low-priority bugs
-1. When using "Save As..." on an already-saved document, the tite should default to "[Original Title] Copy" not "Untitled".
+1. Previously-saved document "sometimes autoscrolls (down) right after opening, making it seem like the poem starts on a different line." All documents should open at top of stack/frame 0, scrolled all the way up.
 1. Bug: Type stuff. Click draft marker icon to add marker. Then WITHOUT TYPING ANYTHING, click the draft marker icon again. You have just added 2 markers right next to each other! This is bad. Make sure flag icon can't be clicked immediately after you click it (i.e. when it is red it shouldn't be clickable).
 1. In drawer, no way to navigate to Markers that have long names, because clicking anywhere on the marker name just makes me rename it instead of navigating to it. Imo a nice solution here: Add little flag icons to left of each name (like bullet points almost). Click on little flag icon @ left of marker name to navigate to marker; click on name to rename; and click on delete icon (Little red X or little trash can.. we don't need whole word "delete") to the right of the name to delete marker. Leaving a bit of white space between flag icon / marker name / delete icon.
 1. Need a way to undo/redo draft marker actions (particularly deleting them by accident).
-1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason.
 1. Bug when editing in timeline mode: Enter timeline mode; scroll back using arrow keys (not click and drag). Cursor currently defaults to right BEFORE the last character typed in any given frame. This is weird. Cursor should ideally default to remain in last position (prior to entering timeline mode), or, if this isn't possible, at least default to AFTER the last character typed (not before).
 1. Right-click on a draft marker in the timeline --> Delete option
 
@@ -51,8 +65,7 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 1. Timeline handle should be all the way to the right (top of stack) when entering timeline mode
 
 ## Ready for Review
-1. Highlighted text should stay visibly highlighted while changing the font, font size, alignment, etc. Clicking into the menu to, say, open the font or font size choices, shouldn't un-highlight selected text.
-1. Highest ever draft marker field is not populating from saved files.
+1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
 
 ## In Progress
 
@@ -136,7 +149,7 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 
 ## Regression tests /// Requirements graveyard for future bug checks; DO NOT DELETE
 
-
+1. Formatting: Highlighted text should stay visibly highlighted while changing the font, font size, alignment, etc.
 1. Drawer: Opening drawer should push long lines aside (not overlap them).
 1. Drawer: Deleting all markers should automatically close the drawer.
 1. Drawer: Opening drawer opens drawer & timeline.
@@ -144,8 +157,8 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 1. Markers: default name should appear (Highlighted please!) eg "draft 1"
 1. Markers: Draft markers should be numbered in the order they were created, but, Deleting a draft marker should NEVER Change the name of any past/future Draft markers. Marker names always count up.
 1. Warnings: App should give a warning if quitting with unsaved changes! (in all cases: when opening a new blank doc & when quitting app & when opening a previously saved .midst file.)
-1. Bug: When copying and pasting text from an outside source (eg a website) into Midst, Midst should only save Midst-compatible formatting.
-1. ALL means of exiting Draft Marker creation (& going back to type mode, natch) should cause the flag icon to turn grey again.
+1. Formatting: When copying and pasting text from an outside source (eg a website) into Midst, Midst should only save Midst-compatible formatting.
+1. State: ALL means of exiting Draft Marker creation (& going back to type mode, natch) should cause the flag icon to turn grey again.
 1. When adding a draft marker: Flag icon should turn red (then go pale-grey "unactivated" after the Timeline disappears); Timeline Mode icon should NOT turn red (since user is not actually entering timeline mode, just adding a marker).
 1. Build responsive scrolling feature in Timeline Mode & default to responsive scrolling. See "Responsive scrolling" section below for notes/details.
 1. Allow toggle (this can just be in a menu) on/off of responsive scrolling feature.
@@ -183,3 +196,4 @@ later.)
 ## For the Future...
 
 Brain dump, will expand later! full compliment of keyboard shortcuts, draft marker synopses, draft marker thumbnail previews, GitHub-style diff comparison between drafts, support for touch gestures and Surface Dial, limited mobile version, cloud storage...
+Precise scrubbing in timeline mode: shift-drag or command-drag (a la Final Cut Pro).
