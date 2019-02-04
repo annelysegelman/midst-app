@@ -171,9 +171,6 @@ const menu = (mainWindow) => {
     submenu: [
       { label: 'Activate Responsive Scrolling', click: () => mainWindow.webContents.send('menu.responsiveScrollingOn')},
       { label: 'Deactivate Responsive Scrolling', click: () => mainWindow.webContents.send('menu.responsiveScrollingOff')},
-      // { type: 'separator' },
-      // { label: 'Open Drawer', click: () => mainWindow.webContents.send('menu.openDrawer') },
-      // { label: 'Close Drawer', click: () => mainWindow.webContents.send('menu.closeDrawer') },
     ]
   }
 

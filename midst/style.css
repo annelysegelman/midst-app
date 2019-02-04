@@ -363,7 +363,7 @@ body {
   position: absolute;
   width: 800px;
   height: 600px;
-  top: 0;
+  top: 100px;
   left: 50%;
   margin-left: -400px;
   border: 1px solid #ccc;
@@ -398,5 +398,36 @@ body {
 .midst.player .midst-slider .slider {
   margin-top: 13px;
   margin-left: 15px;
-  width: calc(100% - 30px);
+  width: calc(100% - 30px - 150px);
+  cursor: pointer;
+}
+
+.player-controls {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  width: 130px;
+  height: 30px;
+}
+
+.player-control {
+  float: left;
+  width: 30px;
+  height: 30px;
+  margin-right: 3px;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.player-control:last-child {
+  margin-right: 0;
+}
+
+.player-control svg {
+  width: 20px;
+  height: 20px;
 }

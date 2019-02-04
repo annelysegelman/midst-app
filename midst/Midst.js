@@ -826,6 +826,23 @@ class Midst extends React.Component {
     )
   }
 
+  playerControls() {
+    return e('div', { className: 'player-controls' },
+      e('div', {
+        className: 'player-control play-button',
+      }, e(Play)),
+      e('div', {
+        className: 'player-control pause-button',
+      }, e(Pause)),
+      e('div', {
+        className: 'player-control speed-dial',
+      }, e(Loader)),
+      e('div', {
+        className: 'player-control volume-slider',
+      }, e(Volume2)),
+    )
+  }
+
 // ================================================================================
 // Render
 // ================================================================================
@@ -863,6 +880,7 @@ class Midst extends React.Component {
           }) : null,
           e('div', { id: 'editor' }),
           this.slider(),
+          isPlayer ? this.playerControls() : null,
         ),
         this.drawer(),
       )
