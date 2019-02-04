@@ -16,6 +16,7 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 ## To Discuss...
 1. See "Handling Large Files" below...
 1. Should the last frame scroll all the way to the top and place the cursor on the bottom? Or leave the cursor and scroll position exactly where the writer stopped writing?
+1. It's possible to “fight“ with responsive scrolling if a scrollbar is present in the player at all times. Should scrolling in the player immediately pause playback? Or should scrolling only be possible after pressing the pause button?
 
 ## CRITICAL bugs
 1. None
