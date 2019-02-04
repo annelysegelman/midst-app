@@ -5,6 +5,7 @@ body {
   margin: 0;
   padding: 0;
   user-select: none;
+  background-color: #FFFAFA;
 }
 
 .midst {
@@ -358,6 +359,44 @@ body {
   z-index: 9999;
 }
 
-.midst.player #editor {
-  border: 1px solid #333;
+.midst.player {
+  position: absolute;
+  width: 800px;
+  height: 600px;
+  top: 0;
+  left: 50%;
+  margin-left: -400px;
+  border: 1px solid #ccc;
+}
+
+.midst.player .toolbars {
+  display: none;
+}
+
+.midst.player .main {
+  position: absolute;
+  width: 800px;
+  height: 600px;
+  top: 0;
+  border-right: 0;
+}
+
+.midst.player .main #editor {
+  width: 800px;
+  height: 570px;
+  padding: 0;
+}
+
+.midst.player .midst-slider {
+  height: 30px;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.midst.player .midst-slider .slider {
+  margin-top: 13px;
+  margin-left: 15px;
+  width: calc(100% - 30px);
 }

@@ -13,12 +13,26 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 1. Is it annoying not to allow blank/null draft marker names?
 
 ## To Discuss...
+1. See "Handling Large Files" below...
 
 ## CRITICAL bugs
 1. None
 
 ## High-priority bugs
-1. None
+1. Open "Big Medium.midst" and create a draft marker. Marker default name is "Draft NaN".
+
+## High Priority Feature/Bug: Handling Large Files
+1. Large files can still choke the editor. Open "Big Medium.midst" and try to type in it, there is a lag between when a key is pressed and when the letter appears on the screen.
+
+### App Logic Optimizations (In order of severity. If one fails, try the next.)
+– Don't use React at all for updating Quill.
+– Chunk files in memory and load chunks into Quill on demand.
+– Chunk files on disk and stream chunks over Electron IPC using Node fs.
+
+### UI/UX Optimizations
+– "Compress" files by slicing out every nth update when loading. "Fine grained" playback is still available in the player. (?!)
+– Simply don't record every change, like every 10th change or so. (?!)
+– Show the user a message that this is a long file and to choose a time range to open. (?!)
 
 ## Mid-priority bugs
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.

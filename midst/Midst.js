@@ -8,6 +8,7 @@ class Midst extends React.Component {
   static get defaultProps() {
     return {
       isPlayer: false,
+      fileData: null // { data: window.testFileData },
     }
   }
 
@@ -18,8 +19,10 @@ class Midst extends React.Component {
 // Initial State
 // ================================================================================
     this.initialState = {
+      playbackUid: + new Date(),
       author: 'Anonymous',
       creatingDraftMarker: false,
+      cursors: [],
       drawerOpen: false,
       editingDraftMarker: null,
       fileAbsPath: false,
@@ -36,7 +39,6 @@ class Midst extends React.Component {
       title: 'Untitled',
       displayTitle: 'Untitled',
       highestEverDraftNumber: 0,
-      currentSelection: null,
       pickerIsOpen: false,
     }
 
@@ -95,6 +97,8 @@ class Midst extends React.Component {
 // Lifecycle
 // ================================================================================
   componentDidMount() {
+    const { isPlayer, fileData} = this.props
+
     document.getElementById('editor').addEventListener('keydown', evt => {
       if ((evt.key === 'z' || evt.key === 'Z') && evt.metaKey) {
         evt.stopImmediatePropagation()
@@ -126,13 +130,20 @@ class Midst extends React.Component {
 
     document.body.addEventListener('keydown', this.onKeyDown)
 
-    // setTimeout(() => {
-    //   this.load({"data":{"meta":{"markers":[{"index":67,"name":"asdfasdfasdf"},{"index":85,"name":null}]},"stack":[{"content":{"ops":[{"insert":"a\n"}]},"time":1546722744011},{"content":{"ops":[{"insert":"as\n"}]},"time":1546722744122},{"content":{"ops":[{"insert":"asd\n"}]},"time":1546722744126},{"content":{"ops":[{"insert":"asdf\n"}]},"time":1546722744252},{"content":{"ops":[{"insert":"asdfa\n"}]},"time":1546722744336},{"content":{"ops":[{"insert":"asdfad\n"}]},"time":1546722744452},{"content":{"ops":[{"insert":"asdfad \n"}]},"time":1546722744493},{"content":{"ops":[{"insert":"asdfad a\n"}]},"time":1546722744644},{"content":{"ops":[{"insert":"asdfad as\n"}]},"time":1546722744712},{"content":{"ops":[{"insert":"asdfad asd\n"}]},"time":1546722744731},{"content":{"ops":[{"insert":"asdfad asdf\n"}]},"time":1546722744828},{"content":{"ops":[{"insert":"asdfad asdf \n"}]},"time":1546722744912},{"content":{"ops":[{"insert":"asdfad asdf a\n"}]},"time":1546722744952},{"content":{"ops":[{"insert":"asdfad asdf as\n"}]},"time":1546722745061},{"content":{"ops":[{"insert":"asdfad asdf asd\n"}]},"time":1546722745089},{"content":{"ops":[{"insert":"asdfad asdf asdf\n"}]},"time":1546722745185},{"content":{"ops":[{"insert":"asdfad asdf asdf \n"}]},"time":1546722745272},{"content":{"ops":[{"insert":"asdfad asdf asdf a\n"}]},"time":1546722745316},{"content":{"ops":[{"insert":"asdfad asdf asdf as\n"}]},"time":1546722745433},{"content":{"ops":[{"insert":"asdfad asdf asdf asd\n"}]},"time":1546722745440},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf\n"}]},"time":1546722745569},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf \n"}]},"time":1546722745604},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf a\n"}]},"time":1546722745684},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf as\n"}]},"time":1546722745773},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asd\n"}]},"time":1546722745785},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf\n"}]},"time":1546722745871},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf \n"}]},"time":1546722745960},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf a\n"}]},"time":1546722746012},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf as\n"}]},"time":1546722746094},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asd\n"}]},"time":1546722746128},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf\n"}]},"time":1546722746197},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf \n"}]},"time":1546722746256},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf a\n"}]},"time":1546722746353},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf as\n"}]},"time":1546722746428},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asd\n"}]},"time":1546722746437},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf\n"}]},"time":1546722746541},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf \n"}]},"time":1546722746613},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf a\n"}]},"time":1546722746653},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf as\n"}]},"time":1546722746760},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asd\n"}]},"time":1546722746768},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf\n"}]},"time":1546722746885},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf \n"}]},"time":1546722746960},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf a\n"}]},"time":1546722747020},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf ad\n"}]},"time":1546722747147},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf ads\n"}]},"time":1546722747152},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf\n"}]},"time":1546722747213},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf \n"}]},"time":1546722747325},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf a\n"}]},"time":1546722747377},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf ad\n"}]},"time":1546722747509},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf ads\n"}]},"time":1546722747516},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf adsf\n"}]},"time":1546722747609},{"content":{"ops":[{"insert":"asdfad asdf asdf asdf asdf asdf asdf asdf adsf adsf \n"}]},"time":1546722747741},{"content":{"ops":[{"insert":"a\n"}]},"time":1546722755538},{"content":{"ops":[{"insert":"as\n"}]},"time":1546722755637},{"content":{"ops":[{"insert":"asd\n"}]},"time":1546722755668},{"content":{"ops":[{"insert":"asdf\n"}]},"time":1546722755817},{"content":{"ops":[{"insert":"asdfa\n"}]},"time":1546722755827},{"content":{"ops":[{"insert":"asdfas\n"}]},"time":1546722755918},{"content":{"ops":[{"insert":"asdfasd\n"}]},"time":1546722755952},{"content":{"ops":[{"insert":"asdfasdf\n"}]},"time":1546722756014},{"content":{"ops":[{"insert":"asdfasdfa\n"}]},"time":1546722756106},{"content":{"ops":[{"insert":"asdfasdfas\n"}]},"time":1546722756185},{"content":{"ops":[{"insert":"asdfasdfasd\n"}]},"time":1546722756208},{"content":{"ops":[{"insert":"asdfasdfasd \n"}]},"time":1546722756321},{"content":{"ops":[{"insert":"asdfasdfasd M\n"}]},"time":1546722756934},{"content":{"ops":[{"insert":"asdfasdfasd MA\n"}]},"time":1546722756974},{"content":{"ops":[{"insert":"asdfasdfasd MAR\n"}]},"time":1546722757130},{"content":{"ops":[{"insert":"asdfasdfasd MARK\n"}]},"time":1546722757282},{"content":{"ops":[{"insert":"asdfasdfasd MARK \n"}]},"time":1546722759004},{"content":{"ops":[{"insert":"asdfasdfasd MARK a\n"}]},"time":1546722759112},{"content":{"ops":[{"insert":"asdfasdfasd MARK as\n"}]},"time":1546722759205},{"content":{"ops":[{"insert":"asdfasdfasd MARK asd\n"}]},"time":1546722759248},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdf\n"}]},"time":1546722759327},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfa\n"}]},"time":1546722759384},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfas\n"}]},"time":1546722759477},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasd\n"}]},"time":1546722759494},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdf\n"}]},"time":1546722759562},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfa\n"}]},"time":1546722759710},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfas\n"}]},"time":1546722759738},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasd\n"}]},"time":1546722759753},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf\n"}]},"time":1546722759853},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf \n"}]},"time":1546722759964},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf M\n"}]},"time":1546722760572},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MA\n"}]},"time":1546722760609},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MAR\n"}]},"time":1546722760770},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK\n"}]},"time":1546722761005},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK \n"}]},"time":1546722763257},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK a\n"}]},"time":1546722763556},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK as\n"}]},"time":1546722763651},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asd\n"}]},"time":1546722763700},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdf\n"}]},"time":1546722763817},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfa\n"}]},"time":1546722763862},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfas\n"}]},"time":1546722763962},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasd\n"}]},"time":1546722763988},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdf\n"}]},"time":1546722764041},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdfa\n"}]},"time":1546722764149},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdfas\n"}]},"time":1546722764228},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdfasd\n"}]},"time":1546722764284},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdfasdf\n"}]},"time":1546722764376},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdfasdfa\n"}]},"time":1546741544539},{"content":{"ops":[{"insert":"asdfasdfasd MARK asdfasdfasdf MARK asdfasdfasdfas\n"}]},"time":1546741544659}]},"fileName":"Untitled.midst","path":"/Users/tony/Desktop/Untitled.midst"})
-    // }, 250)
+    if (fileData && isPlayer) {
+      this.load(fileData)
+    }
   }
 
-  componentDidUpdate() {
-    // console.log(this.state.editingDraftMarker)
+  componentDidUpdate(prevProps) {
+    const { playbackUid: prevPlaybackUid } = prevProps
+    const { isPlayer, fileData, playbackUid } = this.props
+
+    if (playbackUid !== prevPlaybackUid) {
+      if (fileData && isPlayer) {
+        this.load(fileData)
+      }
+    }
   }
 
 // ================================================================================
@@ -207,12 +218,13 @@ class Midst extends React.Component {
 // ================================================================================
 // Methods
 // ================================================================================
-  setPos(index, focusQuillAtEnd = true) {
+  setPos(index, focusQuillAtCursor = true) {
     this.setState({ index })
+    console.log(this.state.cursors[index])
     const sliceIndex = index === this.state.stack.length ? this.state.stack.length - 1 : index
     this.quill.setContents(this.state.stack[sliceIndex].content)
-    if (focusQuillAtEnd) {
-      this.focusQuillAtEnd()
+    if (focusQuillAtCursor) {
+      this.focusQuillAtCursor()
     }
   }
 
@@ -279,7 +291,7 @@ class Midst extends React.Component {
 
   load(fileData) {
     this.setState({
-      title: fileData.fileName.replace(this.FILE_EXT, ''),
+      title: fileData.fileName ? fileData.fileName.replace(this.FILE_EXT, '') : 'Untitled',
       index: fileData.data.length,
       stack: fileData.data.stack,
       author: fileData.data.meta.author,
@@ -356,6 +368,12 @@ class Midst extends React.Component {
     this.quill.setSelection(length, 1)
   }
 
+  focusQuillAtCursor() {
+    const length = this.quill.getLength()
+    this.quill.focus()
+    this.quill.setSelection(length, 1)
+  }
+
   editDraftMarkerLabel(timelineIndex, inDrawer) {
     return () => {
       const id = 'draft-marker-' + timelineIndex + (inDrawer ? '-in-drawer' : '')
@@ -423,6 +441,8 @@ class Midst extends React.Component {
       formats: ['bold', 'italic', 'underline', 'align', 'size', 'font', 'background'],
     })
 
+    debugger
+
     const Font = Quill.import('formats/font')
     Font.whitelist = [false].concat(_.tail(this.FONT_IDS))
     Quill.register(Font, true)
@@ -443,11 +463,19 @@ class Midst extends React.Component {
       if (source !== 'user') return
 
       const stack = _.cloneDeep(this.state.stack)
+      const cursors = _.cloneDeep(this.state.cursors)
       const index = stack.length - 1
       stack.push({ content: this.quill.getContents(), time: + new Date() })
+
+      // const selection = this.quill.getSelection()
+      // if (!selection) {
+      //   this.quill.updateContents(new Delta().insert('Quill'))
+      // }
+
       this.setState({
         index,
         stack,
+        cursors,
         hasUnsavedChanges: true,
         replayMode: false,
         drawerOpen: false,
@@ -462,6 +490,16 @@ class Midst extends React.Component {
         this.setState({ pickerIsOpen: !this.state.pickerIsOpen })
       })
     }
+
+    const scrollArea = document.querySelector('.ql-editor')
+
+    scrollArea.addEventListener('scroll', evt => {
+      // console.log(scrollArea.scrollTop)
+    })
+
+    setTimeout(() => {
+      scrollArea.scrollTop = 200
+    }, 5000)
   }
 
   exitFocusModeIntent() {
@@ -707,8 +745,9 @@ class Midst extends React.Component {
   }
 
   slider() {
+    const { isPlayer } = this.props
     const { replayMode, index, stack, creatingDraftMarker, showDraftMarkers } = this.state
-    if (replayMode) {
+    if (replayMode || isPlayer) {
       const value = index / stack.length
 
       return e('div', {
@@ -722,7 +761,7 @@ class Midst extends React.Component {
           value,
           onChange: this.sliderOnChange,
         }),
-        showDraftMarkers ? this.draftMarkers() : null,
+        showDraftMarkers || isPlayer ? this.draftMarkers() : null,
       )
     }
   }
@@ -751,9 +790,6 @@ class Midst extends React.Component {
   }
 
   draftMarkerLabel(name, timelineIndex, inDrawer) {
-
-    inDrawer && console.log(name)
-
     return e('div', {
       className: 'draft-marker-label' + (this.state.editingDraftMarker === timelineIndex + (inDrawer ? '-drawer' : '') ? ' editing' : ''),
       onClick: (evt) => evt.stopPropagation()
@@ -814,9 +850,9 @@ class Midst extends React.Component {
           + (focusMode ? ' focus-mode' : '')
           + (isPlayer ? ' player' : ''),
       },
-        e('div', {
+        isApp ? e('div', {
           className: 'title-bar',
-        }, title),
+        }, title) : null,
         e('div', {
           className: 'toolbars',
           onMouseEnter: this.exitFocusModeIntent,
