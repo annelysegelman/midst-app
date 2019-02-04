@@ -7,8 +7,8 @@ class Midst extends React.Component {
 // ================================================================================
   static get defaultProps() {
     return {
-      isPlayer: false,
-      fileData: null // { data: window.testFileData },
+      isPlayer: true,
+      fileData: { data: window.testFileData },
     }
   }
 
@@ -369,7 +369,7 @@ class Midst extends React.Component {
   }
 
   focusQuillAtCursor() {
-    this.quill.setSelection(this.state.cursors[this.state.index], 1)
+    this.quill.setSelection(this.state.cursors[this.state.index], 0)
   }
 
   editDraftMarkerLabel(timelineIndex, inDrawer) {
@@ -455,6 +455,11 @@ class Midst extends React.Component {
     fontSizeStylesInjected.innerText = _.reduce(this.FONT_SIZES, (styleDec, style) => styleDec + this.FONT_SIZE_STYLE_TPL(style), '')
     document.head.appendChild(fontSizeStylesInjected)
 
+    if (this.props.isPlayer) {
+      this.quill.enable(false)
+      return
+    }
+
     this.quill.on('text-change', (delta, oldDelta, source) => {
       if (source !== 'user') return
 
@@ -485,16 +490,6 @@ class Midst extends React.Component {
         this.setState({ pickerIsOpen: !this.state.pickerIsOpen })
       })
     }
-
-    const scrollArea = document.querySelector('.ql-editor')
-
-    scrollArea.addEventListener('scroll', evt => {
-      // console.log(scrollArea.scrollTop)
-    })
-
-    setTimeout(() => {
-      scrollArea.scrollTop = 200
-    }, 5000)
   }
 
   exitFocusModeIntent() {

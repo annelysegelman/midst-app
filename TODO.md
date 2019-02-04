@@ -14,6 +14,7 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 
 ## To Discuss...
 1. See "Handling Large Files" below...
+1. Should the last frame scroll all the way to the top and place the cursor on the bottom? Or leave the cursor and scroll position exactly where the writer stopped writing?
 
 ## CRITICAL bugs
 1. None
@@ -38,6 +39,7 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
 
 ## Low-priority bugs
+1. When using "Save As..." on an already-saved document, the tite should default to "[Original Title] Copy" not "Untitled".
 1. Bug: Type stuff. Click draft marker icon to add marker. Then WITHOUT TYPING ANYTHING, click the draft marker icon again. You have just added 2 markers right next to each other! This is bad. Make sure flag icon can't be clicked immediately after you click it (i.e. when it is red it shouldn't be clickable).
 1. In drawer, no way to navigate to Markers that have long names, because clicking anywhere on the marker name just makes me rename it instead of navigating to it. Imo a nice solution here: Add little flag icons to left of each name (like bullet points almost). Click on little flag icon @ left of marker name to navigate to marker; click on name to rename; and click on delete icon (Little red X or little trash can.. we don't need whole word "delete") to the right of the name to delete marker. Leaving a bit of white space between flag icon / marker name / delete icon.
 1. Need a way to undo/redo draft marker actions (particularly deleting them by accident).
