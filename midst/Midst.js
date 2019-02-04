@@ -40,6 +40,7 @@ class Midst extends React.Component {
       displayTitle: 'Untitled',
       highestEverDraftNumber: 0,
       pickerIsOpen: false,
+      playing: false,
     }
 
     this.state = JSON.parse(JSON.stringify(this.initialState))
@@ -58,6 +59,8 @@ class Midst extends React.Component {
     this.onKeyDown = this.onKeyDown.bind(this)
     this.openDrawer = this.openDrawer.bind(this)
     this.openFile = this.openFile.bind(this)
+    this.pause = this.pause.bind(this)
+    this.play = this.play.bind(this)
     this.quit = this.quit.bind(this)
     this.saveFile = this.saveFile.bind(this)
     this.saveFileAs = this.saveFileAs.bind(this)
@@ -750,6 +753,7 @@ class Midst extends React.Component {
           readOnly: creatingDraftMarker,
           value,
           onChange: this.sliderOnChange,
+          onMouseDown: this.pause,
         }),
         showDraftMarkers || isPlayer ? this.draftMarkers() : null,
       )
@@ -829,10 +833,12 @@ class Midst extends React.Component {
   playerControls() {
     return e('div', { className: 'player-controls' },
       e('div', {
-        className: 'player-control play-button',
+        className: 'player-control play-button' + (this.state.playing ? ' playing' : ''),
+        onClick: this.play,
       }, e(Play)),
       e('div', {
         className: 'player-control pause-button',
+        onClick: this.pause,
       }, e(Pause)),
       e('div', {
         className: 'player-control speed-dial',
@@ -841,6 +847,27 @@ class Midst extends React.Component {
         className: 'player-control volume-slider',
       }, e(Volume2)),
     )
+  }
+
+  play() {
+    this.setState({ playing: true }, this.autoScrub)
+  }
+
+  pause() {
+    this.setState({ playing: false })
+  }
+
+  autoScrub() {
+    if (!this.state.playing) return
+    if (this.state.index === undefined || this.state.index > this.state.stack.length - 2) {
+      this.setState({ playing: false })
+      return
+    }
+
+    setTimeout(() => {
+      this.setPos(this.state.index + 1)
+      this.autoScrub()
+    }, 1)
   }
 
 // ================================================================================

@@ -431,3 +431,7 @@ body {
   width: 20px;
   height: 20px;
 }
+
+.play-button.playing svg {
+  stroke: red;
+}
