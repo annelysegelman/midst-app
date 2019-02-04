@@ -151,7 +151,7 @@ class Midst extends React.Component {
 // ================================================================================
   sliderOnChange(val) {
     const index = Math.ceil(this.state.stack.length * val)
-    this.setPos(index, this.state.responsiveScrolling)
+    this.setPos(index)
   }
 
   onKeyDown(evt) {
@@ -218,12 +218,11 @@ class Midst extends React.Component {
 // ================================================================================
 // Methods
 // ================================================================================
-  setPos(index, focusQuillAtCursor = true) {
+  setPos(index) {
     this.setState({ index })
-    console.log(this.state.cursors[index])
     const sliceIndex = index === this.state.stack.length ? this.state.stack.length - 1 : index
     this.quill.setContents(this.state.stack[sliceIndex].content)
-    if (focusQuillAtCursor) {
+    if (this.state.responsiveScrolling) {
       this.focusQuillAtCursor()
     }
   }
@@ -258,8 +257,8 @@ class Midst extends React.Component {
   }
 
   midstFileModel() {
-    const { stack, markers, highestEverDraftNumber, author, displayTitle } = this.state
-    return  { stack, meta: { markers, highestEverDraftNumber, author, displayTitle }}
+    const { stack, markers, highestEverDraftNumber, author, displayTitle, cursors } = this.state
+    return  { stack, meta: { markers, highestEverDraftNumber, author, displayTitle, cursors }}
   }
 
   async saveFile () {
@@ -297,6 +296,7 @@ class Midst extends React.Component {
       author: fileData.data.meta.author,
       displayTitle: fileData.data.meta.displayTitle,
       markers: fileData.data.meta.markers,
+      cursors: fileData.data.meta.cursors,
       highestEverDraftNumber: fileData.data.meta.highestEverDraftNumber,
       hasUnsavedChanges: false,
       fileAbsPath: fileData.path,
@@ -369,9 +369,7 @@ class Midst extends React.Component {
   }
 
   focusQuillAtCursor() {
-    const length = this.quill.getLength()
-    this.quill.focus()
-    this.quill.setSelection(length, 1)
+    this.quill.setSelection(this.state.cursors[this.state.index], 1)
   }
 
   editDraftMarkerLabel(timelineIndex, inDrawer) {
@@ -441,8 +439,6 @@ class Midst extends React.Component {
       formats: ['bold', 'italic', 'underline', 'align', 'size', 'font', 'background'],
     })
 
-    debugger
-
     const Font = Quill.import('formats/font')
     Font.whitelist = [false].concat(_.tail(this.FONT_IDS))
     Quill.register(Font, true)
@@ -467,10 +463,9 @@ class Midst extends React.Component {
       const index = stack.length - 1
       stack.push({ content: this.quill.getContents(), time: + new Date() })
 
-      // const selection = this.quill.getSelection()
-      // if (!selection) {
-      //   this.quill.updateContents(new Delta().insert('Quill'))
-      // }
+      const selection = this.quill.getSelection()
+      const nextCursor = selection ? selection.index : _.last(cursors)
+      cursors.push(nextCursor)
 
       this.setState({
         index,
