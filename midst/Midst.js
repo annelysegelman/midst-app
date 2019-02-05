@@ -7,7 +7,7 @@ class Midst extends React.Component {
 // ================================================================================
   static get defaultProps() {
     return {
-      isPlayer: false,
+      isPlayer: true,
       fileData: { data: window.testFileData },
     }
   }
@@ -104,6 +104,18 @@ class Midst extends React.Component {
     const { isPlayer, fileData } = this.props
 
     this.setState({ isPlayer })
+
+    document.body.addEventListener('keydown', evt => {
+      if (evt.keyCode === 32 && this.state.isPlayer) {
+        if (this.state.playing) {
+          this.pause()
+        }
+
+        else {
+          this.play()
+        }
+      }
+    })
 
     document.getElementById('editor').addEventListener('keydown', evt => {
       if ((evt.key === 'z' || evt.key === 'Z') && evt.metaKey) {
@@ -236,8 +248,8 @@ class Midst extends React.Component {
 // ================================================================================
 // Methods
 // ================================================================================
-  setPos(index) {
-    this.setState({ index })
+  setPos(index, cb) {
+    this.setState({ index }, cb && cb())
     const sliceIndex = index === this.state.stack.length ? this.state.stack.length - 1 : index
     this.quill.setContents(this.state.stack[sliceIndex].content)
     if (this.state.responsiveScrolling) {
@@ -309,7 +321,7 @@ class Midst extends React.Component {
   load(fileData) {
     this.setState({
       title: fileData.fileName ? fileData.fileName.replace(this.FILE_EXT, '') : 'Untitled',
-      index: fileData.data.length,
+      index: fileData.data.stack.length,
       stack: fileData.data.stack,
       author: fileData.data.meta.author,
       displayTitle: fileData.data.meta.displayTitle,
@@ -859,6 +871,10 @@ class Midst extends React.Component {
   }
 
   play() {
+    if (this.state.index === this.state.stack.length) {
+      this.setPos(0)
+    }
+
     this.setState({ playing: true }, this.autoScrub)
   }
 
