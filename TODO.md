@@ -31,9 +31,8 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 - New TL can be slightly transparent and/or blur any text visible underneath it. (KEEP IN MIND we still want it to be very easy to read the draft marker names & not look visually cluttered... so can't be TOO transparent)
 
 ## High-priority bugs
-1. Open "Big Medium.midst" and create a draft marker. Marker default name is "Draft NaN".
-1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason.
-1. NOTE: The bug appears to actually be that after changing ANY aspect of text formatting (font, font size, bold/italics/underline... alignment seems ok tho), then inserting line breaks, then going up to the "middle space" between the two paragraphs, the font simply reverts to default in all its attributes (12pt helvetica non-bold/italic/underlined). This is now a high priority bug as it makes editing + adding new stanzas quite annoying.
+1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason. (https://github.com/quilljs/quill/issues/2161)
+1. Open a new file, immediately create a new draft marker without typing or touching the timeline, then navigate to that marker using drawer: crash. (Try also with clicking timeline draft marker.)
 
 ---
 ## High Priority Feature/Bug: Handling Large Files
@@ -67,6 +66,7 @@ None.
 
 ## Ready for Review
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
+1. Open "Big Medium.midst" and create a draft marker. Marker default name is "Draft NaN".
 
 ## In Progress
 

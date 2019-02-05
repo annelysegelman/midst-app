@@ -7,7 +7,7 @@ class Midst extends React.Component {
 // ================================================================================
   static get defaultProps() {
     return {
-      isPlayer: true,
+      isPlayer: false,
       fileData: { data: window.testFileData },
     }
   }
@@ -326,8 +326,8 @@ class Midst extends React.Component {
       author: fileData.data.meta.author,
       displayTitle: fileData.data.meta.displayTitle,
       markers: fileData.data.meta.markers,
-      cursors: fileData.data.meta.cursors,
-      highestEverDraftNumber: fileData.data.meta.highestEverDraftNumber,
+      cursors: fileData.data.meta.cursors || [],
+      highestEverDraftNumber: fileData.data.meta.highestEverDraftNumber || 0,
       hasUnsavedChanges: false,
       fileAbsPath: fileData.path,
     }, () => {
@@ -399,7 +399,8 @@ class Midst extends React.Component {
   }
 
   focusQuillAtCursor() {
-    this.quill.setSelection(this.state.cursors[this.state.index], 0)
+    const cursorPos = this.state.cursors[this.state.index] || 0
+    this.quill.setSelection(cursorPos, 0)
   }
 
   editDraftMarkerLabel(timelineIndex, inDrawer) {
