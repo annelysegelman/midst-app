@@ -171,6 +171,9 @@ const menu = (mainWindow) => {
     submenu: [
       { label: 'Activate Responsive Scrolling', click: () => mainWindow.webContents.send('menu.responsiveScrollingOn')},
       { label: 'Deactivate Responsive Scrolling', click: () => mainWindow.webContents.send('menu.responsiveScrollingOff')},
+      { type: 'separator' },
+      { label: 'App', click: () => mainWindow.webContents.send('menu.viewApp')},
+      { label: 'Player', click: () => mainWindow.webContents.send('menu.viewPlayer')},
     ]
   }
 

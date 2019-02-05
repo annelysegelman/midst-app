@@ -7,7 +7,7 @@ class Midst extends React.Component {
 // ================================================================================
   static get defaultProps() {
     return {
-      isPlayer: true,
+      isPlayer: false,
       fileData: { data: window.testFileData },
     }
   }
@@ -29,6 +29,7 @@ class Midst extends React.Component {
       focusMode: false,
       hasUnsavedChanges: false,
       index: 0,
+      isPlayer: false,
       markers: [],
       replayMode: false,
       replayModeOpenedFromDrawer: false,
@@ -100,7 +101,9 @@ class Midst extends React.Component {
 // Lifecycle
 // ================================================================================
   componentDidMount() {
-    const { isPlayer, fileData} = this.props
+    const { isPlayer, fileData } = this.props
+
+    this.setState({ isPlayer })
 
     document.getElementById('editor').addEventListener('keydown', evt => {
       if ((evt.key === 'z' || evt.key === 'Z') && evt.metaKey) {
@@ -130,21 +133,33 @@ class Midst extends React.Component {
     ipc.on('menu.saveFileAs', this.saveFileAs)
     ipc.on('menu.stepBack', this.step(-1))
     ipc.on('menu.stepForward', this.step(1))
+    ipc.on('menu.viewApp', () => this.setState({ isPlayer: false }))
+    ipc.on('menu.viewPlayer', () => this.setState({ isPlayer: true }))
 
     document.body.addEventListener('keydown', this.onKeyDown)
 
     if (fileData && isPlayer) {
       this.load(fileData)
     }
+
+    this.quill.enable(!isPlayer)
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const { playbackUid: prevPlaybackUid } = prevProps
-    const { isPlayer, fileData, playbackUid } = this.props
+    const { isPlayer: wasPlayer } = prevState
+    const { fileData, playbackUid } = this.props
+    const { isPlayer } = this.state
 
-    if (playbackUid !== prevPlaybackUid) {
+    this.quill.enable(!isPlayer)
+
+    if (playbackUid !== prevPlaybackUid || isPlayer !== wasPlayer) {
       if (fileData && isPlayer) {
         this.load(fileData)
+      }
+
+      else {
+        this.newFile()
       }
     }
   }
@@ -458,11 +473,6 @@ class Midst extends React.Component {
     fontSizeStylesInjected.innerText = _.reduce(this.FONT_SIZES, (styleDec, style) => styleDec + this.FONT_SIZE_STYLE_TPL(style), '')
     document.head.appendChild(fontSizeStylesInjected)
 
-    if (this.props.isPlayer) {
-      this.quill.enable(false)
-      return
-    }
-
     this.quill.on('text-change', (delta, oldDelta, source) => {
       if (source !== 'user') return
 
@@ -738,8 +748,7 @@ class Midst extends React.Component {
   }
 
   slider() {
-    const { isPlayer } = this.props
-    const { replayMode, index, stack, creatingDraftMarker, showDraftMarkers } = this.state
+    const { replayMode, index, stack, creatingDraftMarker, showDraftMarkers, isPlayer } = this.state
     if (replayMode || isPlayer) {
       const value = index / stack.length
 
@@ -874,8 +883,7 @@ class Midst extends React.Component {
 // Render
 // ================================================================================
   render() {
-    const { isPlayer } = this.props
-    const { focusMode, title, drawerOpen, pickerIsOpen } = this.state
+    const { focusMode, title, drawerOpen, pickerIsOpen, isPlayer } = this.state
     const isApp = !isPlayer
 
     return (
