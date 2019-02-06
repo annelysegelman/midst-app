@@ -21,17 +21,7 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 ## CRITICAL bugs
 1. None
 
-## High-priority feature request: Web display engine
-1. :')
-
-## High-priority feature request: Timeline fixes
-1. Reduce vertical space that the timeline takes up (i.e. plz make less white space above where the Markers end).
-1. UX/design thought: the fat bottom margin of the app is making it slightly annoying to write in; i feel like i can’t see enough of my poem at once. rather than having the bottom of the app always have this fat margin, could we simply have no bottom margin (as in most text editors… check out Textedit)——& the timeline/markers section will simply, when opened, “slide up” from the bottom of the app (with an opaque background, simply ‘covering’ whatever text is beneath it, as opposed to ‘pushing’ the text aside like the drawer does)?
-- New TL should COVER/OVERLAP existing text, not 'push' it upwards
-- New TL can be slightly transparent and/or blur any text visible underneath it. (KEEP IN MIND we still want it to be very easy to read the draft marker names & not look visually cluttered... so can't be TOO transparent)
-
 ## High-priority bugs
-1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason. (https://github.com/quilljs/quill/issues/2161)
 1. Open a new file, immediately create a new draft marker without typing or touching the timeline, then navigate to that marker using drawer: crash. (Try also with clicking timeline draft marker.)
 
 ---
@@ -51,9 +41,10 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 ---
 
 ## Mid-priority bugs
-None.
+1. Open a file, add a draft marker, re-open the file. The added draft marker is not there.
 
 ## Low-priority bugs
+1. Scrub into the past and create a draft marker there. Timeline should stay at that point, not jump forward to the end.
 1. Previously-saved document "sometimes autoscrolls (down) right after opening, making it seem like the poem starts on a different line." All documents should open at top of stack/frame 0, scrolled all the way up.
 1. Bug: Type stuff. Click draft marker icon to add marker. Then WITHOUT TYPING ANYTHING, click the draft marker icon again. You have just added 2 markers right next to each other! This is bad. Make sure flag icon can't be clicked immediately after you click it (i.e. when it is red it shouldn't be clickable).
 1. In drawer, no way to navigate to Markers that have long names, because clicking anywhere on the marker name just makes me rename it instead of navigating to it. Imo a nice solution here: Add little flag icons to left of each name (like bullet points almost). Click on little flag icon @ left of marker name to navigate to marker; click on name to rename; and click on delete icon (Little red X or little trash can.. we don't need whole word "delete") to the right of the name to delete marker. Leaving a bit of white space between flag icon / marker name / delete icon.
@@ -62,15 +53,25 @@ None.
 1. Right-click on a draft marker in the timeline --> Delete option
 
 ## Lowest priority bugs
+1. Sanitized text does not take on the formatting of neighboring text when pasted in.
+1. Regression: It's now possible to paste in formatted text again.
 1. Timeline handle should be all the way to the right (top of stack) when entering timeline mode
 
 ## Ready for Review
-1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
-1. Open "Big Medium.midst" and create a draft marker. Marker default name is "Draft NaN".
+1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening. __This can be previewed in the player mode, or by opening "Evening Flower PR".__
+1. Reduce vertical space that the timeline takes up (i.e. plz make less white space above where the Markers end).
+1. UX/design thought: the fat bottom margin of the app is making it slightly annoying to write in; i feel like i can’t see enough of my poem at once. rather than having the bottom of the app always have this fat margin, could we simply have no bottom margin (as in most text editors… check out Textedit)——& the timeline/markers section will simply, when opened, “slide up” from the bottom of the app (with an opaque background, simply ‘covering’ whatever text is beneath it, as opposed to ‘pushing’ the text aside like the drawer does)?
+- New TL should COVER/OVERLAP existing text, not 'push' it upwards
+- New TL can be slightly transparent and/or blur any text visible underneath it. (KEEP IN MIND we still want it to be very easy to read the draft marker names & not look visually cluttered... so can't be TOO transparent)
+__It isn't strictly possible to NOT push the content up, depending on where the cursor is, cause cursor-following will always try to keep the cursor in view. Test with file "Fifty Numbered Lines"
+\*\*\* NEEDS DISCUSSION \*\*\*__
+1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason. __This is either a core defect in Quill or something they think is good behavior, there's an open issue on it here: https://github.com/quilljs/quill/issues/2161. It's not possible to fix without changing Quill code directly (we may want to do this one day, and actually branch our own custom editor off from Quill.) For now, my fix is to detect when a user takes certain actions and invisibly "pilot" the app into the correct behavior. It works for the one use case described here, the stanza case, for bold only, and could be made to work for other use cases and other text formattings. But I want to discuss the workload/caveats of this approach with you before putting in the work. \*\*\* NEEDS DISCUSSION \*\*\*__
+1. Web display engine. __Ready for _preliminary_ review. not all features are implemented yet. (For example: playback speed. Can this be a selector: "1x, 2x, 4x", rather than a dial??) Player mode is currently triggered from the "View" menu, this is not meant to be an app feature, but is just to make testing and development easier.__
 
 ## In Progress
 
 ## To Do (Hopefully for pilot!)
+1. Open recent... menu.
 1. Highest priority feature request: Allow user to have multiple Midst documents/windows (in any combination of saved & unsaved) open at the same time?
 1. PC build capability? (Would be helpful for prototype testing/pilot phase)
 1. Add shortcut for navigating the timeline in Replay Mode: DOWN ARROW jumps forward to NEXT draft marker sequentially; UP arrow jumps backwards to PREVIOUS draft marker.
