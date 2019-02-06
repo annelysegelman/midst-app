@@ -1,7 +1,7 @@
 
 # MIDST TODO
 
-<!-- *LAST UPDATE: Jason, Feb 6, 2019 -->
+<!-- *LAST UPDATE: Annelyse, Feb 6, 2019 -->
 <!-- *CURRENT STAGING BUILD:
 
 http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549455707609.zip
@@ -10,12 +10,23 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.
  -->
 
 
+## Notes (post-Meeting)
+1. This weekend: try to fix this issue with big files + lag
+1. Next week: Player stuff
+1. "Take over Quill" = vacation task
+1. Research how google docs keeps track of changes (how fine grained is it? what's the ux?)
+
+## CRITICAL bugs
+1. Default docs should say Untitled in the header, then the name of the saved doc should show up there once saved
 
 
-## Player TODOs
+*
+
+
+## PLAYER TODOs
 1. Put it on the web :') 
-1. L/R arrows should control timeline nav
-1. Speed controls
+1. L/R arrows should control timeline nav (when paused)
+1. Speed controls (1x 2x 4x)
 1. Integrate player with entire web page
 1. M in upper left hand corner ("sticky")
 1. Title of poem + Author will always be visible in a sidebar or header
@@ -27,37 +38,38 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.
 ## Questions for R01 User Tests (for Annelyse; Jason, feel free to add questions/concerns you want me to address with our user tests here!)
 1. Is it annoying not to allow blank/null draft marker names?
 1. https://testflight.apple.com/join/uHZjhXy0 ?
+1. Do you like how the responsive scrolling works in playback?
 
 ## To Discuss...
-1. See "Handling Large Files" below...
 1. Should the last frame scroll all the way to the top and place the cursor on the bottom? Or leave the cursor and scroll position exactly where the writer stopped writing?
 - PLAYER: Last frame scrolls to top/ 'presentation view'. APP: leave cursor + scroll position exactly where the writer stopped writing.
 1. It's possible to “fight“ with responsive scrolling if a scrollbar is present in the player at all times. Should scrolling in the player immediately pause playback? Or should scrolling only be possible after pressing the pause button?
 - PLAYER: Manual scrolling should override the responsive scrolling (toggling it off).
 
 
-## CRITICAL bugs
-1. None
 
 ## High-priority bugs
+1. Roll back autopilot "preserve formatting" hack
+1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason. Take over quill??
+- 
+    ___This is either a core defect in Quill or something they think is good behavior, there's an open issue on it here: https://github.com/quilljs/quill/issues/2161. It's not possible to fix without changing Quill code directly (we may want to do this one day, and actually branch our own custom editor off from Quill.) For now, my fix is to detect when a user takes certain actions and invisibly "pilot" the app into the correct behavior. It works for the one use case described here, the stanza case, for bold only, and could be made to work for other use cases and other text formattings. This will also involve patching the timeline somehow, but I think it can be done. But I want to discuss the workload/caveats of this approach with you before putting in the effort, and maybe talk as well about the option to adopt and modify Quill.___
+
 1. Open a new file, immediately create a new draft marker without typing or touching the timeline, then navigate to that marker using drawer: crash. (Try also with clicking timeline draft marker.)
 1. Draft markers should only enter edit mode if they are active. So: Click a marker, go to that point in the timeline, click same marker again, enter edit mode for the marker.
 
 ---
 ## High Priority Feature/Bug: Handling Large Files
 1. Large files can still choke the editor. Open "Big Medium.midst" and try to type in it, there is a lag between when a key is pressed and when the letter appears on the screen.
+a time range to open. (?!)
 
+---
 ### App Logic Optimizations (In order of severity. If one fails, try the next.)
 – Don't use React at all for updating Quill.
 – Chunk files in memory and load chunks into Quill on demand.
 – Chunk files on disk and stream chunks over Electron IPC using Node fs.
 
 ### UI/UX Optimizations
-– "Compress" files by slicing out every nth update when loading. "Fine grained" playback is still available in the player. (?!)
-– Simply don't record every change, like every 10th change or so. (?!)
-– Show the user a message that this is a long file and to choose a time range to open. (?!)
-
----
+– BEAT THE PROBLEM!!!!!!!!!!!!!!
 
 ## Mid-priority bugs
 1. When opening timeline, text that gets "pushed up" needs to get "pushed up" in a smoother way.
@@ -81,25 +93,6 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.
 1. When a file is opened from disk, focus/timeline/drawer mode should deactivate.
 
 ## Ready for Review
-1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
-
-    ___This can be previewed by opening "Responsive Scrolling Test".___
-
-2. Reduce vertical space that the timeline takes up (i.e. plz make less white space above where the Markers end).
-
-        "UX/design thought: the fat bottom margin of the app is making it slightly annoying to write in; i feel like i can’t see enough of my poem at once. rather than having the bottom of the app always have this fat margin, could we simply have no bottom margin (as in most text editors… check out Textedit)——& the timeline/markers section will simply, when opened, “slide up” from the bottom of the app (with an opaque background, simply ‘covering’ whatever text is beneath it, as opposed to ‘pushing’ the text aside like the drawer does)?
-        - New TL should COVER/OVERLAP existing text, not 'push' it upwards
-        - New TL can be slightly transparent and/or blur any text visible underneath it. (KEEP IN MIND we still want it to be very easy to read the draft marker names & not look visually cluttered... so can't be TOO transparent)"
-
-    ___It isn't strictly possible to NOT push the content up, depending on where the cursor is, cause cursor-following (responsive scrolling) will always try to keep the cursor in view when timeline is open. Test with file "Fifty Numbered Lines".___
-
-3. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason.
-
-    ___This is either a core defect in Quill or something they think is good behavior, there's an open issue on it here: https://github.com/quilljs/quill/issues/2161. It's not possible to fix without changing Quill code directly (we may want to do this one day, and actually branch our own custom editor off from Quill.) For now, my fix is to detect when a user takes certain actions and invisibly "pilot" the app into the correct behavior. It works for the one use case described here, the stanza case, for bold only, and could be made to work for other use cases and other text formattings. This will also involve patching the timeline somehow, but I think it can be done. But I want to discuss the workload/caveats of this approach with you before putting in the effort, and maybe talk as well about the option to adopt and modify Quill.___
-
-4. Web display engine.
-
-    ___Ready for _preliminary_ review. not all features are implemented yet. (For example: playback speed. Can this be a selector: "1x, 2x, 4x", rather than a dial??)___
 
 ## In Progress
 
@@ -184,6 +177,7 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.
 
 ## Regression tests /// Requirements graveyard for future bug checks; DO NOT DELETE
 
+1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
 1. Formatting: Highlighted text should stay visibly highlighted while changing the font, font size, alignment, etc.
 1. Drawer: Opening drawer should push long lines aside (not overlap them).
 1. Drawer: Deleting all markers should automatically close the drawer.
