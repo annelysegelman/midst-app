@@ -10,6 +10,20 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.
  -->
 
 
+
+
+## Player TODOs
+1. Put it on the web :') 
+1. L/R arrows should control timeline nav
+1. Speed controls
+1. Integrate player with entire web page
+1. M in upper left hand corner ("sticky")
+1. Title of poem + Author will always be visible in a sidebar or header
+1. Timeline always visible in the player page
+1. For now, apply our super sexy Midst styling (font and font size) to all poems by default. If it's not super difficult, also add a toggle button that allows the reader to switch to the Poet's font styling instead.
+
+
+
 ## Questions for R01 User Tests (for Annelyse; Jason, feel free to add questions/concerns you want me to address with our user tests here!)
 1. Is it annoying not to allow blank/null draft marker names?
 1. https://testflight.apple.com/join/uHZjhXy0 ?
@@ -17,7 +31,10 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.
 ## To Discuss...
 1. See "Handling Large Files" below...
 1. Should the last frame scroll all the way to the top and place the cursor on the bottom? Or leave the cursor and scroll position exactly where the writer stopped writing?
+- PLAYER: Last frame scrolls to top/ 'presentation view'. APP: leave cursor + scroll position exactly where the writer stopped writing.
 1. It's possible to “fight“ with responsive scrolling if a scrollbar is present in the player at all times. Should scrolling in the player immediately pause playback? Or should scrolling only be possible after pressing the pause button?
+- PLAYER: Manual scrolling should override the responsive scrolling (toggling it off).
+
 
 ## CRITICAL bugs
 1. None
@@ -43,10 +60,12 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.
 ---
 
 ## Mid-priority bugs
+1. When opening timeline, text that gets "pushed up" needs to get "pushed up" in a smoother way.
 1. Open a file, add a draft marker, re-open the file. The added draft marker is not there.
 1. Scrub back in an existing "complete" document and start typing. Then leave a draft marker on the very last frame where the document was "complete", named "Last Complete State". Click on the "Last Complete State" marker. The document will be on the NEXT frame AFTER the actual "last complete state".
 
 ## Low-priority bugs
+1. Draft marker names have too much white space around them by default; white space can be flexible?
 1. Scrub into the past and create a draft marker there. Timeline should stay at that point, not jump forward to the end.
 1. Previously-saved document "sometimes autoscrolls (down) right after opening, making it seem like the poem starts on a different line." All documents should open at top of stack/frame 0, scrolled all the way up.
 1. Bug: Type stuff. Click draft marker icon to add marker. Then WITHOUT TYPING ANYTHING, click the draft marker icon again. You have just added 2 markers right next to each other! This is bad. Make sure flag icon can't be clicked immediately after you click it (i.e. when it is red it shouldn't be clickable).
