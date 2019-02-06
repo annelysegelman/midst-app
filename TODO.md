@@ -24,6 +24,7 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.
 
 ## High-priority bugs
 1. Open a new file, immediately create a new draft marker without typing or touching the timeline, then navigate to that marker using drawer: crash. (Try also with clicking timeline draft marker.)
+1. Draft markers should only enter edit mode if they are active. So: Click a marker, go to that point in the timeline, click same marker again, enter edit mode for the marker.
 
 ---
 ## High Priority Feature/Bug: Handling Large Files
@@ -43,6 +44,7 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.
 
 ## Mid-priority bugs
 1. Open a file, add a draft marker, re-open the file. The added draft marker is not there.
+1. Scrub back in an existing "complete" document and start typing. Then leave a draft marker on the very last frame where the document was "complete", named "Last Complete State". Click on the "Last Complete State" marker. The document will be on the NEXT frame AFTER the actual "last complete state".
 
 ## Low-priority bugs
 1. Scrub into the past and create a draft marker there. Timeline should stay at that point, not jump forward to the end.
