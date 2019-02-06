@@ -1,10 +1,11 @@
 
 # MIDST TODO
 
-<!-- *LAST UPDATE: Annelyse, Feb 1, 2019 -->
+<!-- *LAST UPDATE: Jason, Feb 6, 2019 -->
 <!-- *CURRENT STAGING BUILD:
 
-http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
+http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549455707609.zip
+http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.zip
 
  -->
 
@@ -55,18 +56,29 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549048981026.zip
 ## Lowest priority bugs
 1. Sanitized text does not take on the formatting of neighboring text when pasted in.
 1. Regression: It's now possible to paste in formatted text again.
-1. Timeline handle should be all the way to the right (top of stack) when entering timeline mode
+1. Timeline handle should be all the way to the right (top of stack) when entering timeline mode.
+1. When a file is opened from disk, focus/timeline/drawer mode should deactivate.
 
 ## Ready for Review
-1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening. __This can be previewed in the player mode, or by opening "Evening Flower PR".__
-1. Reduce vertical space that the timeline takes up (i.e. plz make less white space above where the Markers end).
-1. UX/design thought: the fat bottom margin of the app is making it slightly annoying to write in; i feel like i can’t see enough of my poem at once. rather than having the bottom of the app always have this fat margin, could we simply have no bottom margin (as in most text editors… check out Textedit)——& the timeline/markers section will simply, when opened, “slide up” from the bottom of the app (with an opaque background, simply ‘covering’ whatever text is beneath it, as opposed to ‘pushing’ the text aside like the drawer does)?
-- New TL should COVER/OVERLAP existing text, not 'push' it upwards
-- New TL can be slightly transparent and/or blur any text visible underneath it. (KEEP IN MIND we still want it to be very easy to read the draft marker names & not look visually cluttered... so can't be TOO transparent)
-__It isn't strictly possible to NOT push the content up, depending on where the cursor is, cause cursor-following will always try to keep the cursor in view. Test with file "Fifty Numbered Lines"
-\*\*\* NEEDS DISCUSSION \*\*\*__
-1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason. __This is either a core defect in Quill or something they think is good behavior, there's an open issue on it here: https://github.com/quilljs/quill/issues/2161. It's not possible to fix without changing Quill code directly (we may want to do this one day, and actually branch our own custom editor off from Quill.) For now, my fix is to detect when a user takes certain actions and invisibly "pilot" the app into the correct behavior. It works for the one use case described here, the stanza case, for bold only, and could be made to work for other use cases and other text formattings. But I want to discuss the workload/caveats of this approach with you before putting in the work. \*\*\* NEEDS DISCUSSION \*\*\*__
-1. Web display engine. __Ready for _preliminary_ review. not all features are implemented yet. (For example: playback speed. Can this be a selector: "1x, 2x, 4x", rather than a dial??) Player mode is currently triggered from the "View" menu, this is not meant to be an app feature, but is just to make testing and development easier.__
+1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
+
+    ___This can be previewed by opening "Responsive Scrolling Test".___
+
+2. Reduce vertical space that the timeline takes up (i.e. plz make less white space above where the Markers end).
+
+        "UX/design thought: the fat bottom margin of the app is making it slightly annoying to write in; i feel like i can’t see enough of my poem at once. rather than having the bottom of the app always have this fat margin, could we simply have no bottom margin (as in most text editors… check out Textedit)——& the timeline/markers section will simply, when opened, “slide up” from the bottom of the app (with an opaque background, simply ‘covering’ whatever text is beneath it, as opposed to ‘pushing’ the text aside like the drawer does)?
+        - New TL should COVER/OVERLAP existing text, not 'push' it upwards
+        - New TL can be slightly transparent and/or blur any text visible underneath it. (KEEP IN MIND we still want it to be very easy to read the draft marker names & not look visually cluttered... so can't be TOO transparent)"
+
+    ___It isn't strictly possible to NOT push the content up, depending on where the cursor is, cause cursor-following (responsive scrolling) will always try to keep the cursor in view when timeline is open. Test with file "Fifty Numbered Lines".___
+
+3. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason.
+
+    ___This is either a core defect in Quill or something they think is good behavior, there's an open issue on it here: https://github.com/quilljs/quill/issues/2161. It's not possible to fix without changing Quill code directly (we may want to do this one day, and actually branch our own custom editor off from Quill.) For now, my fix is to detect when a user takes certain actions and invisibly "pilot" the app into the correct behavior. It works for the one use case described here, the stanza case, for bold only, and could be made to work for other use cases and other text formattings. This will also involve patching the timeline somehow, but I think it can be done. But I want to discuss the workload/caveats of this approach with you before putting in the effort, and maybe talk as well about the option to adopt and modify Quill.___
+
+4. Web display engine.
+
+    ___Ready for _preliminary_ review. not all features are implemented yet. (For example: playback speed. Can this be a selector: "1x, 2x, 4x", rather than a dial??)___
 
 ## In Progress
 

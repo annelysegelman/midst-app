@@ -7,7 +7,7 @@ class Midst extends React.Component {
 // ================================================================================
   static get defaultProps() {
     return {
-      isPlayer: false,
+      isPlayer: true,
       fileData: { data: window.testFileData },
     }
   }
@@ -803,8 +803,6 @@ class Midst extends React.Component {
   slider() {
     const { replayMode, index, stack, creatingDraftMarker, showDraftMarkers, isPlayer, drawerOpen } = this.state
     const value = index / stack.length
-
-    console.log(drawerOpen)
 
     return e('div', {
       className: 'midst-slider'

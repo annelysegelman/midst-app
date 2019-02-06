@@ -427,6 +427,8 @@ body {
 }
 
 .midst.player .midst-slider {
+  position: absolute;
+  bottom: 0;
   height: 30px;
   left: 0;
   width: 100%;
