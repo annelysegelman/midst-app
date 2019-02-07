@@ -22,7 +22,6 @@ class Midst extends React.Component {
       playbackUid: + new Date(),
       author: 'Anonymous',
       creatingDraftMarker: false,
-      currentFormat: null,
       cursors: [],
       drawerOpen: false,
       editingDraftMarker: null,
@@ -78,7 +77,6 @@ class Midst extends React.Component {
     this.quill = null
     this.FILE_EXT = 'mst'
     this.EXIT_FOCUS_MODE_HOVER_TIME_LIMIT = 500
-    this.FORCE_FORMATTING_ON_NEXT_TEXT_CHANGE = false
     this.DRAFT_MARKER_REPLAY_MODE_PREVIEW_TIME = 1000
     this.FONTS = ['Helvetica', 'Courier', 'Georgia', 'Tahoma', 'Times New Roman', 'Arial', 'Verdana', 'Garamond', 'Lato']
     this.FONT_IDS = this.FONTS.map(name => name.toLowerCase().replace(/ /g, '-'))
@@ -465,24 +463,6 @@ class Midst extends React.Component {
     }
   }
 
-  forceApplyCurrentFormatting() {
-    const { currentFormat } = this.state
-    for (const formatName in currentFormat) {
-      setTimeout(() => {
-        const range = this.quill.getSelection()
-        const pos = range && range.index
-        if (!pos) return
-        this.quill.setSelection(pos - 1, 1, 'api')
-        switch (formatName) {
-          case 'bold':
-            this.quill.format('bold', currentFormat[formatName])
-            break
-          }
-        this.quill.setSelection(pos, 0, 'api')
-      })
-    }
-  }
-
   setUpQuill() {
     this.quill = new Quill('#editor', {
       theme: 'snow',
@@ -508,25 +488,8 @@ class Midst extends React.Component {
     fontSizeStylesInjected.innerText = _.reduce(this.FONT_SIZES, (styleDec, style) => styleDec + this.FONT_SIZE_STYLE_TPL(style), '')
     document.head.appendChild(fontSizeStylesInjected)
 
-    this.setState({ currentFormat: this.quill.getFormat() })
-
     this.quill.on('text-change', (delta, oldDelta, source) => {
       if (source !== 'user') return
-
-      if (/\n/.test(_.get(delta, 'ops[1].insert'))) {
-        const selection = this.quill.getSelection()
-        const selectionIndex = selection && selection.index
-        const length = this.quill.getLength()
-
-        if (length > 2 && selectionIndex < length - 2) {
-          this.FORCE_FORMATTING_ON_NEXT_TEXT_CHANGE = true
-        }
-      }
-
-      else if (this.FORCE_FORMATTING_ON_NEXT_TEXT_CHANGE) {
-        this.forceApplyCurrentFormatting()
-        this.FORCE_FORMATTING_ON_NEXT_TEXT_CHANGE = false
-      }
 
       const stack = _.cloneDeep(this.state.stack)
       const cursors = _.cloneDeep(this.state.cursors)
@@ -546,7 +509,6 @@ class Midst extends React.Component {
         drawerOpen: false,
         creatingDraftMarker: false,
         editingDraftMarker: null,
-        currentFormat: this.FORCE_FORMATTING_ON_NEXT_TEXT_CHANGE ? this.state.currentFormat : this.quill.getFormat(),
       })
     })
 
