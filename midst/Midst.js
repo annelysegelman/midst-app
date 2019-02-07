@@ -75,7 +75,7 @@ class Midst extends React.Component {
 // ================================================================================
     this.exitFocusModeIntentTimer = null
     this.quill = null
-    this.FILE_EXT = 'mst'
+    this.FILE_EXT = '.midst'
     this.EXIT_FOCUS_MODE_HOVER_TIME_LIMIT = 500
     this.DRAFT_MARKER_REPLAY_MODE_PREVIEW_TIME = 1000
     this.FONTS = ['Helvetica', 'Courier', 'Georgia', 'Tahoma', 'Times New Roman', 'Arial', 'Verdana', 'Garamond', 'Lato']
@@ -491,19 +491,13 @@ class Midst extends React.Component {
     this.quill.on('text-change', (delta, oldDelta, source) => {
       if (source !== 'user') return
 
-      const stack = _.cloneDeep(this.state.stack)
-      const cursors = _.cloneDeep(this.state.cursors)
-      const index = stack.length - 1
-      stack.push({ content: this.quill.getContents(), time: + new Date() })
-
       const selection = this.quill.getSelection()
       const nextCursor = selection ? selection.index : _.last(cursors)
-      cursors.push(nextCursor)
 
       this.setState({
-        index,
-        stack,
-        cursors,
+        index: this.state.stack.length,
+        stack: this.state.stack.concat([{ content: this.quill.getContents(), time: + new Date() }]),
+        cursors: this.state.cursors.concat([nextCursor]),
         hasUnsavedChanges: true,
         replayMode: false,
         drawerOpen: false,
