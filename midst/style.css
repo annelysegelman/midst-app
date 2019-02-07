@@ -23,6 +23,7 @@ body {
   left: 0;
   width: 100vw;
   height: 25px;
+  z-index: 99999;
   font-family: 'HelveticaNeueLTStd-Lt';
   font-size: 13px;
   letter-spacing: 1px;

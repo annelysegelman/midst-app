@@ -17,14 +17,13 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.
 1. Research how google docs keeps track of changes (how fine grained is it? what's the ux?)
 
 ## CRITICAL bugs
-1. Default docs should say Untitled in the header, then the name of the saved doc should show up there once saved
-
+1. None.
 
 *
 
 
 ## PLAYER TODOs
-1. Put it on the web :') 
+1. Put it on the web :')
 1. L/R arrows should control timeline nav (when paused)
 1. Speed controls (1x 2x 4x)
 1. Integrate player with entire web page
@@ -32,8 +31,6 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.
 1. Title of poem + Author will always be visible in a sidebar or header
 1. Timeline always visible in the player page
 1. For now, apply our super sexy Midst styling (font and font size) to all poems by default. If it's not super difficult, also add a toggle button that allows the reader to switch to the Poet's font styling instead.
-
-
 
 ## Questions for R01 User Tests (for Annelyse; Jason, feel free to add questions/concerns you want me to address with our user tests here!)
 1. Is it annoying not to allow blank/null draft marker names?
@@ -46,12 +43,10 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_PLAYER_build_1549455707609.
 1. It's possible to “fight“ with responsive scrolling if a scrollbar is present in the player at all times. Should scrolling in the player immediately pause playback? Or should scrolling only be possible after pressing the pause button?
 - PLAYER: Manual scrolling should override the responsive scrolling (toggling it off).
 
-
-
 ## High-priority bugs
 1. Roll back autopilot "preserve formatting" hack
 1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason. Take over quill??
-- 
+-
     ___This is either a core defect in Quill or something they think is good behavior, there's an open issue on it here: https://github.com/quilljs/quill/issues/2161. It's not possible to fix without changing Quill code directly (we may want to do this one day, and actually branch our own custom editor off from Quill.) For now, my fix is to detect when a user takes certain actions and invisibly "pilot" the app into the correct behavior. It works for the one use case described here, the stanza case, for bold only, and could be made to work for other use cases and other text formattings. This will also involve patching the timeline somehow, but I think it can be done. But I want to discuss the workload/caveats of this approach with you before putting in the effort, and maybe talk as well about the option to adopt and modify Quill.___
 
 1. Open a new file, immediately create a new draft marker without typing or touching the timeline, then navigate to that marker using drawer: crash. (Try also with clicking timeline draft marker.)
@@ -93,6 +88,7 @@ a time range to open. (?!)
 1. When a file is opened from disk, focus/timeline/drawer mode should deactivate.
 
 ## Ready for Review
+1. Default docs should say Untitled in the header, then the name of the saved doc should show up there once saved
 
 ## In Progress
 
