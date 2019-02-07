@@ -10,8 +10,11 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549540678169.zip
 
 ## Notes (post-Meeting)
 1. <strike>This weekend: try to fix this issue with big files + lag</strike>
+
 1. <strike>Next week</strike> This weekend: Player stuff
+
 1. "Take over Quill" = vacation task
+
 1. Research how google docs keeps track of changes (how fine grained is it? what's the ux?)
 
 ---
@@ -35,12 +38,19 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549540678169.zip
 
 ## PLAYER TODOs
 1. Put it on the web :')
+
 1. L/R arrows should control timeline nav (when paused)
+
 1. Speed controls (1x 2x 4x)
+
 1. Integrate player with entire web page
+
 1. M in upper left hand corner ("sticky")
+
 1. Title of poem + Author will always be visible in a sidebar or header
+
 1. Timeline always visible in the player page
+
 1. For now, apply our super sexy Midst styling (font and font size) to all poems by default. If it's not super difficult, also add a toggle button that allows the reader to switch to the Poet's font styling instead.
 
 ---
