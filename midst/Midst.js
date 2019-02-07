@@ -313,7 +313,7 @@ class Midst extends React.Component {
 
     this.setState({
       fileAbsPath: fileInfo.fileAbsPath,
-      title: fileInfo.fileName.replace(new RegExp(`.${this.FILE_EXT}$`), ''),
+      title: fileInfo.fileName.replace(new RegExp(`${this.FILE_EXT}$`), ''),
       hasUnsavedChanges: false
     })
   }
