@@ -1,10 +1,14 @@
 # MIDST TODO
 
-*LAST UPDATE: Jason, Feb 7, 2019
+*LAST UPDATE: Jason, Feb 13, 2019
 
 *CURRENT STAGING BUILD:
 
-http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549540678169.zip
+http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_Midst_build_1550078015290.zip
+
+*CURRENT PLAYER URL:
+
+http://midst.press/sandbox/player/
 
 ---
 
@@ -38,12 +42,14 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549540678169.zip
 
 1. Timeline always visible in the player page
 
+1. Speed controls (1x 2x 4x)
+
 ---
 
 ## To Discuss...
-1. Player: M in upper left hand corner ("sticky") <-- TASK FOR ANNELYSE!
+1. Player: M in upper left hand corner ("sticky") – Can Annelyse do this?
 
-1. Player: Title of poem + Author will always be visible in a sidebar or header <-- TASK FOR ANNELYSE AND JASON TO SHARE!
+1. Player: Title of poem + Author will always be visible in a sidebar or header Can Annelyse do the frontend (UI) for this? (Jason will plug in the data/backend.)
 
 ---
 
@@ -54,8 +60,6 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549540678169.zip
 
 ## PLAYER TODOs
 1. L/R arrows should control timeline nav (when paused)
-
-1. Speed controls (1x 2x 4x)
 
 1. For now, apply our super sexy Midst styling (font and font size) to all poems by default. If it's not super difficult, also add a toggle button that allows the reader to switch to the Poet's font styling instead.
 
