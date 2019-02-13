@@ -1,16 +1,68 @@
 # MIDST TODO
 
-*LAST UPDATE: Jason, Feb 13, 2019
+*LAST UPDATE: Jason, Feb 13 2019
 
 *CURRENT STAGING BUILD:
 
-http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_Midst_build_1550078015290.zip
+http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1550078015290.zip
 
 *CURRENT PLAYER URL:
 
 http://midst.press/sandbox/player/
 
 ---
+
+## Goals before AWP (March 26), prioritized
+1. paper collateral (annelyse will do this)
+
+1. get Player working
+
+1. Get midst.press site looking sexy
+
+1. fix stanza bug
+
+1. get free public beta ready with telemetry built-in
+
+1. finish web design, with beta offering and player with a demo poem loaded up, and UX that encourages email signups!
+
+1. Live demo of the app ("Try it!") that works in a web browser
+
+## Annelyse TODO
+1. User tests, gather feedback
+
+1. Learn html/css/media queries :')
+
+1. Trademarking?
+
+1. Email DWRL
+
+1. Park @midstapp / @getmidst on various platforms
+
+1. Setup emails for domains
+
+1. Design
+- Colours:   beige, near-black, red /// canary yellow, baker-miller pink, teal
+
+## To Discuss...
+1. Live demo on midst.press ("Write" nav)
+
+1. Trademarking Midst
+
+1. UX notes from Startup Lab meeting
+
+1. Revisit/confer re: timing of private beta, public beta, + $ launch
+
+1. Setting goals for now until AWP
+
+1. Setting goals for end-of-semester
+
+1. Talk about business models/structures
+
+1. Player: M in upper left hand corner ("sticky") – Can Annelyse do this?
+
+1. Player: Title of poem + Author will always be visible in a sidebar or header Can Annelyse do the frontend (UI) for this? (Jason will plug in the data/backend.)
+
+1. "For now, apply our super sexy Midst styling (font and font size) to all poems by default. If it's not super difficult, also add a toggle button that allows the reader to switch to the Poet's font styling instead." – __It's possible to preserve the poets' title styling if we add the "H1" button to the app and make it clear (for example, in some kind of FAQ page/user guide) that you can preserve your title by using this button. ...Or other specific formats, like pull quotes, by using specific buttons. Could also be a special "preservable formats" menu (not with a jargon name but, say, just a nice declarative icon) in the app toolbar for _these specific kinds_ of formats.__
 
 ## Notes (post-Meeting)
 1. <strike>This weekend: try to fix this issue with big files + lag</strike>
@@ -23,7 +75,7 @@ http://midst.press/sandbox/player/
 
 ---
 
-## Ready for Review (Player)
+## Ready for Review (App)
 1. Default docs should say Untitled in the header, then the name of the saved doc should show up there once saved
 
 1. Large files can still choke the editor. Open "Big Medium.midst" and try to type in it, there is a lag between when a key is pressed and when the letter appears on the screen. BEAT THE PROBLEM!!!!!!!!!!!!!!
@@ -48,17 +100,8 @@ http://midst.press/sandbox/player/
 
 ---
 
-## To Discuss...
-1. Player: M in upper left hand corner ("sticky") – Can Annelyse do this?
-
-1. Player: Title of poem + Author will always be visible in a sidebar or header Can Annelyse do the frontend (UI) for this? (Jason will plug in the data/backend.)
-
-1. "For now, apply our super sexy Midst styling (font and font size) to all poems by default. If it's not super difficult, also add a toggle button that allows the reader to switch to the Poet's font styling instead." – __It's possible to preserve the poets' title styling if we add the "H1" button to the app and make it clear (for example, in some kind of FAQ page/user guide) that you can preserve your title by using this button. ...Or other specific formats, like pull quotes, by using specific buttons. Could also be a special "preservable formats" menu (not with a jargon name but, say, just a nice declarative icon) in the app toolbar for _these specific kinds_ of formats.__
-
----
-
-## CRITICAL bugs
-1. None.
+## Highest priority bugs
+1. Stanza bug :'(
 
 ---
 
@@ -79,20 +122,32 @@ http://midst.press/sandbox/player/
 ---
 
 ## High-priority
+
+1. Make grabber area for playhead a bit bigger plz!
+
 1. Should the last frame scroll all the way to the top and place the cursor on the bottom? Or leave the cursor and scroll position exactly where the writer stopped writing? ___PLAYER: Last frame scrolls to top/ 'presentation view'. APP: leave cursor + scroll position exactly where the writer stopped writing.___
 
 1. It's possible to “fight“ with responsive scrolling if a scrollbar is present in the player at all times. Should scrolling in the player immediately pause playback? Or should scrolling only be possible after pressing the pause button? ___PLAYER: Manual scrolling should override the responsive scrolling (toggling it off).___
 
 1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason. (https://github.com/quilljs/quill/issues/2161) Solution: Fork Quill.
 
+1. Open a new file, immediately create a new draft marker without typing or touching the timeline, then navigate to that marker using drawer: crash. (Try also with clicking timeline draft marker.)
+
+1. Draft markers should only enter edit mode if they are active. So: Click a marker, go to that point in the timeline, click same marker again, enter edit mode for the marker.
+
+1. Change Midst app icon to squiggly M
+
 ---
 
 ## Mid-priority
-1. When opening timeline, text that gets "pushed up" needs to get "pushed up" in a smoother way. Solution: Stop repositioning cursor when entering and exiting focus mode. Detect if cursor already was below the fold, and if so, smoothly scroll the bottom of the document into view.
+1. When opening timeline, text that gets "pushed up" needs to get "pushed up" in a smoother way.
+
+1. Open a file, add a draft marker, re-open the file. The added draft marker is not there.
 
 1. Scrub back in an existing "complete" document and start typing. Then leave a draft marker on the very last frame where the document was "complete", named "Last Complete State". Click on the "Last Complete State" marker. The document will be on the NEXT frame AFTER the actual "last complete state".
 
-1. Draft marker alignment. Make a draft marker at the first frame. It is centered on the timeline handle, when the handle is under it, but actually hangs over the timeline progress bar. Draft markers gradually "drift" off the center of the timeline handle from left to right. Solution: Make it so Slider's progress bar completely contains the handle. Make each draft marker actually contain an invisible instance of Slider, using position: absolute to align with the visible slider.
+1. Set a limit for how small the app window can be
+- If necessary, collapse toolbar items into smaller expandable menus so that the icons don't overlap when the app window gets too small!
 
 ---
 
@@ -113,13 +168,12 @@ http://midst.press/sandbox/player/
 
 1. Right-click on a draft marker in the timeline --> Delete option
 
-1. <strike>Timeline progress bar does not go all the way to the end when typing the first few letters/sentences, but can be scrubbed to the end by hand or with a draft marker</strike>. If using a draft marker to scrub to the end, the cursor is left at the end of the document (or last edit). If using the timeline to scrub to the end, the cursor jumps back to the beginning of the document.
-
-1. Deleting a draft marker should not scrub the timeline to that point.
-
 ---
 
 ## Lowest priority
+
+1. Fixed "Unidentified Developer" warning when opening new app builds.
+
 1. Sanitized text does not take on the formatting of neighboring text when pasted in.
 
 1. Regression: It's now possible to paste in formatted text again.
@@ -127,6 +181,27 @@ http://midst.press/sandbox/player/
 1. Timeline handle should be all the way to the right (top of stack) when entering timeline mode.
 
 1. When a file is opened from disk, focus/timeline/drawer mode should deactivate.
+
+1. Draft Markers: double click to rename, click once to jump to the marker
+
+
+
+## More low priority stuff / Annelyse braindump
+1. Make email addresses for midst.app & midst.press
+
+1. MangoDB database / each user signs in and gets an auth token?
+
+1. google Adwords, Regional Foundation Library, EFF Austin, Wikimedia Grants (research funding)
+
+1. Customized themes: Paper mode, white mode, dark mode.
+
+1. Texas accountants + Lawyers for the Arts.
+
+1. show/hide Draft Markers individually
+
+1. Resort options for draft markers: e.g. sort to alphabetical order
+
+1. Moveable draft markers on the timeline, click and drag
 
 ---
 
@@ -165,12 +240,8 @@ http://midst.press/sandbox/player/
 
 ---
 
-## Design To-Dos (Not for pilot / defer plz)
-1. Choose icons, woooo
-
-1. Develop moar interactions
-
----
+## Build community forums / allow anyone to upload their own Midst files!
+1. More to come on this, after AWP
 
 ## Future TODO
 1. Licensing/app expiration / antipiracy stuff?
@@ -232,6 +303,9 @@ http://midst.press/sandbox/player/
 1. Draft Marker: versioning flags.
 
 ## Regression tests /// Requirements graveyard for future bug checks; DO NOT DELETE
+
+1. Header: Default docs should say Untitled in the header, then the name of the saved doc should show up there once saved
+
 1. Responsive scrolling feature needs to support asynchronous editing. Make sure it's responding to edits (& showing them on screen) no matter where in a document they are happening.
 
 1. Formatting: Highlighted text should stay visibly highlighted while changing the font, font size, alignment, etc.
