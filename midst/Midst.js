@@ -102,13 +102,29 @@ class Midst extends React.Component {
 // ================================================================================
   componentDidMount() {
     document.body.addEventListener('keydown', evt => {
-      if (evt.keyCode === 32 && window.MIDST_IS_PLAYER) {
-        if (this.state.playing) {
-          this.pause()
-        }
+      const { playing, index, stack } = this.state
 
-        else {
-          this.play()
+      if (window.MIDST_IS_PLAYER) {
+        switch (evt.keyCode) {
+          case 32:
+            if (this.state.playing) {
+              this.pause()
+            }
+
+            else {
+              this.play()
+            }
+            break
+          case 37:
+            if (!playing && index > 0) {
+              this.setPos(index - 1)
+            }
+            break
+          case 39:
+            if (!playing && index < stack.length - 1) {
+              this.setPos(index + 1)
+            }
+            break
         }
       }
     })
@@ -912,7 +928,6 @@ class Midst extends React.Component {
         !window.MIDST_IS_PLAYER ? e('div', {
           className: 'title-bar',
         }, title) : null,
-
         e('div', {
           className: 'toolbars',
           onMouseEnter: this.exitFocusModeIntent,

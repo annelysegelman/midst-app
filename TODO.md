@@ -44,12 +44,16 @@ http://midst.press/sandbox/player/
 
 1. Speed controls (1x 2x 4x)
 
+1. L/R arrows should control timeline nav (when paused)
+
 ---
 
 ## To Discuss...
 1. Player: M in upper left hand corner ("sticky") – Can Annelyse do this?
 
 1. Player: Title of poem + Author will always be visible in a sidebar or header Can Annelyse do the frontend (UI) for this? (Jason will plug in the data/backend.)
+
+1. "For now, apply our super sexy Midst styling (font and font size) to all poems by default. If it's not super difficult, also add a toggle button that allows the reader to switch to the Poet's font styling instead." – __It's possible to preserve the poets' title styling if we add the "H1" button to the app and make it clear (for example, in some kind of FAQ page/user guide) that you can preserve your title by using this button. ...Or other specific formats, like pull quotes, by using specific buttons. Could also be a special "preservable formats" menu (not with a jargon name but, say, just a nice declarative icon) in the app toolbar for _these specific kinds_ of formats.__
 
 ---
 
@@ -59,10 +63,6 @@ http://midst.press/sandbox/player/
 ---
 
 ## PLAYER TODOs
-1. L/R arrows should control timeline nav (when paused)
-
-1. For now, apply our super sexy Midst styling (font and font size) to all poems by default. If it's not super difficult, also add a toggle button that allows the reader to switch to the Poet's font styling instead.
-
 1. Load .midst file on server via browser URL, and change the file when the browser URL changes.
 
 1. Load the reader page. Press spacebar. Timeline resets to the beginning and plays again to the end (as expected). Now press spacebar again. Spacebar has the default browser behavior, which is to scroll the page down. It should reset the timeline again and start playback again.
