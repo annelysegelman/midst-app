@@ -1,0 +1,110 @@
+.midst.player {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  margin-left: 0;
+}
+
+.midst.player .toolbars {
+  display: none;
+}
+
+.midst.player .main {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  border-right: 0;
+}
+
+.midst.player .main #editor {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+}
+
+.midst.player .main #editor .ql-editor {
+  padding: 100px 30vw 0 20vw;
+}
+
+.midst.player .midst-slider {
+  position: absolute;
+  bottom: 0;
+  height: 30px;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.midst.player .midst-slider .slider {
+  margin-top: 13px;
+  margin-left: 15px;
+  width: calc(100% - 30px - 150px);
+  cursor: pointer;
+}
+
+.player-controls {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  width: 130px;
+  height: 30px;
+}
+
+.player-control {
+  float: left;
+  width: 30px;
+  height: 30px;
+  margin-right: 3px;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.player-control:last-child {
+  margin-right: 0;
+}
+
+.player-control svg {
+  width: 20px;
+  height: 20px;
+}
+
+.player-control.speed-selector .drop {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  margin-top: -2px;
+}
+
+.player-control.speed-selector .drop .drop__toggle {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  background: transparent;
+  font-family: 'HelveticaNeueLTStd-BdCn';
+  font-size: 16px;
+  text-align: center;
+}
+
+.player-control.speed-selector .drop .drop__content {
+  border: 0;
+  background: #999;
+  margin-left: 1px;
+}
+
+.player-control.speed-selector .drop .drop__content div {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border: 0;
+  font-family: 'HelveticaNeueLTStd-BdCn';
+  font-size: 16px;
+  text-align: center;
+}

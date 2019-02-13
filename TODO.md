@@ -19,15 +19,31 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549540678169.zip
 
 ---
 
-## Ready for Review
+## Ready for Review (Player)
 1. Default docs should say Untitled in the header, then the name of the saved doc should show up there once saved
 
 1. Large files can still choke the editor. Open "Big Medium.midst" and try to type in it, there is a lag between when a key is pressed and when the letter appears on the screen. BEAT THE PROBLEM!!!!!!!!!!!!!!
 
+1. Open a new file, immediately create a new draft marker without typing or touching the timeline, then navigate to that marker using drawer: crash. (Try also with clicking timeline draft marker.)
+
+1. Draft markers should only enter edit mode if they are active. So: Click a marker, go to that point in the timeline, click same marker again, enter edit mode for the marker.
+
+1. Open a file, add a draft marker, re-open the file. The added draft marker is not there.
+
+## Ready for Review (Player)
+
+1. Put it on the web :')
+
+1. Integrate player with entire web page
+
+1. Timeline always visible in the player page
+
 ---
 
 ## To Discuss...
-1. Nothing.
+1. Player: M in upper left hand corner ("sticky") <-- TASK FOR ANNELYSE!
+
+1. Player: Title of poem + Author will always be visible in a sidebar or header <-- TASK FOR ANNELYSE AND JASON TO SHARE!
 
 ---
 
@@ -37,21 +53,15 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549540678169.zip
 ---
 
 ## PLAYER TODOs
-1. Put it on the web :')
-
 1. L/R arrows should control timeline nav (when paused)
 
 1. Speed controls (1x 2x 4x)
 
-1. Integrate player with entire web page
-
-1. M in upper left hand corner ("sticky")
-
-1. Title of poem + Author will always be visible in a sidebar or header
-
-1. Timeline always visible in the player page
-
 1. For now, apply our super sexy Midst styling (font and font size) to all poems by default. If it's not super difficult, also add a toggle button that allows the reader to switch to the Poet's font styling instead.
+
+1. Load .midst file on server via browser URL, and change the file when the browser URL changes.
+
+1. Load the reader page. Press spacebar. Timeline resets to the beginning and plays again to the end (as expected). Now press spacebar again. Spacebar has the default browser behavior, which is to scroll the page down. It should reset the timeline again and start playback again.
 
 ---
 
@@ -71,18 +81,14 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549540678169.zip
 
 1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason. (https://github.com/quilljs/quill/issues/2161) Solution: Fork Quill.
 
-1. Open a new file, immediately create a new draft marker without typing or touching the timeline, then navigate to that marker using drawer: crash. (Try also with clicking timeline draft marker.)
-
-1. Draft markers should only enter edit mode if they are active. So: Click a marker, go to that point in the timeline, click same marker again, enter edit mode for the marker.
-
 ---
 
 ## Mid-priority
-1. When opening timeline, text that gets "pushed up" needs to get "pushed up" in a smoother way.
-
-1. Open a file, add a draft marker, re-open the file. The added draft marker is not there.
+1. When opening timeline, text that gets "pushed up" needs to get "pushed up" in a smoother way. Solution: Stop repositioning cursor when entering and exiting focus mode. Detect if cursor already was below the fold, and if so, smoothly scroll the bottom of the document into view.
 
 1. Scrub back in an existing "complete" document and start typing. Then leave a draft marker on the very last frame where the document was "complete", named "Last Complete State". Click on the "Last Complete State" marker. The document will be on the NEXT frame AFTER the actual "last complete state".
+
+1. Draft marker alignment. Make a draft marker at the first frame. It is centered on the timeline handle, when the handle is under it, but actually hangs over the timeline progress bar. Draft markers gradually "drift" off the center of the timeline handle from left to right. Solution: Make it so Slider's progress bar completely contains the handle. Make each draft marker actually contain an invisible instance of Slider, using position: absolute to align with the visible slider.
 
 ---
 
@@ -102,6 +108,10 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1549540678169.zip
 1. Bug when editing in timeline mode: Enter timeline mode; scroll back using arrow keys (not click and drag). Cursor currently defaults to right BEFORE the last character typed in any given frame. This is weird. Cursor should ideally default to remain in last position (prior to entering timeline mode), or, if this isn't possible, at least default to AFTER the last character typed (not before).
 
 1. Right-click on a draft marker in the timeline --> Delete option
+
+1. <strike>Timeline progress bar does not go all the way to the end when typing the first few letters/sentences, but can be scrubbed to the end by hand or with a draft marker</strike>. If using a draft marker to scrub to the end, the cursor is left at the end of the document (or last edit). If using the timeline to scrub to the end, the cursor jumps back to the beginning of the document.
+
+1. Deleting a draft marker should not scrub the timeline to that point.
 
 ---
 

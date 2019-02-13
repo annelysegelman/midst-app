@@ -7,7 +7,6 @@ class Midst extends React.Component {
 // ================================================================================
   static get defaultProps() {
     return {
-      isPlayer: false,
       fileData: { data: window.testFileData },
     }
   }
@@ -29,7 +28,6 @@ class Midst extends React.Component {
       focusMode: false,
       hasUnsavedChanges: false,
       index: 0,
-      isPlayer: false,
       markers: [],
       replayMode: false,
       replayModeOpenedFromDrawer: false,
@@ -42,6 +40,8 @@ class Midst extends React.Component {
       highestEverDraftNumber: 0,
       pickerIsOpen: false,
       playing: false,
+      playbackSpeed: 1,
+      playbackSpeedDropOpen: false,
     }
 
     this.state = JSON.parse(JSON.stringify(this.initialState))
@@ -101,12 +101,8 @@ class Midst extends React.Component {
 // Lifecycle
 // ================================================================================
   componentDidMount() {
-    const { isPlayer, fileData } = this.props
-
-    this.setState({ isPlayer })
-
     document.body.addEventListener('keydown', evt => {
-      if (evt.keyCode === 32 && this.state.isPlayer) {
+      if (evt.keyCode === 32 && window.MIDST_IS_PLAYER) {
         if (this.state.playing) {
           this.pause()
         }
@@ -135,44 +131,23 @@ class Midst extends React.Component {
 
     this.setUpQuill()
 
-    ipc.on('fileOpened', (evt, fileData) => this.load(fileData))
-    ipc.on('menu.newFile', this.newFile)
-    ipc.on('menu.openFile', this.openFile)
-    ipc.on('menu.quit', this.quit)
-    ipc.on('menu.responsiveScrollingOff', () => this.setState({ responsiveScrolling: false }))
-    ipc.on('menu.responsiveScrollingOn', () => this.setState({ responsiveScrolling: true }))
-    ipc.on('menu.saveFile', this.saveFile)
-    ipc.on('menu.saveFileAs', this.saveFileAs)
-    ipc.on('menu.stepBack', this.step(-1))
-    ipc.on('menu.stepForward', this.step(1))
-    ipc.on('menu.viewApp', () => this.setState({ isPlayer: false }))
-    ipc.on('menu.viewPlayer', () => this.setState({ isPlayer: true }))
+    if (typeof ipc !== 'undefined') {
+      ipc.on('fileOpened', (evt, fileData) => this.load(fileData))
+      ipc.on('menu.newFile', this.newFile)
+      ipc.on('menu.openFile', this.openFile)
+      ipc.on('menu.quit', this.quit)
+      ipc.on('menu.responsiveScrollingOff', () => this.setState({ responsiveScrolling: false }))
+      ipc.on('menu.responsiveScrollingOn', () => this.setState({ responsiveScrolling: true }))
+      ipc.on('menu.saveFile', this.saveFile)
+      ipc.on('menu.saveFileAs', this.saveFileAs)
+      ipc.on('menu.stepBack', this.step(-1))
+      ipc.on('menu.stepForward', this.step(1))
+    }
 
     document.body.addEventListener('keydown', this.onKeyDown)
 
-    if (fileData && isPlayer) {
-      this.load(fileData)
-    }
-
-    this.quill.enable(!isPlayer)
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { playbackUid: prevPlaybackUid } = prevProps
-    const { isPlayer: wasPlayer } = prevState
-    const { fileData, playbackUid } = this.props
-    const { isPlayer } = this.state
-
-    this.quill.enable(!isPlayer)
-
-    if (playbackUid !== prevPlaybackUid || isPlayer !== wasPlayer) {
-      if (fileData && isPlayer) {
-        this.load(fileData)
-      }
-
-      else {
-        this.newFile()
-      }
+    if (this.props.fileData && window.MIDST_IS_PLAYER) {
+      this.load(this.props.fileData)
     }
   }
 
@@ -340,10 +315,10 @@ class Midst extends React.Component {
       replayMode: true,
       editingDraftMarker: null,
     })
-    this.setPos(this.state.stack.length - 1)
-    setTimeout(() => {
-      this.focusQuillAtEnd()
-    }, 250)
+    // this.setPos(this.state.stack.length - 1)
+    // setTimeout(() => {
+    //   this.focusQuillAtEnd()
+    // }, 250)
   }
 
   exitReplayMode() {
@@ -354,7 +329,7 @@ class Midst extends React.Component {
       drawerOpen: false,
     })
 
-    this.setPos(this.state.stack.length - 1)
+    // this.setPos(this.state.stack.length - 1)
   }
 
   toggleReplayMode() {
@@ -472,6 +447,8 @@ class Midst extends React.Component {
       formats: ['bold', 'italic', 'underline', 'align', 'size', 'font', 'background'],
     })
 
+    this.quill.enable(!window.MIDST_IS_PLAYER)
+
     const Font = Quill.import('formats/font')
     Font.whitelist = [false].concat(_.tail(this.FONT_IDS))
     Quill.register(Font, true)
@@ -546,6 +523,9 @@ class Midst extends React.Component {
 
   goTo(index) {
     this.setState({ index }, () => {
+      if (index === this.state.stack.length) {
+        index = index - 1
+      }
       this.quill.setContents(this.state.stack[index].content)
       this.focusQuillAtEnd()
     })
@@ -561,13 +541,14 @@ class Midst extends React.Component {
   }
 
   createDraftMarker() {
-    const { markers, index, replayMode, highestEverDraftNumber } = this.state
+    const { markers, index, replayMode, highestEverDraftNumber, stack } = this.state
     const markerIndices = markers.map(marker => marker.index)
-    const realIndex = index + 1
+    const realIndex = index === stack.length ? index - 1 : index + 1
 
     if (markerIndices.indexOf(realIndex) >= 0) return
 
     this.setState({
+      hasUnsavedChanges: true,
       creatingDraftMarker: true,
       highestEverDraftNumber: highestEverDraftNumber + 1,
       markers: markers.concat([this.draftMarkerModel(realIndex)]),
@@ -718,7 +699,7 @@ class Midst extends React.Component {
         e('img', { src: 'm.png' }),
       ),
       e('button', {
-        onClick: this.openFile,
+        onClick: (evt) => console.log(evt) // this.openFile,
       }, e(Folder)),
       e('button', {
         className: !hasUnsavedChanges ? 'deactivated' : '',
@@ -757,8 +738,8 @@ class Midst extends React.Component {
   }
 
   slider() {
-    const { replayMode, index, stack, creatingDraftMarker, showDraftMarkers, isPlayer, drawerOpen } = this.state
-    const value = index / stack.length
+    const { replayMode, index, stack, creatingDraftMarker, showDraftMarkers, drawerOpen } = this.state
+    const value = index === stack.length - 1 ? 1 : index / stack.length
 
     return e('div', {
       className: 'midst-slider'
@@ -774,7 +755,7 @@ class Midst extends React.Component {
         onChange: this.sliderOnChange,
         onMouseDown: this.pause,
       }),
-      showDraftMarkers || isPlayer ? this.draftMarkers() : null,
+      showDraftMarkers || window.MIDST_IS_PLAYER ? this.draftMarkers() : null,
     )
   }
 
@@ -784,30 +765,31 @@ class Midst extends React.Component {
       className: 'draft-markers'
     },
       markers.map(({index, name}, markerNo) => {
+        const active = currentTimelinePosition === index
         return e('div', {
           key: index,
           className: 'draft-marker'
             + (editingDraftMarker === index ? ' editing' : '')
-            + (currentTimelinePosition === index ? ' active' : '')
+            + (active ? ' active' : '')
           ,
           style: {
             left: (index / stack.length * 100) + '%',
           },
           onClick: () => this.goTo(index),
         },
-          showDraftMarkerLabels ? this.draftMarkerLabel(name || 'Draft ' + (markerNo + 1), index) : null,
+          showDraftMarkerLabels ? this.draftMarkerLabel(name || 'Draft ' + (markerNo + 1), index, false, active) : null,
         )
       })
     )
   }
 
-  draftMarkerLabel(name, timelineIndex, inDrawer) {
+  draftMarkerLabel(name, timelineIndex, inDrawer, active) {
     return e('div', {
       className: 'draft-marker-label' + (this.state.editingDraftMarker === timelineIndex + (inDrawer ? '-drawer' : '') ? ' editing' : ''),
-      onClick: (evt) => evt.stopPropagation()
+      onClick: active || inDrawer ? (evt) => evt.stopPropagation() : null
     },
       e('span', {
-        onClick: this.editDraftMarkerLabel(timelineIndex, inDrawer),
+        onClick: active || inDrawer ? this.editDraftMarkerLabel(timelineIndex, inDrawer) : null,
       }, name),
       e('input', {
         id: 'draft-marker-' + timelineIndex + (inDrawer ? '-in-drawer' : ''),
@@ -849,21 +831,39 @@ class Midst extends React.Component {
   }
 
   playerControls() {
+    const { playing, playbackSpeed, playbackSpeedDropOpen } = this.state
     return e('div', { className: 'player-controls' },
-      e('div', {
-        className: 'player-control play-button' + (this.state.playing ? ' playing' : ''),
+      !playing ? e('div', {
+        className: 'player-control play-button',
         onClick: this.play,
-      }, e(Play)),
-      e('div', {
+      }, e(Play)) : null,
+      playing ? e('div', {
         className: 'player-control pause-button',
         onClick: this.pause,
-      }, e(Pause)),
+      }, e(Pause)) : null,
       e('div', {
-        className: 'player-control speed-dial',
-      }, e(Loader)),
+        className: 'player-control speed-selector',
+      },
+        e(Drop, {
+          direction: 'up',
+          label: playbackSpeed + 'x',
+          controlled: true,
+          open: playbackSpeedDropOpen,
+          onDropToggled: () => this.setState({ playbackSpeedDropOpen: true }),
+        },
+          e('div', { onClick: () => this.setState({ playbackSpeedDropOpen: false, playbackSpeed: 0.25 }) }, '.25x'),
+          e('div', { onClick: () => this.setState({ playbackSpeedDropOpen: false, playbackSpeed: 0.5 }) }, '.5x'),
+          e('div', { onClick: () => this.setState({ playbackSpeedDropOpen: false, playbackSpeed: 1 }) }, '1x'),
+          e('div', { onClick: () => this.setState({ playbackSpeedDropOpen: false, playbackSpeed: 2 }) }, '2x'),
+          e('div', { onClick: () => this.setState({ playbackSpeedDropOpen: false, playbackSpeed: 4 }) }, '4x'),
+        ),
+      ),
       e('div', {
         className: 'player-control volume-slider',
       }, e(Volume2)),
+      e('div', {
+        className: 'player-control settings-button',
+      }, e(Settings)),
     )
   }
 
@@ -880,40 +880,45 @@ class Midst extends React.Component {
   }
 
   autoScrub() {
-    if (!this.state.playing) return
-    if (this.state.index === undefined || this.state.index > this.state.stack.length - 2) {
+    const { playing, playbackSpeed, index, stack } = this.state
+
+    if (!playing) return
+    if (index === undefined || index > stack.length - 2) {
       this.setState({ playing: false })
       return
     }
 
+    const advanceBy = playbackSpeed >= 1 ? playbackSpeed * 2 : 1
+    const timeout = playbackSpeed < 1 ? (1 / playbackSpeed) * 50 : 1
+
     setTimeout(() => {
-      this.setPos(this.state.index + 1)
+      this.setPos(index + advanceBy)
       this.autoScrub()
-    }, 1)
+    }, timeout)
   }
 
 // ================================================================================
 // Render
 // ================================================================================
   render() {
-    const { focusMode, title, drawerOpen, pickerIsOpen, isPlayer, replayMode } = this.state
-    const isApp = !isPlayer
+    const { focusMode, title, drawerOpen, pickerIsOpen, replayMode } = this.state
 
     return (
       e('div', {
         className: 'midst'
           + (focusMode ? ' focus-mode' : '')
-          + (isPlayer ? ' player' : ''),
+          + (window.MIDST_IS_PLAYER ? ' player' : ''),
       },
-        isApp ? e('div', {
+        !window.MIDST_IS_PLAYER ? e('div', {
           className: 'title-bar',
         }, title) : null,
+
         e('div', {
           className: 'toolbars',
           onMouseEnter: this.exitFocusModeIntent,
           onMouseLeave: this.cancelExitFocusModeIntent,
         },
-          isApp ? e('div', { className: 'toolbars-fade' },
+          !window.MIDST_IS_PLAYER ? e('div', { className: 'toolbars-fade' },
             this.midstToolbarLeft(),
             this.quillToolbar(),
             this.midstToolbarRight(),
@@ -932,7 +937,7 @@ class Midst extends React.Component {
             })
           ),
           this.slider(),
-          isPlayer ? this.playerControls() : null,
+          window.MIDST_IS_PLAYER ? this.playerControls() : null,
         ),
         this.drawer(),
       )
