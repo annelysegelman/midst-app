@@ -12,6 +12,11 @@ http://midst.press/sandbox/player/
 
 ---
 
+## VERY HIGH-PRIORITY BUGS
+1. Along with the stanza bug, I've noticed that hitting tab also removes the text formatting! Uh oh.
+
+
+
 ## To Discuss
 1. Does the Midst app have an error log built in? Gerald used it and it crashed when he hit save.
 1. SXSW demo day pitch application (due Sunday night).
