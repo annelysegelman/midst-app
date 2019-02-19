@@ -14,6 +14,8 @@ http://midst.press/sandbox/player/
 
 ## VERY HIGH-PRIORITY BUGS
 1. Along with the stanza bug, I've noticed that hitting tab also removes the text formatting! Uh oh.
+1. Aaaaaaand, try this fun experiment: Open a blank document. Change the font/font size/bold/italic/underline. Type a letter. Delete the letter and type a new one: poof, formatting gone. More critically, this bug occurs ANY time you delete ANY entire line, whether you delete the line by highlighting the line and hitting the delete button; typing a few letters quickly and hitting command-z; or whether you backspace (hit delete) until there are no more letters left in the line. 
+1. I'm not putting this under 'critical' bugs because I think that category should be reserved for stuff that literally breaks the app (or destroys the content of people's writing), but fixing this bug should be our #1 priority! (I think all the stuff I'm writing here falls under the same "take over quill & fix it" category.)
 
 
 
