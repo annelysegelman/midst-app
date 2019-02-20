@@ -1,3 +1,5 @@
+const Quill = require('./quill/quill/quill')
+
 /**
  * Midst
  */
