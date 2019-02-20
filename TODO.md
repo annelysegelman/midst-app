@@ -1,6 +1,6 @@
 # MIDST TODO
 
-*LAST UPDATE: Jason, Feb 13 2019
+*LAST UPDATE: Annelyse, Feb 14 2019
 
 *CURRENT STAGING BUILD:
 
@@ -11,6 +11,58 @@ http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1550078015290.zip
 http://midst.press/sandbox/player/
 
 ---
+
+## VERY HIGH-PRIORITY BUGS
+1. Along with the stanza bug, I've noticed that hitting tab also removes the text formatting! Uh oh.
+1. Aaaaaaand, try this fun experiment: Open a blank document. Change the font/font size/bold/italic/underline. Type a letter. Delete the letter and type a new one: poof, formatting gone. More critically, this bug occurs ANY time you delete ANY entire line, whether you delete the line by highlighting the line and hitting the delete button; typing a few letters quickly and hitting command-z; or whether you backspace (hit delete) until there are no more letters left in the line. 
+1. I'm not putting this under 'critical' bugs because I think that category should be reserved for stuff that literally breaks the app (or destroys the content of people's writing), but fixing this bug should be our #1 priority! (I think all the stuff I'm writing here falls under the same "take over quill & fix it" category.)
+
+
+
+## To Discuss
+1. Does the Midst app have an error log built in? Gerald used it and it crashed when he hit save.
+1. SXSW demo day pitch application (due Sunday night).
+
+
+## Questions for Henry (design/UX)
+1. Timeline controls: do they belong where they are on the Player or should they be in a sidebar on the side of the screen?
+1. 1x 2x etc. or another form of speed control? (See NOTE in Player TODOs below.)
+1. Feedback on web design, site nav?
+1. Feedback on home page / getting people excited to read the poems/ having a clearer 'call to action'?
+1. Color scheme for Midst logo on website?
+1. Color scheme for Midst app icon?
+1. Styling of poems in player? Font/font size/margins?
+
+
+## Player TODOs
+1. Add timestamp that follows the playhead. for now let's try displaying it as in my demo, so time (hour:minute, please use 12 hour American clock system with am/pm, not military time), Month & day (no year i think, for now). (see http://annelyseg.tumblr.com/post/182675105408/i-am-designing-midst-now).
+
+1. When you open the player, you start on frame 0; if you hit play, it automatically starts playing from the beginning, then reaches frame 0 again and pauses. This is perfect. But, Bug: After the initial playthrough, hitting play on frame 0 doesn't play the poem from the beginning anymore (it should!). 
+
+1. Bug: Once opened, the speed control menu should automatically close when user clicks ANYWHERE outside of that menu (whether or not a new speed was selected).
+
+1. Default speed control is way too fast. IMO, a temporary fix: .5x can remain as-is; 1x (the default) should be a biiiit faster than the current .5x (not too fast to follow along with); and what's currently 1x should be labeled 2x. You can remove the 4x option altogether, it's way too fast.
+
+- NOTE: Gerald was confused by 1x, 2x, etc.; said "Why isn't it a length of time, like '30 seconds', where 30 seconds is how long the entire poem will take to play through?" I'm not sure I agree with this & tbh I think this may apply more to "export video" functions on the app (you know you want your final video of yr poem on Youtube to be a certain length) than to the "play speed" functions in our Player/journal, but, we can discuss if you want! At the very least I think what I'm saying about changing the 1x speed is a good idea.
+
+1. Design: The timeline & controls feels "squashed" at the bottom of the screen, too small and compact. See http://annelyseg.tumblr.com/post/182675105408/i-am-designing-midst-now ——— Give it a little bit more breathing room / vertical space (and a little more white space beneath it). 
+
+1. Playhead should be a little larger and easier to grab, and its "area of receptivity" should be larger (ie clicking super close to the playhead, right above it or below it vertically, should still let you 'grab' it). NOTE: This is also true for the app, not just the player!
+
+1. Background color of the page: SeaShell # fff5ee . 
+rgb(255, 245, 238)
+hsl(25, 100%, 97%)
+
+1. Upper-right: Author name + title of poem.
+
+1. Can we upload an additional demo poem, Big Medium, so I can look at navigation between them (soon) + how the responsive scrolling is working (now), plus I'll be able to show the designer Henry this? (Do you want me to throw a couple of draft markers onto it so we can see how those are appearing in the Player?)
+
+
+
+
+
+
+
 
 ## Goals before AWP (March 26), prioritized
 1. paper collateral (annelyse will do this)
@@ -28,7 +80,9 @@ http://midst.press/sandbox/player/
 1. Live demo of the app ("Try it!") that works in a web browser
 
 ## Annelyse TODO
-1. User tests, gather feedback
+1. Make app icon (after talking to Henry)
+
+1. Talk to 5 strangers and ask them to use the app using Aaron's instructions
 
 1. Learn html/css/media queries :')
 
@@ -44,69 +98,29 @@ http://midst.press/sandbox/player/
 - Colours:   beige, near-black, red /// canary yellow, baker-miller pink, teal
 
 ## To Discuss...
-1. Live demo on midst.press ("Write" nav)
-
-1. Trademarking Midst
-
-1. UX notes from Startup Lab meeting
-
-1. Revisit/confer re: timing of private beta, public beta, + $ launch
-
-1. Setting goals for now until AWP
-
-1. Setting goals for end-of-semester
-
-1. Talk about business models/structures
-
-1. Player: M in upper left hand corner ("sticky") – Can Annelyse do this?
-
-1. Player: Title of poem + Author will always be visible in a sidebar or header Can Annelyse do the frontend (UI) for this? (Jason will plug in the data/backend.)
-
 1. "For now, apply our super sexy Midst styling (font and font size) to all poems by default. If it's not super difficult, also add a toggle button that allows the reader to switch to the Poet's font styling instead." – __It's possible to preserve the poets' title styling if we add the "H1" button to the app and make it clear (for example, in some kind of FAQ page/user guide) that you can preserve your title by using this button. ...Or other specific formats, like pull quotes, by using specific buttons. Could also be a special "preservable formats" menu (not with a jargon name but, say, just a nice declarative icon) in the app toolbar for _these specific kinds_ of formats.__
 
-## Notes (post-Meeting)
-1. <strike>This weekend: try to fix this issue with big files + lag</strike>
-
-1. <strike>Next week</strike> This weekend: Player stuff
-
-1. "Take over Quill" = vacation task
-
-1. Research how google docs keeps track of changes (how fine grained is it? what's the ux?)
 
 ---
 
 ## Ready for Review (App)
-1. Default docs should say Untitled in the header, then the name of the saved doc should show up there once saved
 
-1. Large files can still choke the editor. Open "Big Medium.midst" and try to type in it, there is a lag between when a key is pressed and when the letter appears on the screen. BEAT THE PROBLEM!!!!!!!!!!!!!!
-
-1. Open a new file, immediately create a new draft marker without typing or touching the timeline, then navigate to that marker using drawer: crash. (Try also with clicking timeline draft marker.)
-
-1. Draft markers should only enter edit mode if they are active. So: Click a marker, go to that point in the timeline, click same marker again, enter edit mode for the marker.
-
-1. Open a file, add a draft marker, re-open the file. The added draft marker is not there.
+1. Nothing here!
 
 ## Ready for Review (Player)
 
-1. Put it on the web :')
-
-1. Integrate player with entire web page
-
-1. Timeline always visible in the player page
-
-1. Speed controls (1x 2x 4x)
-
-1. L/R arrows should control timeline nav (when paused)
+1. Nothing here!
 
 ---
 
 ## Highest priority bugs
+1. Open a new file, immediately create a new draft marker without typing or touching the timeline, then navigate to that marker using drawer: crash. (Try also with clicking timeline draft marker.) (NOTE 2/15 ARG: This was in 'ready for review' but is still crashing the app.)
 1. Stanza bug :'(
 
 ---
 
 ## PLAYER TODOs
-1. Load .midst file on server via browser URL, and change the file when the browser URL changes.
+1. NOTE FROM ANNELYSE: Please prioritize frontend stuff / getting the player page looking great + having features, rather than prioritizing infrastructure (since AWP won't know/care if we have an efficient way to upload files in place yet!). Load .midst file on server via browser URL, and change the file when the browser URL changes.
 
 1. Load the reader page. Press spacebar. Timeline resets to the beginning and plays again to the end (as expected). Now press spacebar again. Spacebar has the default browser behavior, which is to scroll the page down. It should reset the timeline again and start playback again.
 
@@ -123,19 +137,19 @@ http://midst.press/sandbox/player/
 
 ## High-priority
 
-1. Make grabber area for playhead a bit bigger plz!
+1. Make grabber area for playhead a bit bigger plz! (This is a note for the Player & for the App.)
 
 1. Should the last frame scroll all the way to the top and place the cursor on the bottom? Or leave the cursor and scroll position exactly where the writer stopped writing? ___PLAYER: Last frame scrolls to top/ 'presentation view'. APP: leave cursor + scroll position exactly where the writer stopped writing.___
 
 1. It's possible to “fight“ with responsive scrolling if a scrollbar is present in the player at all times. Should scrolling in the player immediately pause playback? Or should scrolling only be possible after pressing the pause button? ___PLAYER: Manual scrolling should override the responsive scrolling (toggling it off).___
 
-1. Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason. (https://github.com/quilljs/quill/issues/2161) Solution: Fork Quill.
+1. Stanza bug! :::: Weird bug happening now: after a global font change, insert a line break after a piece of text, then type in the space above it. Font reverts to sans serif for some reason. (https://github.com/quilljs/quill/issues/2161) Solution: Fork Quill.
 
 1. Open a new file, immediately create a new draft marker without typing or touching the timeline, then navigate to that marker using drawer: crash. (Try also with clicking timeline draft marker.)
 
 1. Draft markers should only enter edit mode if they are active. So: Click a marker, go to that point in the timeline, click same marker again, enter edit mode for the marker.
 
-1. Change Midst app icon to squiggly M
+1. Change Midst app icon to our squiggly M.
 
 ---
 
@@ -356,6 +370,8 @@ later.)
 1. font selection: Helvetica, Courier, Georgia, Tahoma, Times New Roman, Arial, Verdana, Garamond, Lato. Default to Helvetica.
 
 ## Draft marker requirements (for future bug checks?)
+
+1. Draft markers should only enter edit mode if they are active. So: Click a marker, go to that point in the timeline, click same marker again, enter edit mode for the marker.
 1. Adding a new draft marker:
 - Clicking flag icon opens the Timeline. A marker appears at frame zero, sticking up out of timeline, with its default name ("Draft 1", "Draft 2", etc.) already highlighted & ready to be edited. Here the user has 2 choices: a) Click anywhere in the Type window to close the timeline (saving the draft marker w/ the default name) & continue writing; or b) Immediately begin typing, in which case they are editing the already-highlighted name of the draft marker; when they are finished, they can click anywhere in the type window to re-enter type mode and continue writing.
 - Draft markers should be serially numbered by default. Numbering system should NOT be affected by changing names of draft markers. For example, the first marker will always be either "Draft 1" or a custom name, the second always "Draft 2" or a custom name, etc.
