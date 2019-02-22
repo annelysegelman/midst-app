@@ -7,7 +7,8 @@ const Indent = IndentClass
 
 const Blockquote = require('./formats/blockquote');
 const Header = require('./formats/header');
-const List, { ListItem } = require('./formats/list');
+const List = require('./formats/list');
+const { ListItem } = require('./formats/list');
 
 const { BackgroundClass, BackgroundStyle } = require('./formats/background');
 const { ColorClass, ColorStyle } = require('./formats/color');
@@ -24,7 +25,8 @@ const Underline = require('./formats/underline');
 const Image = require('./formats/image');
 const Video = require('./formats/video');
 
-const CodeBlock, { Code } = require('./formats/code');
+const CodeBlock = require('./formats/code');
+const { Code } = require('./formats/code');
 const InlineCode = Code
 
 const Formula = require('./modules/formula');

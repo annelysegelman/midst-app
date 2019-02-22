@@ -1,4 +1,4 @@
-const Parchment = require('parchment');
+const Parchment = require('../../parchment').default;
 const Quill = require('../core/quill');
 const Module = require('../core/module');
 

@@ -1,6 +1,6 @@
-const Delta = require('quill-delta');
-const Parchment = require('parchment');
-const Block = require('../blots/block');
+const Delta = require('../../quill-delta');
+const Parchment = require('../../parchment').default;
+const Block = require('../blots/block').default;
 const Inline = require('../blots/inline');
 const TextBlot = require('../blots/text');
 

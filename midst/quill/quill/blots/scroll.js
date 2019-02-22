@@ -1,6 +1,7 @@
-const Parchment = require('parchment');
+const Parchment = require('../../parchment').default;
 const Emitter = require('../core/emitter');
-const Block, { BlockEmbed } = require('./block');
+const Block = require('./block');
+const { BlockEmbed } = require('./block');
 const Break = require('./break');
 const CodeBlock = require('../formats/code');
 const Container = require('./container');

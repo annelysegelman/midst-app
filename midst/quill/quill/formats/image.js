@@ -1,4 +1,4 @@
-const Parchment = require('parchment');
+const Parchment = require('../../parchment').default;
 const { sanitize } = require('../formats/link');
 
 const ATTRIBUTES = [

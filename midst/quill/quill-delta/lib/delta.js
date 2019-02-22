@@ -1,6 +1,6 @@
-var diff = require('fast-diff');
-var equal = require('deep-equal');
-var extend = require('extend');
+var diff = require('../../fast-diff');
+var equal = require('../../deep-equal');
+var extend = require('../../extend');
 var op = require('./op');
 
 

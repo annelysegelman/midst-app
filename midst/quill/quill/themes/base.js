@@ -1,5 +1,5 @@
-const extend = require('extend');
-const Delta = require('quill-delta');
+const extend = require('../../extend');
+const Delta = require('../../quill-delta');
 const Emitter = require('../core/emitter');
 const Keyboard = require('../modules/keyboard');
 const Theme = require('../core/theme');

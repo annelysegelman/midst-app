@@ -1,5 +1,6 @@
-const Parchment = require('parchment');
-const Block, { BlockEmbed } = require('./block');
+const Parchment = require('../../parchment').default;
+const Block = require('./block');
+const { BlockEmbed } = require('./block');
 
 
 class Container extends Parchment.Container { }

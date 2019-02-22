@@ -1,6 +1,6 @@
-const Parchment = require('parchment');
-const clone = require('clone');
-const equal = require('deep-equal');
+const Parchment = require('../../parchment').default;
+const clone = require('../../clone');
+const equal = require('../../deep-equal');
 const Emitter = require('./emitter');
 const logger = require('./logger');
 

@@ -1,7 +1,7 @@
-const Parchment = require('parchment');
+const Parchment = require('../../parchment').default;
 const Quill = require('../core/quill');
 const Module = require('../core/module');
-const CodeBlock = require('../formats/code');
+const CodeBlock = require('../formats/code').default;
 
 
 class SyntaxCodeBlock extends CodeBlock {

@@ -1,4 +1,4 @@
-const Parchment = require('parchment');
+const Parchment = require('../../parchment').default;
 
 let config = {
   scope: Parchment.Scope.BLOCK,

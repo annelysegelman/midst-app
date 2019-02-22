@@ -1,5 +1,4 @@
-const Parchment = require('parchment');
-
+const Parchment = require('../../parchment').default;
 
 class Break extends Parchment.Embed {
   static value() {

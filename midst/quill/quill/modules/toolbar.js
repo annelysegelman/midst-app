@@ -1,5 +1,5 @@
-const Delta = require('quill-delta');
-const Parchment = require('parchment');
+const Delta = require('../../quill-delta');
+const Parchment = require('../../parchment').default;
 const Quill = require('../core/quill');
 const logger = require('../core/logger');
 const Module = require('../core/module');

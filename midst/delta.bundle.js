@@ -987,9 +987,9 @@ function merge_tuples (diffs, start, length) {
 }
 
 },{}],6:[function(require,module,exports){
-var diff = require('fast-diff');
-var equal = require('deep-equal');
-var extend = require('extend');
+var diff = require('../../fast-diff');
+var equal = require('../../deep-equal');
+var extend = require('../../extend');
 var op = require('./op');
 
 
@@ -1335,7 +1335,7 @@ module.exports = Delta;
 
 },{"./op":7,"deep-equal":1,"extend":4,"fast-diff":5}],7:[function(require,module,exports){
 var equal = require('deep-equal');
-var extend = require('extend');
+var extend = require('../../extend');
 
 
 var lib = {

@@ -1,4 +1,4 @@
-const extend = require('extend');
+const extend = require('../../extend');
 const Emitter = require('../core/emitter');
 const BaseTheme, { BaseTooltip } = require('./base');
 const { Range } = require('../core/selection');

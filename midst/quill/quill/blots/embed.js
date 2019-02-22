@@ -1,4 +1,4 @@
-const Parchment = require('parchment');
+const Parchment = require('../../parchment').default;
 const TextBlot = require('./text');
 
 const GUARD_TEXT = "\uFEFF";

@@ -1,7 +1,8 @@
-const Parchment = require('parchment');
-const Quill = require('./core/quill');
+const Parchment = require('../parchment').default;
+const Quill = require('./core/quill').default;
 
-const Block, { BlockEmbed } = require('./blots/block');
+const Block = require('./blots/block');
+const { BlockEmbed } = require('./blots/block');
 const Break = require('./blots/break');
 const Container = require('./blots/container');
 const Cursor = require('./blots/cursor');
@@ -30,7 +31,7 @@ Quill.register({
   'modules/keyboard'   : Keyboard
 });
 
-Parchment.register(Block, Break, Cursor, Inline, Scroll, TextBlot);
+Parchment.register(Block.default, Break, Cursor, Inline, Scroll, TextBlot);
 
 
 module.exports = Quill;

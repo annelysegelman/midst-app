@@ -1,5 +1,5 @@
-const Parchment = require('parchment');
-const Block = require('../blots/block');
+const Parchment = require('../../parchment').default;
+const Block = require('../blots/block').default;
 const Container = require('../blots/container');
 
 

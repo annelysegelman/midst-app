@@ -1,4 +1,4 @@
-const EventEmitter = require('eventemitter3');
+const EventEmitter = require('../../eventemitter3');
 const logger = require('./logger');
 
 let debug = logger('quill:events');

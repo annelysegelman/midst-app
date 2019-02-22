@@ -1,4 +1,4 @@
-const Quill = require('./quill/quill/quill')
+const McQuill = require('./quill/quill/quill')
 
 /**
  * Midst

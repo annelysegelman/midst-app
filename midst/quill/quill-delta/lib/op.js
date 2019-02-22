@@ -1,5 +1,5 @@
-var equal = require('deep-equal');
-var extend = require('extend');
+var equal = require('../../deep-equal');
+var extend = require('../../extend');
 
 
 var lib = {

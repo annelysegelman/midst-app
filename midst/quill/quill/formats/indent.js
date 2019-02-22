@@ -1,4 +1,4 @@
-const Parchment = require('parchment');
+const Parchment = require('../../parchment').default;
 
 class IdentAttributor extends Parchment.Attributor.Class {
   add(node, value) {

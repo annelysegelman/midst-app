@@ -1,4 +1,4 @@
-const Block = require('../blots/block');
+const Block = require('../blots/block').default;
 
 
 class Header extends Block {

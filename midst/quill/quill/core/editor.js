@@ -1,13 +1,14 @@
-const Delta = require('quill-delta');
-const DeltaOp = require('quill-delta/lib/op');
-const Parchment = require('parchment');
+const Delta = require('../../quill-delta');
+const DeltaOp = require('../../quill-delta/lib/op');
+const Parchment = require('../../parchment');
 const CodeBlock = require('../formats/code');
 const CursorBlot = require('../blots/cursor');
-const Block, { bubbleFormats } = require('../blots/block');
+const Block = require('../blots/block');
+const { bubbleFormats } = require('../blots/block');
 const Break = require('../blots/break');
-const clone = require('clone');
-const equal = require('deep-equal');
-const extend = require('extend');
+const clone = require('../../clone');
+const equal = require('../../deep-equal');
+const extend = require('../../extend');
 
 
 const ASCII = /^[ -~]*$/;

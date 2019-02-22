@@ -1,5 +1,5 @@
 const Text = require('./text');
-const Parchment = require('parchment');
+const Parchment = require('../../parchment').default;
 
 
 class Inline extends Parchment.Inline {

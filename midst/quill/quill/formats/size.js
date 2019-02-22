@@ -1,4 +1,4 @@
-const Parchment = require('parchment');
+const Parchment = require('../../parchment').default;
 
 let SizeClass = new Parchment.Attributor.Class('size', 'ql-size', {
   scope: Parchment.Scope.INLINE,

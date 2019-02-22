@@ -1,4 +1,4 @@
-const Parchment = require('parchment');
+const Parchment = require('../../parchment').default;
 
 class TextBlot extends Parchment.Text { }
 

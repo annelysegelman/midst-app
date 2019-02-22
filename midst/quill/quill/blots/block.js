@@ -1,9 +1,9 @@
-const Parchment = require('parchment');
-const extend = ('extend');
-const Delta = ('quill-delta');
-const Break = ('./break');
-const Inline = ('./inline');
-const TextBlot = ('./text');
+const Parchment = require('../../parchment').default;
+const extend = require('../../extend');
+const Delta = require('../../quill-delta');
+const Break = require('./break');
+const Inline = require('./inline');
+const TextBlot = require('./text');
 
 
 const NEWLINE_LENGTH = 1;

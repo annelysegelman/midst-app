@@ -1,10 +1,11 @@
-const Delta = require('quill-delta');
+const Delta = require('../../quill-delta');
 const Editor = require('./editor');
 const Emitter = require('./emitter');
 const Module = require('./module');
-const Parchment = require('parchment');
-const Selection, { Range } = require('./selection');
-const extend = require('extend');
+const Parchment = require('../../parchment').default;
+const Selection = require('./selection');
+const { Range } = require('./selection');
+const extend = require('../../extend');
 const logger = require('./logger');
 const Theme = require('./theme');
 
@@ -47,7 +48,7 @@ class Quill {
       this.imports[path] = target;
       if ((path.startsWith('blots/') || path.startsWith('formats/')) &&
           target.blotName !== 'abstract') {
-        Parchment.register(target);
+        Parchment.register(target.default || target);
       } else if (path.startsWith('modules') && typeof target.register === 'function') {
         target.register();
       }
