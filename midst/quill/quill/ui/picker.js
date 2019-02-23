@@ -1,5 +1,4 @@
 const Keyboard = require('../modules/keyboard');
-const DropdownIcon = require('../assets/icons/dropdown.svg');
 
 let optionsCounter = 0;
 
@@ -81,7 +80,7 @@ class Picker {
   buildLabel() {
     let label = document.createElement('span');
     label.classList.add('ql-picker-label');
-    label.innerHTML = DropdownIcon;
+    label.innerHTML = '<img src="./quill/quill/assets/icons/dropdown.svg" />';
     label.tabIndex = '0';
     label.setAttribute('role', 'button');
     label.setAttribute('aria-expanded', 'false');

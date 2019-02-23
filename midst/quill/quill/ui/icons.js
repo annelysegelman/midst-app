@@ -1,49 +1,49 @@
 module.exports = {
   'align': {
-    ''        : require('../assets/icons/align-left.svg'),
-    'center'  : require('../assets/icons/align-center.svg'),
-    'right'   : require('../assets/icons/align-right.svg'),
-    'justify' : require('../assets/icons/align-justify.svg')
+    ''        : '<img src="./quill/quill/assets/icons/align-left" />',
+    'center'  : '<img src="./quill/quill/assets/icons/align-center" />',
+    'right'   : '<img src="./quill/quill/assets/icons/align-right" />',
+    'justify' : '<img src="./quill/quill/assets/icons/align-justify" />'
   },
-  'background': require('../assets/icons/background.svg'),
-  'blockquote': require('../assets/icons/blockquote.svg'),
-  'bold'      : require('../assets/icons/bold.svg'),
-  'clean'     : require('../assets/icons/clean.svg'),
-  'code'      : require('../assets/icons/code.svg'),
-  'code-block': require('../assets/icons/code.svg'),
-  'color'     : require('../assets/icons/color.svg'),
+  'background': '<img src="./quill/quill/assets/icons/background" />',
+  'blockquote': '<img src="./quill/quill/assets/icons/blockquote" />',
+  'bold'      : '<img src="./quill/quill/assets/icons/bold" />',
+  'clean'     : '<img src="./quill/quill/assets/icons/clean" />',
+  'code'      : '<img src="./quill/quill/assets/icons/code" />',
+  'code-block': '<img src="./quill/quill/assets/icons/code" />',
+  'color'     : '<img src="./quill/quill/assets/icons/color" />',
   'direction' : {
-    ''        : require('../assets/icons/direction-ltr.svg'),
-    'rtl'     : require('../assets/icons/direction-rtl.svg')
+    ''        : '<img src="./quill/quill/assets/icons/direction-ltr" />',
+    'rtl'     : '<img src="./quill/quill/assets/icons/direction-rtl" />'
   },
   'float': {
-    'center'  : require('../assets/icons/float-center.svg'),
-    'full'    : require('../assets/icons/float-full.svg'),
-    'left'    : require('../assets/icons/float-left.svg'),
-    'right'   : require('../assets/icons/float-right.svg')
+    'center'  : '<img src="./quill/quill/assets/icons/float-center" />',
+    'full'    : '<img src="./quill/quill/assets/icons/float-full" />',
+    'left'    : '<img src="./quill/quill/assets/icons/float-left" />',
+    'right'   : '<img src="./quill/quill/assets/icons/float-right" />'
   },
-  'formula'   : require('../assets/icons/formula.svg'),
+  'formula'   : '<img src="./quill/quill/assets/icons/formula" />',
   'header': {
-    '1'       : require('../assets/icons/header.svg'),
-    '2'       : require('../assets/icons/header-2.svg')
+    '1'       : '<img src="./quill/quill/assets/icons/header" />',
+    '2'       : '<img src="./quill/quill/assets/icons/header-2" />'
   },
-  'italic'    : require('../assets/icons/italic.svg'),
-  'image'     : require('../assets/icons/image.svg'),
+  'italic'    : '<img src="./quill/quill/assets/icons/italic" />',
+  'image'     : '<img src="./quill/quill/assets/icons/image" />',
   'indent': {
-    '+1'      : require('../assets/icons/indent.svg'),
-    '-1'      : require('../assets/icons/outdent.svg')
+    '+1'      : '<img src="./quill/quill/assets/icons/indent" />',
+    '-1'      : '<img src="./quill/quill/assets/icons/outdent" />'
   },
-  'link'      : require('../assets/icons/link.svg'),
+  'link'      : '<img src="./quill/quill/assets/icons/link" />',
   'list': {
-    'ordered' : require('../assets/icons/list-ordered.svg'),
-    'bullet'  : require('../assets/icons/list-bullet.svg'),
-    'check'   : require('../assets/icons/list-check.svg')
+    'ordered' : '<img src="./quill/quill/assets/icons/list-ordered" />',
+    'bullet'  : '<img src="./quill/quill/assets/icons/list-bullet" />',
+    'check'   : '<img src="./quill/quill/assets/icons/list-check" />'
   },
   'script': {
-    'sub'     : require('../assets/icons/subscript.svg'),
-    'super'   : require('../assets/icons/superscript.svg'),
+    'sub'     : '<img src="./quill/quill/assets/icons/subscript" />',
+    'super'   : '<img src="./quill/quill/assets/icons/superscript" />',
   },
-  'strike'    : require('../assets/icons/strike.svg'),
-  'underline' : require('../assets/icons/underline.svg'),
-  'video'     : require('../assets/icons/video.svg')
+  'strike'    : '<img src="./quill/quill/assets/icons/strike" />',
+  'underline' : '<img src="./quill/quill/assets/icons/underline" />',
+  'video'     : '<img src="./quill/quill/assets/icons/video" />'
 };

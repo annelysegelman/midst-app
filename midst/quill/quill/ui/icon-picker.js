@@ -1,6 +1,5 @@
 const Picker = require('./picker');
 
-
 class IconPicker extends Picker {
   constructor(select, icons) {
     super(select);
