@@ -1,6 +1,7 @@
 const extend = require('../../extend');
 const Emitter = require('../core/emitter');
-const BaseTheme, { BaseTooltip } = require('./base');
+const BaseTheme = require('./base').default;
+const { BaseTooltip } = require('./base');
 const LinkBlot = require('../formats/link');
 const { Range } = require('../core/selection');
 const icons = require('../ui/icons');

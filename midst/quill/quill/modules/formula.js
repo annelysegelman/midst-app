@@ -1,5 +1,5 @@
 const Embed = require('../blots/embed');
-const Quill = require('../core/quill');
+const Quill = require('../core/quill').default;
 const Module = require('../core/module');
 
 

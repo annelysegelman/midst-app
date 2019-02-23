@@ -261,4 +261,4 @@ function fillSelect(select, values, defaultValue = false) {
 }
 
 
-export { BaseTooltip, BaseTheme as default };
+module.exports = { BaseTooltip, default: BaseTheme };

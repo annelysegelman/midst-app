@@ -1,5 +1,5 @@
 const Parchment = require('../../parchment').default;
-const Quill = require('../core/quill');
+const Quill = require('../core/quill').default;
 const Module = require('../core/module');
 const CodeBlock = require('../formats/code').default;
 

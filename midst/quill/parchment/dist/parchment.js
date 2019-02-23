@@ -128,7 +128,7 @@ function create(input, value) {
         throw new ParchmentError("Unable to create " + input + " blot");
     }
     var BlotClass = match;
-    var node = 
+    var node =
     // @ts-ignore
     input instanceof Node || input['nodeType'] === Node.TEXT_NODE ? input : BlotClass.create(value);
     return new BlotClass(node, value);
@@ -409,6 +409,7 @@ var ContainerBlot = /** @class */ (function (_super) {
     ContainerBlot.prototype.insertBefore = function (childBlot, refBlot) {
         if (this.statics.allowedChildren != null &&
             !this.statics.allowedChildren.some(function (child) {
+                child = typeof child === 'object' ? child.default : child
                 return childBlot instanceof child;
             })) {
             throw new Registry.ParchmentError("Cannot insert " + childBlot.statics.blotName + " into " + this.statics.blotName);

@@ -1,9 +1,9 @@
 const Delta = require('../../quill-delta');
 const DeltaOp = require('../../quill-delta/lib/op');
-const Parchment = require('../../parchment');
+const Parchment = require('../../parchment').default;
 const CodeBlock = require('../formats/code');
 const CursorBlot = require('../blots/cursor');
-const Block = require('../blots/block');
+const Block = require('../blots/block').default;
 const { bubbleFormats } = require('../blots/block');
 const Break = require('../blots/break');
 const clone = require('../../clone');

@@ -4,7 +4,7 @@ const extend = require('../../extend');
 const Delta = require('../../quill-delta');
 const DeltaOp = require('../../quill-delta/lib/op');
 const Parchment = require('../../parchment').default;
-const Quill = require('../core/quill');
+const Quill = require('../core/quill').default;
 const logger = require('../core/logger');
 const Module = require('../core/module');
 
@@ -27,7 +27,8 @@ class Keyboard extends Module {
   constructor(quill, options) {
     super(quill, options);
     this.bindings = {};
-    Object.keys(this.options.bindings).forEach((name) => {
+    // HACK: this.options.bindings || {}
+    Object.keys(this.options.bindings || {}).forEach((name) => {
       if (name === 'list autofill' &&
           quill.scroll.whitelist != null &&
           !quill.scroll.whitelist['list']) {

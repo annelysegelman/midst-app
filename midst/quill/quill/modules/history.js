@@ -1,7 +1,6 @@
 const Parchment = require('../../parchment').default;
-const Quill = require('../core/quill');
+const Quill = require('../core/quill').default;
 const Module = require('../core/module');
-
 
 class History extends Module {
   constructor(quill, options) {

@@ -1,7 +1,7 @@
 const extend = require('../../extend');
 const Delta = require('../../quill-delta');
 const Parchment = require('../../parchment').default;
-const Quill = require('../core/quill');
+const Quill = require('../core/quill').default;
 const logger = require('../core/logger');
 const Module = require('../core/module');
 
@@ -62,7 +62,8 @@ class Clipboard extends Module {
     this.container.setAttribute('contenteditable', true);
     this.container.setAttribute('tabindex', -1);
     this.matchers = [];
-    CLIPBOARD_CONFIG.concat(this.options.matchers).forEach(([selector, matcher]) => {
+    // HACK: this.options.matchers || []
+    CLIPBOARD_CONFIG.concat(this.options.matchers || []).forEach(([selector, matcher]) => {
       if (!options.matchVisual && matcher === matchSpacing) return;
       this.addMatcher(selector, matcher);
     });

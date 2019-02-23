@@ -34,12 +34,11 @@ const Syntax = require('./modules/syntax');
 const Toolbar = require('./modules/toolbar');
 
 const Icons = require('./ui/icons');
-// const Picker = require('./ui/picker');
-// const ColorPicker = require('./ui/color-picker');
-// const IconPicker = require('./ui/icon-picker');
-// const Tooltip = require('./ui/tooltip');
+const Picker = require('./ui/picker');
+const ColorPicker = require('./ui/color-picker');
+const IconPicker = require('./ui/icon-picker');
+const Tooltip = require('./ui/tooltip');
 
-const BubbleTheme = require('./themes/bubble');
 const SnowTheme = require('./themes/snow');
 
 
@@ -94,7 +93,6 @@ Quill.register({
   'modules/syntax': Syntax,
   'modules/toolbar': Toolbar,
 
-  'themes/bubble': BubbleTheme,
   'themes/snow': SnowTheme,
 
   'ui/icons': Icons,

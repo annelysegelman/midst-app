@@ -15,6 +15,9 @@ class Theme {
 
   addModule(name) {
     let moduleClass = this.quill.constructor.import(`modules/${name}`);
+    if (typeof moduleClass !== 'function') {
+      moduleClass = moduleClass.default
+    }
     this.modules[name] = new moduleClass(this.quill, this.options.modules[name] || {});
     return this.modules[name];
   }
