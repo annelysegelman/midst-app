@@ -138,7 +138,6 @@ function find(node, bubble) {
     if (bubble === void 0) { bubble = false; }
     if (node == null)
         return null;
-    console.log('Parchment tries to infer the current cursor text format here', node[exports.DATA_KEY])
     console.log('Stanza bug === Parchment knows of a Block-Blot called “Cursor“ and gives this Blot equal status to DOM-element-based Blots. BUT, for whatever reason, cursor-to-cursor updates (eg: up-arrow, tab) do not pass along format, the way Block-to-Block transitions do.')
     // @ts-ignore
     if (node[exports.DATA_KEY] != null)
