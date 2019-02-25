@@ -1,49 +1,49 @@
 module.exports = {
   'align': {
-    ''        : '<img src="./quill/quill/assets/icons/align-left" />',
-    'center'  : '<img src="./quill/quill/assets/icons/align-center" />',
-    'right'   : '<img src="./quill/quill/assets/icons/align-right" />',
-    'justify' : '<img src="./quill/quill/assets/icons/align-justify" />'
+    ''        : '<img src="./quill/quill/assets/icons/align-left.svg" />',
+    'center'  : '<img src="./quill/quill/assets/icons/align-center.svg" />',
+    'right'   : '<img src="./quill/quill/assets/icons/align-right.svg" />',
+    'justify' : '<img src="./quill/quill/assets/icons/align-justify.svg" />'
   },
-  'background': '<img src="./quill/quill/assets/icons/background" />',
-  'blockquote': '<img src="./quill/quill/assets/icons/blockquote" />',
-  'bold'      : '<img src="./quill/quill/assets/icons/bold" />',
-  'clean'     : '<img src="./quill/quill/assets/icons/clean" />',
-  'code'      : '<img src="./quill/quill/assets/icons/code" />',
-  'code-block': '<img src="./quill/quill/assets/icons/code" />',
-  'color'     : '<img src="./quill/quill/assets/icons/color" />',
+  'background': '<img src="./quill/quill/assets/icons/background.svg" />',
+  'blockquote': '<img src="./quill/quill/assets/icons/blockquote.svg" />',
+  'bold'      : '<img src="./quill/quill/assets/icons/bold.svg" />',
+  'clean'     : '<img src="./quill/quill/assets/icons/clean.svg" />',
+  'code'      : '<img src="./quill/quill/assets/icons/code.svg" />',
+  'code-block': '<img src="./quill/quill/assets/icons/code.svg" />',
+  'color'     : '<img src="./quill/quill/assets/icons/color.svg" />',
   'direction' : {
-    ''        : '<img src="./quill/quill/assets/icons/direction-ltr" />',
-    'rtl'     : '<img src="./quill/quill/assets/icons/direction-rtl" />'
+    ''        : '<img src="./quill/quill/assets/icons/direction-ltr.svg" />',
+    'rtl'     : '<img src="./quill/quill/assets/icons/direction-rtl.svg" />'
   },
   'float': {
-    'center'  : '<img src="./quill/quill/assets/icons/float-center" />',
-    'full'    : '<img src="./quill/quill/assets/icons/float-full" />',
-    'left'    : '<img src="./quill/quill/assets/icons/float-left" />',
-    'right'   : '<img src="./quill/quill/assets/icons/float-right" />'
+    'center'  : '<img src="./quill/quill/assets/icons/float-center.svg" />',
+    'full'    : '<img src="./quill/quill/assets/icons/float-full.svg" />',
+    'left'    : '<img src="./quill/quill/assets/icons/float-left.svg" />',
+    'right'   : '<img src="./quill/quill/assets/icons/float-right.svg" />'
   },
-  'formula'   : '<img src="./quill/quill/assets/icons/formula" />',
+  'formula'   : '<img src="./quill/quill/assets/icons/formula.svg" />',
   'header': {
-    '1'       : '<img src="./quill/quill/assets/icons/header" />',
-    '2'       : '<img src="./quill/quill/assets/icons/header-2" />'
+    '1'       : '<img src="./quill/quill/assets/icons/header.svg" />',
+    '2'       : '<img src="./quill/quill/assets/icons/header-2.svg" />'
   },
-  'italic'    : '<img src="./quill/quill/assets/icons/italic" />',
-  'image'     : '<img src="./quill/quill/assets/icons/image" />',
+  'italic'    : '<img src="./quill/quill/assets/icons/italic.svg" />',
+  'image'     : '<img src="./quill/quill/assets/icons/image.svg" />',
   'indent': {
-    '+1'      : '<img src="./quill/quill/assets/icons/indent" />',
-    '-1'      : '<img src="./quill/quill/assets/icons/outdent" />'
+    '+1'      : '<img src="./quill/quill/assets/icons/indent.svg" />',
+    '-1'      : '<img src="./quill/quill/assets/icons/outdent.svg" />'
   },
-  'link'      : '<img src="./quill/quill/assets/icons/link" />',
+  'link'      : '<img src="./quill/quill/assets/icons/link.svg" />',
   'list': {
-    'ordered' : '<img src="./quill/quill/assets/icons/list-ordered" />',
-    'bullet'  : '<img src="./quill/quill/assets/icons/list-bullet" />',
-    'check'   : '<img src="./quill/quill/assets/icons/list-check" />'
+    'ordered' : '<img src="./quill/quill/assets/icons/list-ordered.svg" />',
+    'bullet'  : '<img src="./quill/quill/assets/icons/list-bullet.svg" />',
+    'check'   : '<img src="./quill/quill/assets/icons/list-check.svg" />'
   },
   'script': {
-    'sub'     : '<img src="./quill/quill/assets/icons/subscript" />',
-    'super'   : '<img src="./quill/quill/assets/icons/superscript" />',
+    'sub'     : '<img src="./quill/quill/assets/icons/subscript.svg" />',
+    'super'   : '<img src="./quill/quill/assets/icons/superscript.svg" />',
   },
-  'strike'    : '<img src="./quill/quill/assets/icons/strike" />',
-  'underline' : '<img src="./quill/quill/assets/icons/underline" />',
-  'video'     : '<img src="./quill/quill/assets/icons/video" />'
+  'strike'    : '<img src="./quill/quill/assets/icons/strike.svg" />',
+  'underline' : '<img src="./quill/quill/assets/icons/underline.svg" />',
+  'video'     : '<img src="./quill/quill/assets/icons/video.svg" />'
 };

@@ -149,13 +149,17 @@ class Quill {
       let range = this.getSelection(true);
       let change = new Delta();
       if (range == null) {
+        console.log(1)
         return change;
       } else if (Parchment.query(name, Parchment.Scope.BLOCK)) {
+        console.log(2)
         change = this.editor.formatLine(range.index, range.length, { [name]: value });
       } else if (range.length === 0) {
+        console.log(3)
         this.selection.format(name, value);
         return change;
       } else {
+        console.log(4)
         change = this.editor.formatText(range.index, range.length, { [name]: value });
       }
       this.setSelection(range, Emitter.sources.SILENT);

@@ -38,7 +38,7 @@ class Toolbar extends Module {
       }
     });
     this.quill.on(Quill.events.SCROLL_OPTIMIZE, () => {
-      let [range, ] = this.quill.selection.getRange();  // quill.getSelection triggers update
+      let [range, ] = this.quill.selection.getRange();  // NOTE: quill.getSelection triggers update
       this.update(range);
     });
   }
@@ -98,6 +98,7 @@ class Toolbar extends Module {
           .insert({ [format]: value })
         , Quill.sources.USER);
       } else {
+        console.log(format, value)
         this.quill.format(format, value, Quill.sources.USER);
       }
       this.update(range);

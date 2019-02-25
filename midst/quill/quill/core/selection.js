@@ -101,12 +101,14 @@ class Selection {
       // TODO Give blot ability to not split
       if (blot instanceof Parchment.Leaf) {
         let after = blot.split(nativeRange.start.offset);
+        console.log('Here is where it might be going wrong, see TODO comment above.')
         blot.parent.insertBefore(this.cursor, after);
       } else {
         blot.insertBefore(this.cursor, nativeRange.start.node);  // Should never happen
       }
       this.cursor.attach();
     }
+    console.log(this.cursor.format)
     this.cursor.format(format, value);
     this.scroll.optimize();
     this.setNativeRange(this.cursor.textNode, this.cursor.textNode.data.length);

@@ -356,6 +356,7 @@ var ContainerBlot = /** @class */ (function (_super) {
         });
     };
     ContainerBlot.prototype.descendant = function (criteria, index) {
+        criteria = criteria.default ? criteria.default : criteria
         var _a = this.children.find(index), child = _a[0], offset = _a[1];
         if ((criteria.blotName == null && criteria(child)) ||
             (criteria.blotName != null && child instanceof criteria)) {

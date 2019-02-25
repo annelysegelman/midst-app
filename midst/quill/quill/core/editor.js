@@ -1,7 +1,7 @@
 const Delta = require('../../quill-delta');
 const DeltaOp = require('../../quill-delta/lib/op');
 const Parchment = require('../../parchment').default;
-const CodeBlock = require('../formats/code');
+const CodeBlock = require('../formats/code').default;
 const CursorBlot = require('../blots/cursor');
 const Block = require('../blots/block').default;
 const { bubbleFormats } = require('../blots/block');
@@ -198,8 +198,10 @@ class Editor {
         mutations[0].target.data.match(ASCII) &&
         Parchment.find(mutations[0].target)) {
       // Optimization for character changes
+      console.log('This is DEFINITELY where the stanza bug occurs.')
       let textBlot = Parchment.find(mutations[0].target);
       let formats = bubbleFormats(textBlot);
+      console.log('Formats at the time of update were:', formats)
       let index = textBlot.offset(this.scroll);
       let oldValue = mutations[0].oldValue.replace(CursorBlot.CONTENTS, '');
       let oldText = new Delta().insert(oldValue);
