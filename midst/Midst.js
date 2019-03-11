@@ -455,6 +455,7 @@ class Midst extends React.Component {
   }
 
   setUpQuill() {
+    return
     this.quill = new Quill('#editor', {
       theme: 'snow',
       modules: {
