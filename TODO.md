@@ -12,6 +12,23 @@ http://midst.press/sandbox/player/
 
 ---
 
+## TODO, SUMMERNOTES MIDST:
+1. Bug: Long lines (that hit the right edge of the document, then wrap) overlap each other. 
+1. Bug: Resizing Midst window causes the font-format options (size, font, b/i, line spacing) to become weirdly formatted.
+1. Bug: Making the window very small makes the toolbar look silly. I propose at least a temporary fix of not allowing the window width to be smaller than the fully-compressed toolbar width (i.e. allow the window to get smaller and reduce the toolbar’s white space, but not so small that the icons start to overlap).
+1. More default margin?
+1. Replace placeholder M with our actual icon M (and then maybe a bit of white space after it, before the save/open icons?)
+
+
+## MISC. THOUGHTS, SUMMERNOTES MIDST:
+1. Background color: Do we want the default to be the same as the midst.press bg color, or remain as-is?
+
+
+
+
+---
+
+
 ## For Review
 1. Along with the stanza bug, I've noticed that hitting tab also removes the text formatting! Uh oh.
 1. Aaaaaaand, try this fun experiment: Open a blank document. Change the font/font size/bold/italic/underline. Type a letter. Delete the letter and type a new one: poof, formatting gone. More critically, this bug occurs ANY time you delete ANY entire line, whether you delete the line by highlighting the line and hitting the delete button; typing a few letters quickly and hitting command-z; or whether you backspace (hit delete) until there are no more letters left in the line.
