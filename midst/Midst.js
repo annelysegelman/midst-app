@@ -29,6 +29,7 @@ class Midst extends React.Component {
       hasUnsavedChanges: false,
       index: 0,
       markers: [],
+      formats: [],
       replayMode: false,
       replayModeOpenedFromDrawer: false,
       responsiveScrolling: true,
@@ -56,6 +57,7 @@ class Midst extends React.Component {
     this.draftMarkerLabelOnKeyDown = this.draftMarkerLabelOnKeyDown.bind(this)
     this.editDraftMarkerLabel = this.editDraftMarkerLabel.bind(this)
     this.exitFocusModeIntent = this.exitFocusModeIntent.bind(this)
+    this.exitReplayMode = this.exitReplayMode.bind(this)
     this.newFile = this.newFile.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
     this.openDrawer = this.openDrawer.bind(this)
@@ -167,6 +169,11 @@ class Midst extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    // console.log(prevState.replayMode)
+    // console.log(this.state.replayMode)
+  }
+
 // ================================================================================
 // Handlers
 // ================================================================================
@@ -243,8 +250,7 @@ class Midst extends React.Component {
     const sliceIndex = index === this.state.stack.length ? this.state.stack.length - 1 : index
 
     this.setState({ index }, cb)
-    this.editor.summernote('reset')
-    this.editor.summernote('pasteHTML', this.state.stack[sliceIndex].content)
+    this.editor.summernote('code', this.state.stack[sliceIndex].content)
 
     // if (this.state.responsiveScrolling) {
     //   this.focusQuillAtCursor()
@@ -272,6 +278,7 @@ class Midst extends React.Component {
   async newFile() {
     if (!await this.checkForUnsavedChanges()) return
     this.setState(this.initialState)
+    this.editor.summernote('code', '')
     this.quill.setContents([])
   }
 
@@ -325,7 +332,7 @@ class Midst extends React.Component {
       hasUnsavedChanges: false,
       fileAbsPath: fileData.path,
     }, () => {
-      this.quill.setContents(_.get(_.last(this.state.stack), 'content'))
+      this.editor.summernote('code', _.get(_.last(this.state.stack), 'content'))
     })
   }
 
@@ -334,10 +341,6 @@ class Midst extends React.Component {
       replayMode: true,
       editingDraftMarker: null,
     })
-    // this.setPos(this.state.stack.length - 1)
-    // setTimeout(() => {
-    //   this.focusQuillAtEnd()
-    // }, 250)
   }
 
   exitReplayMode() {
@@ -347,8 +350,6 @@ class Midst extends React.Component {
       replayMode: false,
       drawerOpen: false,
     })
-
-    // this.setPos(this.state.stack.length - 1)
   }
 
   toggleReplayMode() {
@@ -459,7 +460,19 @@ class Midst extends React.Component {
 
   setUpSummernote() {
     this.editor = $('#editor')
-    this.editor.summernote()
+    this.editor.summernote({
+      toolbar: [
+        ['fontsize', ['fontsize']],
+        ['fontname', ['fontname']],
+        ['bold', ['bold']],
+        ['italic', ['italic']],
+        ['height', ['height']],
+      ],
+
+      disableDragAndDrop: true,
+    })
+
+    this.resetLineHeight()
 
     if (window.MIDST_IS_PLAYER) {
       this.editor.summernote('disable')
@@ -474,6 +487,8 @@ class Midst extends React.Component {
     // Inject custom font size stylesheets, if needed.
 
     this.editor.on('summernote.change', (we, content, $editable) => {
+      if (this.state.replayMode) return
+
       const selection = $('#editor').summernote('createRange').so
       const nextCursor = selection ? selection.index : _.last(this.state.cursors)
 
@@ -481,6 +496,9 @@ class Midst extends React.Component {
         index: this.state.stack.length,
         stack: this.state.stack.concat([{ content, time: we.timeStamp }]),
         cursors: this.state.cursors.concat([nextCursor]),
+        formats: this.state.formats.concat([
+          { lineHeight: 1 },
+        ]),
         hasUnsavedChanges: true,
         replayMode: false,
         drawerOpen: false,
@@ -525,7 +543,7 @@ class Midst extends React.Component {
       if (index === this.state.stack.length) {
         index = index - 1
       }
-      this.quill.setContents(this.state.stack[index].content)
+      this.editor.summernote('code', this.state.stack[index].content)
       this.focusQuillAtEnd()
     })
   }
@@ -577,58 +595,32 @@ class Midst extends React.Component {
 
   applyFormat(formatName) {
     return () => {
+      if (this.state.replayMode) return
+
       switch (formatName) {
         case 'align-left':
-          this.quill.format('align', null, 'user')
+          this.editor.summernote('justifyLeft')
           break
         case 'align-center':
-          this.quill.format('align', 'center', 'user')
+          this.editor.summernote('justifyCenter')
           break
         case 'align-right':
-          this.quill.format('align', 'right', 'user')
+          this.editor.summernote('justifyRight')
           break
         case 'align-justify':
-          this.quill.format('align', 'justify', 'user')
+          this.editor.summernote('justifyFull')
           break
       }
     }
   }
 
+  resetLineHeight() {
+    this.editor.summernote('lineHeight', .5)
+  }
+
 // ================================================================================
 // Render Helepers
 // ================================================================================
-  quillToolbarSize() {
-    return e('select', {
-      className: 'ql-size',
-      defaultValue: 'def',
-    },
-      this.FONT_SIZES.map((name, i) => (
-        name === false ? e('option', {key: i, value: 'def'}, '12')
-        : e('option', {key: i, value: this.FONT_SIZES[i]}, name.replace('px', ''))
-      ))
-    )
-  }
-
-  quillToolbarFont() {
-    return e('select', {
-      className: 'ql-font',
-      defaultValue: 'def',
-    },
-      this.FONTS.map((name, i) => (
-        i === 0 ? e('option', {key: i, value: 'def'}, 'Helvetica')
-        : e('option', {key: i, value: this.FONT_IDS[i]}, name)
-      ))
-    )
-  }
-
-  quillToolbarStyle() {
-    return e(React.Fragment, {},
-      e('button', {className: 'ql-bold'}),
-      e('button', {className: 'ql-italic'}),
-      e('button', {className: 'ql-underline'}),
-    )
-  }
-
   quillToolbarAlign() {
     return e(React.Fragment, {},
       e('button', {
@@ -679,12 +671,10 @@ class Midst extends React.Component {
   }
 
   quillToolbar() {
+    return null
     return e('div', {
       id: 'quill-toolbar',
     },
-      this.quillToolbarFormats(this.quillToolbarSize()),
-      this.quillToolbarFormats(this.quillToolbarFont()),
-      this.quillToolbarFormats(this.quillToolbarStyle()),
       this.quillToolbarFormats(this.quillToolbarAlign()),
     )
   }
@@ -755,6 +745,10 @@ class Midst extends React.Component {
         onMouseDown: this.pause,
       }),
       showDraftMarkers || window.MIDST_IS_PLAYER ? this.draftMarkers() : null,
+      e('div', {
+        className: 'exit-overlay',
+        onClick: this.exitReplayMode,
+      })
     )
   }
 

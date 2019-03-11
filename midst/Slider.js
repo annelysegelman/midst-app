@@ -31,7 +31,7 @@ class Slider extends React.Component {
 // Styles
 // ================================================================================
     this.css = () => `
-      .slider {
+      .hem-slider {
         position: relative;
         width: 200px;
         height: 20px;
@@ -40,11 +40,11 @@ class Slider extends React.Component {
         user-select: none;
       }
 
-      .slider * {
+      .hem-slider * {
         user-select: none;
       }
 
-      .slider .progress {
+      .hem-slider__progress {
         position: absolute;
         top: 0;
         left: 0;
@@ -137,13 +137,13 @@ class Slider extends React.Component {
     const value = controlled ? propsValue : stateValue
     return (
       e('div', {
-        className: 'slider',
+        className: 'hem-slider',
         onMouseDown: this.onMouseDown,
         onMouseUp: this.onMouseUp,
         ref: el => this.el = el
       },
         e('div', {
-          className: 'progress',
+          className: 'hem-slider__progress',
           style: {
             [direction === 'vertical' ? 'height' : 'width']: `${value * 100}%`,
           },

@@ -1,10 +1,10 @@
 # MIDST TODO
 
-*LAST UPDATE: Annelyse, Feb 14 2019
+*LAST UPDATE: Jason, March 11 2019
 
 *CURRENT STAGING BUILD:
 
-http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1550078015290.zip
+http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1552326080668.zip
 
 *CURRENT PLAYER URL:
 
@@ -12,17 +12,16 @@ http://midst.press/sandbox/player/
 
 ---
 
-## VERY HIGH-PRIORITY BUGS
+## For Review
 1. Along with the stanza bug, I've noticed that hitting tab also removes the text formatting! Uh oh.
-1. Aaaaaaand, try this fun experiment: Open a blank document. Change the font/font size/bold/italic/underline. Type a letter. Delete the letter and type a new one: poof, formatting gone. More critically, this bug occurs ANY time you delete ANY entire line, whether you delete the line by highlighting the line and hitting the delete button; typing a few letters quickly and hitting command-z; or whether you backspace (hit delete) until there are no more letters left in the line. 
-1. I'm not putting this under 'critical' bugs because I think that category should be reserved for stuff that literally breaks the app (or destroys the content of people's writing), but fixing this bug should be our #1 priority! (I think all the stuff I'm writing here falls under the same "take over quill & fix it" category.)
-
-
+1. Aaaaaaand, try this fun experiment: Open a blank document. Change the font/font size/bold/italic/underline. Type a letter. Delete the letter and type a new one: poof, formatting gone. More critically, this bug occurs ANY time you delete ANY entire line, whether you delete the line by highlighting the line and hitting the delete button; typing a few letters quickly and hitting command-z; or whether you backspace (hit delete) until there are no more letters left in the line.
+1. get Player working
+1. Get midst.press site looking sexy
+1. fix stanza bug
+1. finish web design, with beta offering and player with a demo poem loaded up, and UX that encourages email signups!
 
 ## To Discuss
 1. Does the Midst app have an error log built in? Gerald used it and it crashed when he hit save.
-1. SXSW demo day pitch application (due Sunday night).
-
 
 ## Questions for Henry (design/UX)
 1. Timeline controls: do they belong where they are on the Player or should they be in a sidebar on the side of the screen?
@@ -33,11 +32,10 @@ http://midst.press/sandbox/player/
 1. Color scheme for Midst app icon?
 1. Styling of poems in player? Font/font size/margins?
 
-
 ## Player TODOs
 1. Add timestamp that follows the playhead. for now let's try displaying it as in my demo, so time (hour:minute, please use 12 hour American clock system with am/pm, not military time), Month & day (no year i think, for now). (see http://annelyseg.tumblr.com/post/182675105408/i-am-designing-midst-now).
 
-1. When you open the player, you start on frame 0; if you hit play, it automatically starts playing from the beginning, then reaches frame 0 again and pauses. This is perfect. But, Bug: After the initial playthrough, hitting play on frame 0 doesn't play the poem from the beginning anymore (it should!). 
+1. When you open the player, you start on frame 0; if you hit play, it automatically starts playing from the beginning, then reaches frame 0 again and pauses. This is perfect. But, Bug: After the initial playthrough, hitting play on frame 0 doesn't play the poem from the beginning anymore (it should!).
 
 1. Bug: Once opened, the speed control menu should automatically close when user clicks ANYWHERE outside of that menu (whether or not a new speed was selected).
 
@@ -45,11 +43,11 @@ http://midst.press/sandbox/player/
 
 - NOTE: Gerald was confused by 1x, 2x, etc.; said "Why isn't it a length of time, like '30 seconds', where 30 seconds is how long the entire poem will take to play through?" I'm not sure I agree with this & tbh I think this may apply more to "export video" functions on the app (you know you want your final video of yr poem on Youtube to be a certain length) than to the "play speed" functions in our Player/journal, but, we can discuss if you want! At the very least I think what I'm saying about changing the 1x speed is a good idea.
 
-1. Design: The timeline & controls feels "squashed" at the bottom of the screen, too small and compact. See http://annelyseg.tumblr.com/post/182675105408/i-am-designing-midst-now ——— Give it a little bit more breathing room / vertical space (and a little more white space beneath it). 
+1. Design: The timeline & controls feels "squashed" at the bottom of the screen, too small and compact. See http://annelyseg.tumblr.com/post/182675105408/i-am-designing-midst-now ——— Give it a little bit more breathing room / vertical space (and a little more white space beneath it).
 
 1. Playhead should be a little larger and easier to grab, and its "area of receptivity" should be larger (ie clicking super close to the playhead, right above it or below it vertically, should still let you 'grab' it). NOTE: This is also true for the app, not just the player!
 
-1. Background color of the page: SeaShell # fff5ee . 
+1. Background color of the page: SeaShell # fff5ee .
 rgb(255, 245, 238)
 hsl(25, 100%, 97%)
 
@@ -57,25 +55,10 @@ hsl(25, 100%, 97%)
 
 1. Can we upload an additional demo poem, Big Medium, so I can look at navigation between them (soon) + how the responsive scrolling is working (now), plus I'll be able to show the designer Henry this? (Do you want me to throw a couple of draft markers onto it so we can see how those are appearing in the Player?)
 
-
-
-
-
-
-
-
 ## Goals before AWP (March 26), prioritized
 1. paper collateral (annelyse will do this)
 
-1. get Player working
-
-1. Get midst.press site looking sexy
-
-1. fix stanza bug
-
 1. get free public beta ready with telemetry built-in
-
-1. finish web design, with beta offering and player with a demo poem loaded up, and UX that encourages email signups!
 
 1. Live demo of the app ("Try it!") that works in a web browser
 
@@ -99,19 +82,6 @@ hsl(25, 100%, 97%)
 
 ## To Discuss...
 1. "For now, apply our super sexy Midst styling (font and font size) to all poems by default. If it's not super difficult, also add a toggle button that allows the reader to switch to the Poet's font styling instead." – __It's possible to preserve the poets' title styling if we add the "H1" button to the app and make it clear (for example, in some kind of FAQ page/user guide) that you can preserve your title by using this button. ...Or other specific formats, like pull quotes, by using specific buttons. Could also be a special "preservable formats" menu (not with a jargon name but, say, just a nice declarative icon) in the app toolbar for _these specific kinds_ of formats.__
-
-
----
-
-## Ready for Review (App)
-
-1. Nothing here!
-
-## Ready for Review (Player)
-
-1. Nothing here!
-
----
 
 ## Highest priority bugs
 1. Open a new file, immediately create a new draft marker without typing or touching the timeline, then navigate to that marker using drawer: crash. (Try also with clicking timeline draft marker.) (NOTE 2/15 ARG: This was in 'ready for review' but is still crashing the app.)
