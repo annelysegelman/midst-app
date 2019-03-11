@@ -1,7 +1,0 @@
-const Inline = require('../blots/inline');
-
-class Underline extends Inline { }
-Underline.blotName = 'underline';
-Underline.tagName = 'U';
-
-module.exports = Underline;

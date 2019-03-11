@@ -1,5 +1,3 @@
-const McQuill = require('./quill/quill/quill')
-
 /**
  * Midst
  */
@@ -457,7 +455,7 @@ class Midst extends React.Component {
   }
 
   setUpQuill() {
-    this.quill = new McQuill('#editor', {
+    this.quill = new Quill('#editor', {
       theme: 'snow',
       modules: {
         toolbar: '#quill-toolbar',
