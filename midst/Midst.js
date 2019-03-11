@@ -145,7 +145,7 @@ class Midst extends React.Component {
       }
     })
 
-    this.setUpQuill()
+    this.setUpSummernote()
 
     if (typeof ipc !== 'undefined') {
       ipc.on('fileOpened', (evt, fileData) => this.load(fileData))
@@ -240,12 +240,15 @@ class Midst extends React.Component {
 // Methods
 // ================================================================================
   setPos(index, cb) {
-    this.setState({ index }, cb && cb())
     const sliceIndex = index === this.state.stack.length ? this.state.stack.length - 1 : index
-    this.quill.setContents(this.state.stack[sliceIndex].content)
-    if (this.state.responsiveScrolling) {
-      this.focusQuillAtCursor()
-    }
+
+    this.setState({ index }, cb)
+    this.editor.summernote('reset')
+    this.editor.summernote('pasteHTML', this.state.stack[sliceIndex].content)
+
+    // if (this.state.responsiveScrolling) {
+    //   this.focusQuillAtCursor()
+    // }
   }
 
   async checkForUnsavedChanges(message) {
@@ -454,43 +457,29 @@ class Midst extends React.Component {
     }
   }
 
-  setUpQuill() {
-    return
-    this.quill = new Quill('#editor', {
-      theme: 'snow',
-      modules: {
-        toolbar: '#quill-toolbar',
-      },
-      formats: ['bold', 'italic', 'underline', 'align', 'size', 'font', 'background'],
-    })
+  setUpSummernote() {
+    this.editor = $('#editor')
+    this.editor.summernote()
 
-    this.quill.enable(!window.MIDST_IS_PLAYER)
+    if (window.MIDST_IS_PLAYER) {
+      this.editor.summernote('disable')
+    }
 
-    const Font = Quill.import('formats/font')
-    Font.whitelist = [false].concat(_.tail(this.FONT_IDS))
-    Quill.register(Font, true)
+    // Configure available font families.
 
-    const fontFamilyStylesInjected = document.createElement('style')
-    fontFamilyStylesInjected.innerText = _.reduce(this.FONTS, (styleDec, style) => styleDec + this.FONT_FAMILY_STYLE_TPL(style), '')
-    document.head.appendChild(fontFamilyStylesInjected)
+    // Inject custom font family stylesheets, if needed.
 
-    var Size = Quill.import('attributors/style/size')
-    Size.whitelist = this.FONT_SIZES
-    Quill.register(Size, true)
+    // Configure available font sizes.
 
-    const fontSizeStylesInjected = document.createElement('style')
-    fontSizeStylesInjected.innerText = _.reduce(this.FONT_SIZES, (styleDec, style) => styleDec + this.FONT_SIZE_STYLE_TPL(style), '')
-    document.head.appendChild(fontSizeStylesInjected)
+    // Inject custom font size stylesheets, if needed.
 
-    this.quill.on('text-change', (delta, oldDelta, source) => {
-      if (source !== 'user') return
-
-      const selection = this.quill.getSelection()
-      const nextCursor = selection ? selection.index : _.last(cursors)
+    this.editor.on('summernote.change', (we, content, $editable) => {
+      const selection = $('#editor').summernote('createRange').so
+      const nextCursor = selection ? selection.index : _.last(this.state.cursors)
 
       this.setState({
         index: this.state.stack.length,
-        stack: this.state.stack.concat([{ content: this.quill.getContents(), time: + new Date() }]),
+        stack: this.state.stack.concat([{ content, time: we.timeStamp }]),
         cursors: this.state.cursors.concat([nextCursor]),
         hasUnsavedChanges: true,
         replayMode: false,
@@ -499,13 +488,6 @@ class Midst extends React.Component {
         editingDraftMarker: null,
       })
     })
-
-    const pickers = document.querySelectorAll('.ql-picker')
-    for (const picker of pickers) {
-      picker.addEventListener('mousedown', () => {
-        this.setState({ pickerIsOpen: !this.state.pickerIsOpen })
-      })
-    }
   }
 
   exitFocusModeIntent() {
