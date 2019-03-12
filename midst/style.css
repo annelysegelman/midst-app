@@ -178,6 +178,8 @@ p {
   bottom: 50px;
   height: calc(100vh - 50px);
   width: 100%;
+  background: red;
+  opacity: 0.2;
 }
 
 .midst-slider.up .exit-overlay {
@@ -291,12 +293,21 @@ p {
 
 .note-editor.note-frame {
   border: 0 !important;
-  margin-top: 42px;
-  height: calc(100vh - 67px);
+  margin-top: 52px;
+  height: calc(100vh - 77px);
+}
+
+.editor-wrapper.with-app-timeline {
+  top: 53px;
 }
 
 .editor-wrapper.with-app-timeline  .note-editor.note-frame {
-  height: calc(100vh - 67px - 50px) !important;
+  margin-top: 0;
+  height: calc(100vh - 67px - 61px) !important;
+}
+
+.note-editable {
+  padding: 0 45px !important;
 }
 
 .note-editing-area,
@@ -307,8 +318,8 @@ p {
 
 #quill-toolbar {
   position: absolute;
-  top: 27px;
-  left: 390px;
+  top: 32px;
+  left: 430px;
   border: 0;
 }
 

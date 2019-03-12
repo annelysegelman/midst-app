@@ -4,7 +4,7 @@
 
 *CURRENT STAGING BUILD:
 
-http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1552326080668.zip
+http://hem.rocks/files/midst-builds/mac-mojave/Midst_build_1552423526837.zip
 
 *CURRENT PLAYER URL:
 
@@ -13,22 +13,23 @@ http://midst.press/sandbox/player/
 ---
 
 ## For Review
+1. General comparability of the app after Summernote + stress test.
 1. Along with the stanza bug, I've noticed that hitting tab also removes the text formatting! Uh oh.
 1. Aaaaaaand, try this fun experiment: Open a blank document. Change the font/font size/bold/italic/underline. Type a letter. Delete the letter and type a new one: poof, formatting gone. More critically, this bug occurs ANY time you delete ANY entire line, whether you delete the line by highlighting the line and hitting the delete button; typing a few letters quickly and hitting command-z; or whether you backspace (hit delete) until there are no more letters left in the line.
 1. get Player working
 1. Get midst.press site looking sexy
 1. fix stanza bug
 1. finish web design, with beta offering and player with a demo poem loaded up, and UX that encourages email signups!
+1. You can paste in formatted text.
+1. Responsive scrolling.
+1. You should be able to scroll in timeline mode.
 
 ## Post-Summernote-specific To-Do's
-1. You can paste in formatted text.
-1. Cursor following.
-1. You should be able to scroll in timeline mode.
-1. Shift+Cmd+R does something weird. Only allow certain shortcuts??
-1. Cursor should focus at end after loading a file.
+1.
 
 ## To Discuss
 1. Does the Midst app have an error log built in? Gerald used it and it crashed when he hit save.
+1. What to do about the font, size, line-height buttons??
 
 ## Questions for Henry (design/UX)
 1. Timeline controls: do they belong where they are on the Player or should they be in a sidebar on the side of the screen?

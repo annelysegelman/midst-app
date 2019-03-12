@@ -277,7 +277,6 @@ class Midst extends React.Component {
     if (!await this.checkForUnsavedChanges()) return
     this.setState(this.initialState)
     this.editor.summernote('code', '')
-    this.quill.setContents([])
   }
 
   async quit() {
@@ -350,7 +349,7 @@ class Midst extends React.Component {
       replayMode: false,
       drawerOpen: false,
     }, () => {
-      this.focusEditorAtEnd()
+      $('.note-editable').focus()
     })
   }
 
@@ -400,19 +399,21 @@ class Midst extends React.Component {
   }
 
   focusEditorAtLine(lineNumber) {
-    const el = this.getLine(lineNumber)
+    setTimeout(() => {
+      const el = this.getLine(lineNumber)
 
-    if (!el) return
+      if (!el) return
 
-    const range = document.createRange();
-    const sel = window.getSelection();
-    const children = el.childNodes.length
+      const range = document.createRange();
+      const sel = window.getSelection();
+      const children = el.childNodes.length
 
-    range.setStart(el, children)
-    range.collapse(true)
-    sel.removeAllRanges()
-    sel.addRange(range)
-    el.scrollIntoView()
+      range.setStart(el, children)
+      range.collapse(true)
+      sel.removeAllRanges()
+      sel.addRange(range)
+      el.scrollIntoView()
+    })
   }
 
   focusEditorAtEnd() {
@@ -489,6 +490,38 @@ class Midst extends React.Component {
       ],
 
       disableDragAndDrop: true,
+
+      callbacks: {
+        onPaste: (evt) => {
+          evt.preventDefault()
+          const bufferText = ((evt.originalEvent || evt).clipboardData || window.clipboardData).getData('Text')
+          setTimeout(function () {
+            document.execCommand('insertText', false, bufferText)
+          }, 10)
+        },
+
+        onChange: (content) => {
+          if (this.state.replayMode) return
+
+          const currentLine = $(window.getSelection().anchorNode).parents('p')
+          let currentLineNumber = $('.note-editable p').index(currentLine)
+          currentLineNumber = currentLineNumber > -1 ? currentLineNumber : _.last(this.state.lineNumbers)
+
+          this.setState({
+            index: this.state.stack.length,
+            stack: this.state.stack.concat([{ content, time: + new Date() }]),
+            lineNumbers: this.state.lineNumbers.concat([currentLineNumber]),
+            formats: this.state.formats.concat([
+              { lineHeight: 1 },
+            ]),
+            hasUnsavedChanges: true,
+            replayMode: false,
+            drawerOpen: false,
+            creatingDraftMarker: false,
+            editingDraftMarker: null,
+          })
+        }
+      }
     })
 
     this.resetLineHeight()
@@ -505,27 +538,27 @@ class Midst extends React.Component {
 
     // Inject custom font size stylesheets, if needed.
 
-    this.editor.on('summernote.change', (we, content, $editable) => {
-      if (this.state.replayMode) return
+    // this.editor.on('summernote.change', (evt, content) => {
+    //   if (this.state.replayMode) return
 
-      const currentLine = $(window.getSelection().anchorNode).parents('p')
-      let currentLineNumber = $('.note-editable p').index(currentLine)
-      currentLineNumber = currentLineNumber > -1 ? currentLineNumber : _.last(this.state.lineNumbers)
+    //   const currentLine = $(window.getSelection().anchorNode).parents('p')
+    //   let currentLineNumber = $('.note-editable p').index(currentLine)
+    //   currentLineNumber = currentLineNumber > -1 ? currentLineNumber : _.last(this.state.lineNumbers)
 
-      this.setState({
-        index: this.state.stack.length,
-        stack: this.state.stack.concat([{ content, time: we.timeStamp }]),
-        lineNumbers: this.state.lineNumbers.concat([currentLineNumber]),
-        formats: this.state.formats.concat([
-          { lineHeight: 1 },
-        ]),
-        hasUnsavedChanges: true,
-        replayMode: false,
-        drawerOpen: false,
-        creatingDraftMarker: false,
-        editingDraftMarker: null,
-      })
-    })
+    //   this.setState({
+    //     index: this.state.stack.length,
+    //     stack: this.state.stack.concat([{ content, time: evt.timeStamp }]),
+    //     lineNumbers: this.state.lineNumbers.concat([currentLineNumber]),
+    //     formats: this.state.formats.concat([
+    //       { lineHeight: 1 },
+    //     ]),
+    //     hasUnsavedChanges: true,
+    //     replayMode: false,
+    //     drawerOpen: false,
+    //     creatingDraftMarker: false,
+    //     editingDraftMarker: null,
+    //   })
+    // })
   }
 
   exitFocusModeIntent() {
@@ -691,7 +724,6 @@ class Midst extends React.Component {
   }
 
   quillToolbar() {
-    return null
     return e('div', {
       id: 'quill-toolbar',
     },
@@ -708,7 +740,7 @@ class Midst extends React.Component {
         e('img', { src: 'm.png' }),
       ),
       e('button', {
-        onClick: (evt) => console.log(evt) // this.openFile,
+        onClick: () => this.openFile(),
       }, e(Folder)),
       e('button', {
         className: !hasUnsavedChanges ? 'deactivated' : '',
@@ -765,10 +797,6 @@ class Midst extends React.Component {
         onMouseDown: this.pause,
       }),
       showDraftMarkers || window.MIDST_IS_PLAYER ? this.draftMarkers() : null,
-      e('div', {
-        className: 'exit-overlay',
-        onClick: this.exitReplayMode,
-      })
     )
   }
 
@@ -943,7 +971,14 @@ class Midst extends React.Component {
               this.setState({ pickerIsOpen: false })
             }
           }) : null,
-          e('div', { className: 'editor-wrapper' + (replayMode ? ' with-app-timeline' : '') },
+          e('div', {
+            className: 'editor-wrapper' + (replayMode ? ' with-app-timeline' : ''),
+            onClick: () => {
+              if (this.state.replayMode) {
+                this.exitReplayMode()
+              }
+            },
+          },
             e('div', {
               id: 'editor',
             })
