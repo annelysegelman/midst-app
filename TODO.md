@@ -1,6 +1,6 @@
 # MIDST TODO
 
-*LAST UPDATE: Jason, March 11 2019
+*LAST UPDATE: Jason, March 12 2019
 
 *CURRENT STAGING BUILD:
 
@@ -25,6 +25,7 @@ http://midst.press/sandbox/player/
 1. Cursor following.
 1. You should be able to scroll in timeline mode.
 1. Shift+Cmd+R does something weird. Only allow certain shortcuts??
+1. Cursor should focus at end after loading a file.
 
 ## To Discuss
 1. Does the Midst app have an error log built in? Gerald used it and it crashed when he hit save.
