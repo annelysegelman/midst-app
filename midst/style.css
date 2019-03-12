@@ -8,6 +8,10 @@ body {
   background-color: #FFFAFA;
 }
 
+p {
+  margin: 0 !important;
+}
+
 .midst {
   position: fixed;
   top: 0;
@@ -120,6 +124,7 @@ body {
   height: 50px;
   transition: all 250ms;
   border-top: 1px solid #ccc;
+  /* background-color: #FFFAFA; */
 }
 
 .midst-slider.up {
@@ -288,6 +293,10 @@ body {
   border: 0 !important;
   margin-top: 42px;
   height: calc(100vh - 67px);
+}
+
+.editor-wrapper.with-app-timeline  .note-editor.note-frame {
+  height: calc(100vh - 67px - 50px) !important;
 }
 
 .note-editing-area,

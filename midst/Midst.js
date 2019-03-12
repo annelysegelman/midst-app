@@ -21,7 +21,7 @@ class Midst extends React.Component {
       playbackUid: + new Date(),
       author: 'Anonymous',
       creatingDraftMarker: false,
-      cursors: [],
+      lineNumbers: [],
       drawerOpen: false,
       editingDraftMarker: null,
       fileAbsPath: false,
@@ -170,8 +170,6 @@ class Midst extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // console.log(prevState.replayMode)
-    // console.log(this.state.replayMode)
   }
 
 // ================================================================================
@@ -252,9 +250,9 @@ class Midst extends React.Component {
     this.setState({ index }, cb)
     this.editor.summernote('code', this.state.stack[sliceIndex].content)
 
-    // if (this.state.responsiveScrolling) {
-    //   this.focusQuillAtCursor()
-    // }
+    if (this.state.responsiveScrolling) {
+      this.focusEditorAtLine()
+    }
   }
 
   async checkForUnsavedChanges(message) {
@@ -288,8 +286,8 @@ class Midst extends React.Component {
   }
 
   midstFileModel() {
-    const { stack, markers, highestEverDraftNumber, author, displayTitle, cursors } = this.state
-    return  { stack, meta: { markers, highestEverDraftNumber, author, displayTitle, cursors }}
+    const { stack, markers, highestEverDraftNumber, author, displayTitle, lineNumbers } = this.state
+    return  { stack, meta: { markers, highestEverDraftNumber, author, displayTitle, lineNumbers }}
   }
 
   async saveFile () {
@@ -327,7 +325,7 @@ class Midst extends React.Component {
       author: fileData.data.meta.author,
       displayTitle: fileData.data.meta.displayTitle,
       markers: fileData.data.meta.markers,
-      cursors: fileData.data.meta.cursors || [],
+      lineNumbers: fileData.data.meta.lineNumbers || [],
       highestEverDraftNumber: fileData.data.meta.highestEverDraftNumber || 0,
       hasUnsavedChanges: false,
       fileAbsPath: fileData.path,
@@ -340,6 +338,8 @@ class Midst extends React.Component {
     this.setState({
       replayMode: true,
       editingDraftMarker: null,
+    }, () => {
+      this.focusEditorAtEnd()
     })
   }
 
@@ -349,6 +349,8 @@ class Midst extends React.Component {
     this.setState({
       replayMode: false,
       drawerOpen: false,
+    }, () => {
+      this.focusEditorAtEnd()
     })
   }
 
@@ -375,7 +377,7 @@ class Midst extends React.Component {
 
   exitFocusMode() {
     this.setState({ focusMode: false })
-    this.focusQuillAtEnd()
+    this.focusEditorAtEnd()
   }
 
   toggleFocusMode() {
@@ -389,15 +391,32 @@ class Midst extends React.Component {
     }
   }
 
-  focusQuillAtEnd() {
-    const length = this.quill.getLength()
-    this.quill.focus()
-    this.quill.setSelection(length, 1)
+  getLine(selectedLineNumber) {
+    const { index, lineNumbers } = this.state
+    const lineNumberIndex = selectedLineNumber || (index === lineNumbers.length ? lineNumbers.length - 1 : index)
+    const lineNumber = lineNumbers[lineNumberIndex]
+
+    return $('.note-editable p').eq(lineNumber)[0]
   }
 
-  focusQuillAtCursor() {
-    const cursorPos = this.state.cursors[this.state.index] || 0
-    this.quill.setSelection(cursorPos, 0)
+  focusEditorAtLine(lineNumber) {
+    const el = this.getLine(lineNumber)
+
+    if (!el) return
+
+    const range = document.createRange();
+    const sel = window.getSelection();
+    const children = el.childNodes.length
+
+    range.setStart(el, children)
+    range.collapse(true)
+    sel.removeAllRanges()
+    sel.addRange(range)
+    el.scrollIntoView()
+  }
+
+  focusEditorAtEnd() {
+    this.focusEditorAtLine(this.state.stack.length - 1)
   }
 
   editDraftMarkerLabel(timelineIndex, inDrawer) {
@@ -489,13 +508,14 @@ class Midst extends React.Component {
     this.editor.on('summernote.change', (we, content, $editable) => {
       if (this.state.replayMode) return
 
-      const selection = $('#editor').summernote('createRange').so
-      const nextCursor = selection ? selection.index : _.last(this.state.cursors)
+      const currentLine = $(window.getSelection().anchorNode).parents('p')
+      let currentLineNumber = $('.note-editable p').index(currentLine)
+      currentLineNumber = currentLineNumber > -1 ? currentLineNumber : _.last(this.state.lineNumbers)
 
       this.setState({
         index: this.state.stack.length,
         stack: this.state.stack.concat([{ content, time: we.timeStamp }]),
-        cursors: this.state.cursors.concat([nextCursor]),
+        lineNumbers: this.state.lineNumbers.concat([currentLineNumber]),
         formats: this.state.formats.concat([
           { lineHeight: 1 },
         ]),
@@ -544,7 +564,7 @@ class Midst extends React.Component {
         index = index - 1
       }
       this.editor.summernote('code', this.state.stack[index].content)
-      this.focusQuillAtEnd()
+      this.focusEditorAtLine(index - 1)
     })
   }
 
@@ -615,7 +635,7 @@ class Midst extends React.Component {
   }
 
   resetLineHeight() {
-    this.editor.summernote('lineHeight', .5)
+    this.editor.summernote('lineHeight', 1)
   }
 
 // ================================================================================

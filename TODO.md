@@ -20,6 +20,12 @@ http://midst.press/sandbox/player/
 1. fix stanza bug
 1. finish web design, with beta offering and player with a demo poem loaded up, and UX that encourages email signups!
 
+## Post-Summernote-specific To-Do's
+1. You can paste in formatted text.
+1. Cursor following.
+1. You should be able to scroll in timeline mode.
+1. Shift+Cmd+R does something weird. Only allow certain shortcuts??
+
 ## To Discuss
 1. Does the Midst app have an error log built in? Gerald used it and it crashed when he hit save.
 
