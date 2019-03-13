@@ -3,6 +3,7 @@
 
 ## Dev
 `NODE_ENV=development electron midst`
+`NODE_ENV=development electron awp-midst`
 
 ## Build App
 1. Download the latest prebuilt binary from https://github.com/electron/electron/releases
