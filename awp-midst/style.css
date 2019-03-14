@@ -1,17 +1,34 @@
 .round-icon {
-  width: 70px;
-  height: 70px;
-  border-radius: 70px;
-  background: blue;
+  width: 40px;
+  height: 40px;
+  border-radius: 80px;
+  background: #ddd;
   cursor: pointer;
+}
+
+.round-icon.active {
+  background: #999;
+}
+
+.big-round-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 80px;
+  background: #ddd;
+  cursor: pointer;
+}
+
+.big-round-icon.active {
+  background: #999;
 }
 
 .double-icon {
   width: 80px;
   height: 60px;
   border-radius: 5px;
-  background: blue;
+  background: #ddd;
   cursor: pointer;
+  opacity: 0;
 }
 
 .midst {
@@ -21,13 +38,15 @@
   width: 100vw;
   height: 100vh;
   background: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
 }
 
 .title-bar {
   width: 100vw;
   height: 25px;
-  background: red;
   -webkit-app-region: drag;
+  font-size: 12px;
 }
 
 .title-bar .title {
@@ -39,7 +58,6 @@
 .top-toolbar {
   width: 100vw;
   height: 50px;
-  background: green;
 }
 
 .logo {
@@ -50,12 +68,13 @@
   height: 85px;
   padding: 0;
   overflow: hidden;
+  opacity: 0.6;
 }
 
 .logo span {
   display: block;
   position: absolute;
-  top: -10px;
+  top: -8px;
   left: 0;
   width: 190px;
   height: 190px;
@@ -69,10 +88,21 @@
   right: 15px;
 }
 
+.italic-toggle {
+  position: absolute;
+  top: 16px;
+  right: 103px;
+}
+
+.bold-toggle {
+  position: absolute;
+  top: 16px;
+  right: 153px;
+}
+
 .editor {
   width: 100vw;
   height: calc(100vh - 25px - 50px);
-  background: yellow;
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -90,6 +120,10 @@
 .editor #editable p {
   margin: 0;
   padding: 0;
+}
+
+#editable .bold {
+  font-weight: bold;
 }
 
 .bottom-toolbar {
@@ -111,28 +145,30 @@
 }
 
 .timeline-toggles .icon.timeline-toggle {
-  background: orange;
+  background: #666;
 }
 
 .timeline-toggles .icon.drawer-toggle {
-
+  background: #ddd;
 }
 
 .timeline {
   position: fixed;
   bottom: -5px;
-  right: 15px;
+  right: 55px;
   left: calc(100vw - 80px - 15px);
   z-index: 9998;
   height: 60px;
   overflow: hidden;
   border-radius: 5px;
-  background: orange;
+  background: #666;
   transition: all 250ms;
 }
 
 .timeline.open {
+  z-index: 99999;
   left: 15px;
+  right: 15px;
 }
 
 .drawer {
@@ -144,15 +180,47 @@
   height: 60px;
   overflow: hidden;
   border-radius: 5px;
-  background: blue;
+  background: #ddd;
   transition: all 250ms;
 }
 
 .drawer.open {
-  width: 200px;
-  height: calc(100vh - 200px);
+  width: 178px;
+  height: calc(100vh - 100px);
 }
 
 .focus-mode {
 
+}
+
+.debug-layout .title-bar {
+  background: red;
+}
+
+.debug-layout .top-toolbar {
+  background: green;
+}
+
+.debug-layout .editor {
+  background: yellow;
+}
+
+.debug-layout .round-icon {
+  background: blue;
+}
+
+.debug-layout .double-icon {
+  background: blue;
+}
+
+.debug-layout .timeline-toggles .icon.timeline-toggle {
+  background: orange;
+}
+
+.debug-layout .timeline {
+  background: orange;
+}
+
+.debug-layout .drawer {
+  background: blue;
 }

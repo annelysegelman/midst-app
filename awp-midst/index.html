@@ -2,21 +2,23 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title></title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset='utf-8'>
+  <title>Midst App</title>
+  <link rel='stylesheet' href='lato.css'>
+  <link rel='stylesheet' href='style.css'>
 
-  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <script>if (typeof module === 'object') {window.module = module; module = undefined}</script>
 
-  <script src="jquery.js"></script>
-  <script src="react.development.js"></script>
-  <script src="react-dom.development.js"></script>
-  <!-- <script src="react.production.js"></script> -->
-  <!-- <script src="react-dom.production.js"></script> -->
-  <script type="text/javascript" src="rangy-core.js"></script>
-  <script type="text/javascript" src="rangy-selectionsaverestore.js"></script>
+  <script src='jquery.js'></script>
+  <script src='react.development.js'></script>
+  <script src='react-dom.development.js'></script>
+  <!-- <script src='react.production.js'></script> -->
+  <!-- <script src='react-dom.production.js'></script> -->
+  <script type='text/javascript' src='rangy-core.js'></script>
+  <script type='text/javascript' src='rangy-selectionsaverestore.js'></script>
+  <script type='text/javascript' src='rangy-classapplier.js'></script>
 
-  <script type="text/javascript">
+  <script type='text/javascript'>
     let savedSel = null
     let savedSelActiveElement = null
 
@@ -40,11 +42,34 @@
       }
     }
 
+    // let rangyBoldApplier
+
+    // function rangyToggleBold() {
+    //   rangyBoldApplier.toggleSelection()
+    // }
+
+    // function rangyApplyBold() {
+    //   document.execCommand('insertText', false, '.')
+    //   rangyBoldApplier.applyToSelection()
+    //   document.execCommand('delete')
+    // }
+
+    // function rangyRemoveBold() {
+    //   rangyBoldApplier.undoToSelection()
+    // }
+
+    // function rangyInitClassApplier() {
+    //   rangyBoldApplier = rangy.createClassApplier('bold', {
+    //     tagNames: ['span', 'a', 'b', 'img', 'p', 'em'],
+    //   })
+    // }
+
     window.e = window.React.createElement
     window.remote = window.require('electron').remote
     window.ipc = window.require('electron').ipcRenderer
     document.addEventListener('DOMContentLoaded', () => {
       rangy.init()
+      // rangyInitClassApplier()
 
       window.ReactDOM.render(
         e(Midst),
@@ -53,15 +78,15 @@
     })
   </script>
 
-  <script src="append-style.js"></script>
-  <script src="lodash.js"></script>
-  <script src="Midst.js"></script>
-  <script src="mouse-position.js"></script>
-  <script src="Slider.js"></script>
+  <script src='append-style.js'></script>
+  <script src='lodash.js'></script>
+  <script src='Midst.js'></script>
+  <script src='mouse-position.js'></script>
+  <script src='Slider.js'></script>
 </head>
 
 <body>
-  <div id="mount"></div>
+  <div id='mount'></div>
 </body>
 
 </html>

@@ -166,19 +166,49 @@ const menu = (mainWindow) => {
     ]
   }
 
-  const viewMenu = {
-    label: 'View',
+  const fontMenu = {
+    label: 'Font',
     submenu: [
-      { label: 'Activate Responsive Scrolling', click: () => mainWindow.webContents.send('menu.responsiveScrollingOn')},
-      { label: 'Deactivate Responsive Scrolling', click: () => mainWindow.webContents.send('menu.responsiveScrollingOff')},
+      { label: 'Increase Font Size', accelerator: 'Command+Plus', click: () => mainWindow.webContents.send('menu.fontSizeUp')},
+      { label: 'Decrease Font Size', accelerator: 'Command+-', click: () => mainWindow.webContents.send('menu.fontSizeDown')},
+      { label: 'Default Font Size', accelerator: 'Command+0', click: () => mainWindow.webContents.send('menu.fontSizeDefault')},
+      { type: 'separator' },
+        { label: 'Bold', click: () => mainWindow.webContents.send('menu.toggleFontFormatBold')},
+        { label: 'Italic', click: () => mainWindow.webContents.send('menu.toggleFontFormatItalid')},
+      { type: 'separator' },
+      { label: 'Font Size', submenu: [
+        { label: '10', click: () => mainWindow.webContents.send('menu.setFontSize', 10)},
+        { label: '12', click: () => mainWindow.webContents.send('menu.setFontSize', 12)},
+        { label: '14', click: () => mainWindow.webContents.send('menu.setFontSize', 14)},
+        { label: '24', click: () => mainWindow.webContents.send('menu.setFontSize', 24)},
+        { label: '36', click: () => mainWindow.webContents.send('menu.setFontSize', 36)},
+      ]},
+      { type: 'separator' },
+      { label: 'Font Family', submenu: [
+        { label: 'Helvetica', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Helvetica')},
+        { label: 'Courier', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Courier')},
+        { label: 'Times New Roman', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Times New Roman')},
+        { label: 'Arial', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Arial')},
+        { label: 'Garamond', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Garamond')},
+        { label: 'Lato', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Lato')},
+      ]},
     ]
   }
+
+  // const viewMenu = {
+  //   label: 'View',
+  //   submenu: [
+  //     { label: 'Activate Cursor Following', click: () => mainWindow.webContents.send('menu.responsiveScrollingOn')},
+  //     { label: 'Deactivate Responsive Scrolling', click: () => mainWindow.webContents.send('menu.responsiveScrollingOff')},
+  //   ]
+  // }
 
   return [
     appMenu,
     fileMenu,
     editMenu,
-    viewMenu,
+    fontMenu,
+    // viewMenu,
   ]
 }
 
