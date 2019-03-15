@@ -176,14 +176,6 @@ const menu = (mainWindow) => {
         { label: 'Bold', click: () => mainWindow.webContents.send('menu.toggleFontFormatBold')},
         { label: 'Italic', click: () => mainWindow.webContents.send('menu.toggleFontFormatItalid')},
       { type: 'separator' },
-      { label: 'Font Size', submenu: [
-        { label: '10', click: () => mainWindow.webContents.send('menu.setFontSize', 10)},
-        { label: '12', click: () => mainWindow.webContents.send('menu.setFontSize', 12)},
-        { label: '14', click: () => mainWindow.webContents.send('menu.setFontSize', 14)},
-        { label: '24', click: () => mainWindow.webContents.send('menu.setFontSize', 24)},
-        { label: '36', click: () => mainWindow.webContents.send('menu.setFontSize', 36)},
-      ]},
-      { type: 'separator' },
       { label: 'Font Family', submenu: [
         { label: 'Helvetica', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Helvetica')},
         { label: 'Courier', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Courier')},
@@ -198,12 +190,21 @@ const menu = (mainWindow) => {
   const viewMenu = {
     label: 'View',
     submenu: [
-      { label: 'Activate Cursor Following', click: () => mainWindow.webContents.send('menu.responsiveScrollingOn')},
-      { label: 'Deactivate Responsive Scrolling', click: () => mainWindow.webContents.send('menu.responsiveScrollingOff')},
+      { label: 'Focus Mode', click: () => mainWindow.webContents.send('menu.toggleFocusMode')},
+      { label: 'Cursor Following', click: () => mainWindow.webContents.send('menu.editorToggleCursorFollowing')},
       { type: 'separator' },
-      { label: 'Activate Focus Mode', click: () => mainWindow.webContents.send('menu.focusModeOn')},
-      { label: 'Deactivate Focus Mode', click: () => mainWindow.webContents.send('menu.focusModeOff')},
-    ]
+      { label: 'Increase Zoom', accelerator: 'Command+Plus', click: () => mainWindow.webContents.send('menu.fontSizeUp')},
+      { label: 'Decrease Zoom', accelerator: 'Command+-', click: () => mainWindow.webContents.send('menu.fontSizeDown')},
+      { label: 'Default Zoom', accelerator: 'Command+0', click: () => mainWindow.webContents.send('menu.fontSizeDefault')},
+      { type: 'separator' },
+      { label: 'Zoom Level', submenu: [
+        { label: 'Tiny', click: () => mainWindow.webContents.send('menu.setFontSize', 10)},
+        { label: 'Small', click: () => mainWindow.webContents.send('menu.setFontSize', 12)},
+        { label: 'Medium', click: () => mainWindow.webContents.send('menu.setFontSize', 14)},
+        { label: 'Large', click: () => mainWindow.webContents.send('menu.setFontSize', 24)},
+        { label: 'Extra Large', click: () => mainWindow.webContents.send('menu.setFontSize', 36)},
+      ]}
+    ],
   }
 
   return [
