@@ -26,12 +26,18 @@
 }
 
 .double-icon {
-  width: 80px;
+  width: 90px;
   height: 60px;
   border-radius: 5px;
-  background: #ddd;
   cursor: pointer;
-  opacity: 0;
+}
+
+.double-icon .round-icon {
+  float: left;
+}
+
+.double-icon .round-icon:first-child {
+  margin-right: 10px;
 }
 
 .midst {
@@ -122,55 +128,52 @@
   overflow: hidden;
 }
 
-.timeline-toggles .icon {
-  display: inline-block;
-  width: 50%;
-  height: 100%;
-}
-
-.timeline-toggles .icon.timeline-toggle {
-  background: #666;
-}
-
-.timeline-toggles .icon.drawer-toggle {
-  background: #ddd;
+.timeline-toggles .round-icon {
+  background: transparent;
+  color: #FF91AF;
 }
 
 .timeline {
   position: fixed;
-  bottom: -5px;
-  right: 55px;
-  left: calc(100vw - 80px - 15px);
+  bottom: 15px;
+  right: 65px;
+  left: calc(100vw - 80px - 25px);
   z-index: 9998;
-  height: 60px;
+  height: 40px;
+  border-radius: 40px;
   overflow: hidden;
-  border-radius: 5px;
-  background: #666;
+  background: #FF91AF;
   transition: all 250ms;
+  opacity: 0;
 }
 
 .timeline.open {
   z-index: 99999;
   left: 15px;
   right: 15px;
+  opacity: 1;
+  border-radius: 5px;
 }
 
 .drawer {
   position: fixed;
-  bottom: -5px;
+  bottom: 15px;
   right: 15px;
-  width: 80px;
-  z-index: 9997;
-  height: 60px;
+  z-index: 9998;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
   overflow: hidden;
-  border-radius: 5px;
-  background: #ddd;
+  background: #FF91AF;
   transition: all 250ms;
+  opacity: 0;
 }
 
 .drawer.open {
-  width: 178px;
+  width: 239px;
   height: calc(100vh - 100px);
+  opacity: 1;
+  border-radius: 5px;
 }
 
 .top-toolbar .toolbar-icons {

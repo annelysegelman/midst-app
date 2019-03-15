@@ -425,11 +425,11 @@ class Midst extends React.Component {
           e('div', {
             className: 'round-icon timeline-toggle' + (appTimelineMode ? ' active' : ''),
             onClick: this.toggleTimeline,
-          }),
+          }, 'T'),
           e('div', {
             className: 'round-icon drawer-toggle' + (appDrawerOpen ? ' active' : ''),
             onClick: this.toggleDrawer,
-          }),
+          }, 'D'),
         ),
       )
     )
