@@ -158,9 +158,9 @@ class Midst extends React.Component {
 
   editorOnBlur() {
     saveSelection()
-    setTimeout(() => {
-      // restoreSelection()
-    }, 1)
+    // setTimeout(() => {
+    //   // restoreSelection()
+    // }, 1)
   }
 
   editorOnPaste(evt) {
@@ -279,6 +279,7 @@ class Midst extends React.Component {
   }
 
   toggleFontFormatBold() {
+    this.$editable.focus()
     document.execCommand('bold')
     this.setState({ editorFormatBold: !this.state.editorFormatBold })
   }
@@ -287,24 +288,36 @@ class Midst extends React.Component {
 // Other Methods
 // ================================================================================
   detectFormatting(evt) {
+    if (this.$editable.text().length < 2) return
+
     if (evt) {
       if (evt.target.tagName === 'B') {
         this.setState({ editorFormatBold: true })
       }
 
-      if (evt.target.tagName === 'P') {
-        this.setState({ editorFormatBold: false })
+      else if (evt.target.tagName === 'P') {
+        const lastChild = _.last(evt.target.childNodes)
+
+        if (lastChild && lastChild.tagName !== 'B') {
+          this.setState({ editorFormatBold: false })
+        }
+
+        else {
+          this.setState({ editorFormatBold: true })
+        }
       }
     }
 
     else {
       const $boldElement = $(window.getSelection().anchorNode).parents('b')
+      const $lineElement = $(window.getSelection().anchorNode).parents('p')
+      const lineElementText = $lineElement.text()
 
       if ($boldElement.length) {
         this.setState({ editorFormatBold: true })
       }
 
-      else {
+      else if (lineElementText && lineElementText.length) {
         this.setState({ editorFormatBold: false })
       }
     }
