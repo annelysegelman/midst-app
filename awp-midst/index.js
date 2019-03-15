@@ -195,20 +195,23 @@ const menu = (mainWindow) => {
     ]
   }
 
-  // const viewMenu = {
-  //   label: 'View',
-  //   submenu: [
-  //     { label: 'Activate Cursor Following', click: () => mainWindow.webContents.send('menu.responsiveScrollingOn')},
-  //     { label: 'Deactivate Responsive Scrolling', click: () => mainWindow.webContents.send('menu.responsiveScrollingOff')},
-  //   ]
-  // }
+  const viewMenu = {
+    label: 'View',
+    submenu: [
+      { label: 'Activate Cursor Following', click: () => mainWindow.webContents.send('menu.responsiveScrollingOn')},
+      { label: 'Deactivate Responsive Scrolling', click: () => mainWindow.webContents.send('menu.responsiveScrollingOff')},
+      { type: 'separator' },
+      { label: 'Activate Focus Mode', click: () => mainWindow.webContents.send('menu.focusModeOn')},
+      { label: 'Deactivate Focus Mode', click: () => mainWindow.webContents.send('menu.focusModeOff')},
+    ]
+  }
 
   return [
     appMenu,
     fileMenu,
     editMenu,
     fontMenu,
-    // viewMenu,
+    viewMenu,
   ]
 }
 

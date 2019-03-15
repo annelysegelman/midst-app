@@ -37,7 +37,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #fff;
+  background: #FFF5EE;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
 }
@@ -71,15 +71,14 @@
   opacity: 0.6;
 }
 
-.logo span {
+.logo svg {
   display: block;
   position: absolute;
-  top: -8px;
+  top: -52px;
   left: 0;
   width: 190px;
   height: 190px;
-  background: url(./m_heavyweight.svg) no-repeat;
-  background-size: contain;
+  fill: red;
 }
 
 .focus-mode-toggle {
@@ -189,8 +188,20 @@
   height: calc(100vh - 100px);
 }
 
-.focus-mode {
+.title-bar,
+.top-toolbar,
+.bottom-toolbar,
+.timeline,
+.drawer {
+  transition: all 250ms;
+}
 
+.focus-mode .title-bar,
+.focus-mode .top-toolbar,
+.focus-mode .bottom-toolbar,
+.focus-mode .timeline,
+.focus-mode .drawer {
+  opacity: 0;
 }
 
 .debug-layout .title-bar {
