@@ -155,8 +155,8 @@ const menu = (mainWindow) => {
   const editMenu = {
     label: 'Edit',
     submenu: [
-      { label: 'Step Back', accelerator: 'Cmd+Z', click: () => mainWindow.webContents.send('menu.undo')},
-      { label: 'Step Forward', accelerator: 'Shift+Cmd+Z', click: () => mainWindow.webContents.send('menu.redo')},
+      {role: 'undo'},
+      {role: 'redo'},
       { type: 'separator' },
       { label: 'Cut', accelerator: 'Command+X', selector: 'cut:' },
       { label: 'Copy', accelerator: 'Command+C', selector: 'copy:' },
