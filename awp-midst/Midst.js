@@ -47,6 +47,7 @@ class Midst extends React.Component {
   this.editorOnKeyDown = this.editorOnKeyDown.bind(this)
   this.editorOnMouseDown = this.editorOnMouseDown.bind(this)
   this.editorOnPaste = this.editorOnPaste.bind(this)
+  this.exitTimelineMode = this.exitTimelineMode.bind(this)
   this.fontSizeDefault = this.fontSizeDefault.bind(this)
   this.fontSizeDown = this.fontSizeDown.bind(this)
   this.fontSizeUp = this.fontSizeUp.bind(this)
@@ -303,6 +304,14 @@ class Midst extends React.Component {
     })
   }
 
+  exitTimelineMode(refocus) {
+    this.setState({ appTimelineMode: false }, () => {
+      refocus && setTimeout(() => {
+        this.$editable.focus()
+      }, 1)
+    })
+  }
+
   fontSizeDown() {
     const { editorFontSize } = this.state
     const index = this.editorFontSizes.indexOf(editorFontSize)
@@ -547,7 +556,8 @@ class Midst extends React.Component {
       },
         e('div', {
           id: 'editable',
-          contentEditable: appTimelineMode || appDrawerOpen ? false : true,
+          contentEditable: true,
+          onClick: this.exitTimelineMode,
         }),
       )
     )
