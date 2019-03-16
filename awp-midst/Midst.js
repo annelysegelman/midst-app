@@ -190,23 +190,37 @@ class Midst extends React.Component {
 
   editorOnPaste(evt) {
     this.detectFormatting()
-    // evt.preventDefault()
+    evt.preventDefault()
 
-    // let content
+    if (evt.originalEvent.clipboardData) {
+      const htmlContent = evt.originalEvent.clipboardData.getData('text/html')
+      const textContent = evt.originalEvent.clipboardData.getData('text/plain')
+      const contentIsHtml = htmlContent.length
+      let content = contentIsHtml ? htmlContent : textContent
 
-    // if (window.clipboardData) {
-    //   content = window.clipboardData.getData('Text')
 
-    //   if (window.getSelection) {
-    //     const selObj = window.getSelection()
-    //     const selRange = selObj.getRangeAt(0)
-    //     selRange.deleteContents()
-    //     selRange.insertNode(document.createTextNode(content))
-    //   }
-    // } else if (evt.originalEvent.clipboardData) {
-    //   content = (evt.originalEvent || evt).clipboardData.getData('text/plain')
-    //   document.execCommand('insertText', false, content)
-    // }
+      if (contentIsHtml) {
+        if (content.includes('<body>')) {
+          content = content.split('<body>')[1].split('</body>')[0]
+        }
+
+        const o = 'HTML_OPEN_TAG'
+        const c = 'HTML_CLOSE_TAG'
+
+        content = content.replace(/<p[ a-zA-Z0-9="':;-]*>/g, o + 'p' + c)
+        content = content.replace(/<\/p>/g, o + '/p' + c)
+        content = content.replace(/<b>/g, o + 'b' + c)
+        content = content.replace(/<\/b>/g, o + '/b' + c)
+        content = content.replace(/<i>/g, o + 'i' + c)
+        content = content.replace(/<\/i>/g, o + '/i' + c)
+        content = content.replace(/(<([^>]+)>)/ig, '')
+
+        content = content.replace(/HTML_OPEN_TAG/g, '<')
+        content = content.replace(/HTML_CLOSE_TAG/g, '>')
+      }
+
+      document.execCommand('insertHtml', false, content)
+    }
   }
 
   editorOnKeyDown(evt) {
