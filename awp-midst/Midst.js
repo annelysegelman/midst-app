@@ -265,6 +265,12 @@ class Midst extends React.Component {
           appDrawerOpen: false,
         })
       }
+
+      if (!this.state.appTimelineMode) {
+        setTimeout(() => {
+          this.$editable.focus()
+        }, 1)
+      }
     })
   }
 
@@ -287,7 +293,14 @@ class Midst extends React.Component {
   }
 
   toggleFocusMode() {
-    this.setState({ appFocusMode: !this.state.appFocusMode })
+    this.setState({ appFocusMode: !this.state.appFocusMode }, () => {
+      if (this.state.appFocusMode && this.state.appTimelineMode) {
+        this.setState({ appTimelineMode: false })
+        setTimeout(() => {
+          this.$editable.focus()
+        }, 1)
+      }
+    })
   }
 
   fontSizeDown() {
