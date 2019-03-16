@@ -189,7 +189,6 @@ class Midst extends React.Component {
   }
 
   editorOnPaste(evt) {
-    this.detectFormatting()
     evt.preventDefault()
 
     if (evt.originalEvent.clipboardData) {
@@ -207,20 +206,24 @@ class Midst extends React.Component {
         const o = 'HTML_OPEN_TAG'
         const c = 'HTML_CLOSE_TAG'
 
-        content = content.replace(/<p[ a-zA-Z0-9="':;-]*>/g, o + 'p' + c)
+        content = content.replace(/<p[ a-zA-Z0-9="':;,\-\(\)]*>/g, o + 'p' + c)
         content = content.replace(/<\/p>/g, o + '/p' + c)
-        content = content.replace(/<b>/g, o + 'b' + c)
+        content = content.replace(/<b[ a-zA-Z0-9="':;,\-\(\)]*>/g, o + 'b' + c)
         content = content.replace(/<\/b>/g, o + '/b' + c)
-        content = content.replace(/<i>/g, o + 'i' + c)
+        content = content.replace(/<i[ a-zA-Z0-9="':;,\-\(\)]*>/g, o + 'i' + c)
         content = content.replace(/<\/i>/g, o + '/i' + c)
         content = content.replace(/(<([^>]+)>)/ig, '')
 
         content = content.replace(/HTML_OPEN_TAG/g, '<')
         content = content.replace(/HTML_CLOSE_TAG/g, '>')
       }
-
-      document.execCommand('insertHtml', false, content)
     }
+
+    document.execCommand('insertHtml', false, content)
+
+    setTimeout(() => {
+      this.detectFormatting()
+    }, 1)
   }
 
   editorOnKeyDown(evt) {
