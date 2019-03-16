@@ -40,6 +40,7 @@ class Midst extends React.Component {
 // ================================================================================
 // Bound Methods
 // ================================================================================
+  this.appOnKeyDown = this.appOnKeyDown.bind(this)
   this.editorOnBlur = this.editorOnBlur.bind(this)
   this.editorOnInput = this.editorOnInput.bind(this)
   this.editorOnKeyDown = this.editorOnKeyDown.bind(this)
@@ -50,6 +51,7 @@ class Midst extends React.Component {
   this.fontSizeUp = this.fontSizeUp.bind(this)
   this.setFontFamily = this.setFontFamily.bind(this)
   this.setFontSize = this.setFontSize.bind(this)
+  this.sliderOnChange = this.sliderOnChange.bind(this)
   this.toggleDrawer = this.toggleDrawer.bind(this)
   this.toggleFontFormatBold = this.toggleFontFormatBold.bind(this)
   this.toggleFocusMode = this.toggleFocusMode.bind(this)
@@ -85,8 +87,8 @@ class Midst extends React.Component {
       ipc.on('menu.fontSizeUp', this.fontSizeUp)
       ipc.on('menu.setFontFamily', this.setFontFamily)
       ipc.on('menu.setFontSize', this.setFontSize)
-      ipc.on('menu.toggleFontFormatBold', this.toggleFontFormatBold)
       ipc.on('menu.toggleFocusMode', this.toggleFocusMode)
+      ipc.on('menu.toggleFontFormatBold', this.toggleFontFormatBold)
       // ipc.on('menu.toggleFontFormatItalic', this.toggleFontFormatItalic)
       // ipc.on('menu.newFile', this.newFile)
       // ipc.on('menu.openFile', this.openFile)
@@ -95,6 +97,10 @@ class Midst extends React.Component {
 
       ipc.on('fileOpened', (evt, fileData) => this.load(fileData))
     }
+
+    this.$app = $('.midst')
+
+    this.$app.on('keydown', this.appOnKeyDown)
   }
 
   componentDidUpdate() {
@@ -108,6 +114,7 @@ class Midst extends React.Component {
     this.$editable.off('keyup')
     this.$editable.off('mousedown')
     this.$editable.off('paste')
+    this.$app.off('keydown')
   }
 
 // ================================================================================
@@ -143,6 +150,20 @@ class Midst extends React.Component {
 // ================================================================================
 // Handlers
 // ================================================================================
+  appOnKeyDown(evt) {
+    const { appTimelineMode, editorTimelineIndex } = this.state
+
+    if (appTimelineMode) {
+      if (evt.keyCode === 37) {
+        this.setPos(editorTimelineIndex - 1)
+      }
+
+      else if (evt.keyCode === 39) {
+        this.setPos(editorTimelineIndex + 1)
+      }
+    }
+  }
+
   editorOnKeyUp(evt) {
     if (evt.keyCode === 13) {
       // Use <p>'s instead of <div>'s.
@@ -227,17 +248,17 @@ class Midst extends React.Component {
     this.setState({
       appDrawerOpen: !this.state.appDrawerOpen,
     }, () => {
-      if (this.state.appDrawerOpen) {
-        this.setState({
-          appTimelineMode: true,
-        })
-      }
+      // if (this.state.appDrawerOpen) {
+      //   this.setState({
+      //     appTimelineMode: true,
+      //   })
+      // }
 
-      else {
-        this.setState({
-          appTimelineMode: false,
-        })
-      }
+      // else {
+      //   this.setState({
+      //     appTimelineMode: false,
+      //   })
+      // }
     })
   }
 
@@ -282,6 +303,11 @@ class Midst extends React.Component {
     this.$editable.focus()
     document.execCommand('bold')
     this.setState({ editorFormatBold: !this.state.editorFormatBold })
+  }
+
+  sliderOnChange(val) {
+    const index = Math.ceil(this.state.editorTimelineFrames.length * val)
+    this.setPos(index)
   }
 
 // ================================================================================
@@ -348,7 +374,16 @@ class Midst extends React.Component {
     })
 
     this.setState({
+      editorTimelineIndex: editorTimelineFrames.length,
       editorTimelineFrames: editorTimelineFrames.concat([nextFrame])
+    })
+  }
+
+  setPos(index) {
+    this.setState({ editorTimelineIndex: index }, () => {
+      if (this.state.editorTimelineFrames[index]) {
+        this.$editable.html(this.state.editorTimelineFrames[index].content)
+      }
     })
   }
 
@@ -428,7 +463,7 @@ class Midst extends React.Component {
   }
 
   renderBottomToolbar() {
-    const { appTimelineMode, appDrawerOpen } = this.state
+    const { appTimelineMode } = this.state
 
     return (
       e('div', {
@@ -436,27 +471,57 @@ class Midst extends React.Component {
       },
         e('div', { className: 'double-icon timeline-toggles' },
           e('div', {
-            className: 'round-icon timeline-toggle' + (appTimelineMode ? ' active' : ''),
+            className: 'round-icon drawer-toggle',
             onClick: this.toggleTimeline,
           }, 'T'),
-          e('div', {
-            className: 'round-icon drawer-toggle' + (appDrawerOpen ? ' active' : ''),
-            onClick: this.toggleDrawer,
-          }, 'D'),
         ),
       )
     )
   }
 
   renderTimeline() {
-    const { appTimelineMode }  = this.state
+    const { appTimelineMode, editorTimelineIndex, editorTimelineFrames } = this.state
+    const value = editorTimelineIndex / editorTimelineFrames.length
 
     return (
       e('div', {
         className: 'timeline' + (appTimelineMode ? ' open' : ''),
-        onClick: () => this.toggleTimeline(),
+        // onClick: () => this.toggleTimeline(),
       },
-
+        e(Slider, {
+          id: 'midst-slider',
+          hideCursor: false,
+          controlled: true,
+          readOnly: false, // creatingDraftMarker,
+          value,
+          onChange: this.sliderOnChange,
+          onMouseDown: this.pause,
+        }),
+        e('div', {
+          className: 'round-icon timeline-button-1',
+          onClick: () => {
+            this.setState({
+              appTimelineMode: false,
+              appDrawerOpen: false,
+            })
+          },
+          style: {
+            backgroundColor: 'red',
+          }
+        }, 'x'),
+        e('div', {
+          className: 'round-icon timeline-button-2',
+          style: {
+            backgroundColor: 'red',
+          },
+          onClick: this.toggleDrawer,
+        }, '='),
+        e('div', {
+          className: 'round-icon timeline-button-3',
+          style: {
+            backgroundColor: 'red',
+          }
+        }, '>'),
       )
     )
   }

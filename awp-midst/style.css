@@ -33,11 +33,7 @@
 }
 
 .double-icon .round-icon {
-  float: left;
-}
-
-.double-icon .round-icon:first-child {
-  margin-right: 10px;
+  float: right;
 }
 
 .midst {
@@ -136,7 +132,7 @@
 .timeline {
   position: fixed;
   bottom: 15px;
-  right: 65px;
+  right: 15px;
   left: calc(100vw - 80px - 25px);
   z-index: 9998;
   height: 40px;
@@ -153,6 +149,24 @@
   right: 15px;
   opacity: 1;
   border-radius: 5px;
+}
+
+.timeline .timeline-button-1 {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.timeline .timeline-button-2 {
+  position: absolute;
+  top: 0;
+  right: 50px;
+}
+
+.timeline .timeline-button-3 {
+  position: absolute;
+  top: 0;
+  right: 100px;
 }
 
 .drawer {
@@ -202,6 +216,39 @@
 .focus-mode .timeline,
 .focus-mode .drawer {
   opacity: 0;
+}
+
+.timeline .hem-slider {
+  width: calc(100% - 180px);
+  margin: 20px 0 0 20px;
+  height: 2px;
+  border-radius: 3px;
+  background: gray;
+  border: 0;
+}
+
+.timeline .hem-slider .hem-slider__progress {
+  position: relative;
+  border-radius: 3px;
+}
+
+.timeline .hem-slider .hem-slider__progress::after {
+  display: block;
+  position: absolute;
+  right: -4px;
+  top: -6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  border: 2px solid black;
+  background: white;
+  content: ' ';
+  transition: all 150ms;
+  transform-origin: center;
+}
+
+.timeline .hem-slider:active .hem-slider__progress::after {
+  transform: scaleX(1.2) scaleY(1.2);
 }
 
 .debug-layout .title-bar {

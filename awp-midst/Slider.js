@@ -135,6 +135,9 @@ class Slider extends React.Component {
     const { direction, value: propsValue, controlled } = this.props
     const { value: stateValue } = this.state
     const value = controlled ? propsValue : stateValue
+
+    // console.log(propsValue)
+
     return (
       e('div', {
         className: 'hem-slider',
