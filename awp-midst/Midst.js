@@ -523,7 +523,7 @@ class Midst extends React.Component {
   }
 
   renderEditor() {
-    const { editorFontFamily, editorFontSize } = this.state
+    const { editorFontFamily, editorFontSize, appTimelineMode, appDrawerOpen } = this.state
 
     return (
       e('div', {
@@ -535,7 +535,7 @@ class Midst extends React.Component {
       },
         e('div', {
           id: 'editable',
-          contentEditable: true,
+          contentEditable: appTimelineMode || appDrawerOpen ? false : true,
         }),
       )
     )
