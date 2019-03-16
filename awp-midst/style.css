@@ -157,22 +157,22 @@
   border-radius: 5px;
 }
 
-.timeline .timeline-button-1 {
+.timeline {
+  text-align: right;
+}
+
+.timeline-controls {
   position: absolute;
   top: 0;
   right: 0;
+  height: 40px;
+  line-height: 40px;
 }
 
-.timeline .timeline-button-2 {
-  position: absolute;
-  top: 0;
-  right: 50px;
-}
-
-.timeline .timeline-button-3 {
-  position: absolute;
-  top: 0;
-  right: 100px;
+.timeline .round-icon {
+  display: inline-flex;
+  background: transparent;
+  justify-content: center;
 }
 
 .drawer {

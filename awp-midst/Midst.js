@@ -574,32 +574,25 @@ class Midst extends React.Component {
           onChange: this.sliderOnChange,
           onMouseDown: this.pause,
         }),
-        e('div', {
-          className: 'round-icon timeline-button-1',
-          onClick: () => {
-            this.setState({
-              appTimelineMode: false,
-              appDrawerOpen: false,
-            })
-          },
-          style: {
-            backgroundColor: 'red',
-          }
-        }, iconCloseX()),
-        e('div', {
-          className: 'round-icon timeline-button-2',
-          style: {
-            backgroundColor: 'red',
-          },
-          onClick: this.toggleDrawer,
-        }, iconDrawer()),
-        e('div', {
-          className: 'round-icon timeline-button-3',
-          onClick: editorPlaying ? this.pause : this.play,
-          style: {
-            backgroundColor: 'red',
-          }
-        }, iconPlay()),
+        e('div', { className: 'timeline-controls' },
+          e('div', {
+            className: 'round-icon timeline-button-3',
+            onClick: editorPlaying ? this.pause : this.play,
+          }, iconPlay()),
+          e('div', {
+            className: 'round-icon timeline-button-2',
+            onClick: this.toggleDrawer,
+          }, iconDrawer()),
+          e('div', {
+            className: 'round-icon timeline-button-1',
+            onClick: () => {
+              this.setState({
+                appTimelineMode: false,
+                appDrawerOpen: false,
+              })
+            },
+          }, iconCloseX()),
+        )
       )
     )
   }
