@@ -57,6 +57,7 @@ class Midst extends React.Component {
   this.sliderOnChange = this.sliderOnChange.bind(this)
   this.toggleDrawer = this.toggleDrawer.bind(this)
   this.toggleFontFormatBold = this.toggleFontFormatBold.bind(this)
+  this.toggleFontFormatItalic = this.toggleFontFormatItalic.bind(this)
   this.toggleFocusMode = this.toggleFocusMode.bind(this)
   this.toggleTimeline = this.toggleTimeline.bind(this)
 
@@ -209,7 +210,7 @@ class Midst extends React.Component {
   }
 
   editorOnKeyDown(evt) {
-    const { editorFormatBold } = this.state
+    const { editorFormatBold, editorFormatItalic } = this.state
 
     this.detectFormatting()
 
@@ -227,6 +228,10 @@ class Midst extends React.Component {
     if (evt.metaKey) {
       if (evt.keyCode === 66) {
         this.setState({ editorFormatBold: !editorFormatBold })
+      }
+
+      if (evt.keyCode === 73) {
+        this.setState({ editorFormatItalic: !editorFormatItalic })
       }
     }
   }
@@ -308,6 +313,12 @@ class Midst extends React.Component {
     this.setState({ editorFormatBold: !this.state.editorFormatBold })
   }
 
+  toggleFontFormatItalic() {
+    this.$editable.focus()
+    document.execCommand('italic')
+    this.setState({ editorFormatItalic: !this.state.editorFormatItalic })
+  }
+
   sliderOnChange(val) {
     const index = Math.ceil(this.state.editorTimelineFrames.length * val)
     this.setPos(index)
@@ -316,38 +327,55 @@ class Midst extends React.Component {
 // ================================================================================
 // Other Methods
 // ================================================================================
+  hasBoldFormatting($el) {
+    return (
+      $el.prop('tagName') === 'B'
+        || $el.parents('b').length
+        || $el.children('b').length
+    )
+  }
+
+  hasItalicFormatting($el) {
+    return (
+      $el.prop('tagName') === 'I'
+        || $el.parents('i').length
+        || $el.children('i').length
+    )
+  }
+
   detectFormatting(evt) {
     if (this.$editable.text().length < 2) return
 
     if (evt) {
-      if (evt.target.tagName === 'B') {
-        this.setState({ editorFormatBold: true })
-      }
+      const $target = $(evt.target)
+      const $subject = $target.prop('tagName') === 'P'
+        ? $target.children().last()
+        : $target
 
-      else if (evt.target.tagName === 'P') {
-        const lastChild = _.last(evt.target.childNodes)
-
-        if (lastChild && lastChild.tagName !== 'B') {
-          this.setState({ editorFormatBold: false })
-        }
-
-        else {
-          this.setState({ editorFormatBold: true })
-        }
-      }
+      this.setState({
+        editorFormatBold: this.hasBoldFormatting($subject),
+        editorFormatItalic: this.hasItalicFormatting($subject),
+      })
     }
 
     else {
-      const $boldElement = $(window.getSelection().anchorNode).parents('b')
+      const $subject = $(window.getSelection().anchorNode)
       const $lineElement = $(window.getSelection().anchorNode).parents('p')
       const lineElementText = $lineElement.text()
+      const hasFormatting = this.hasBoldFormatting($subject) || this.hasItalicFormatting($subject)
 
-      if ($boldElement.length) {
-        this.setState({ editorFormatBold: true })
+      if (hasFormatting) {
+        this.setState({
+          editorFormatBold: this.hasBoldFormatting($subject),
+          editorFormatItalic: this.hasItalicFormatting($subject),
+        })
       }
 
       else if (lineElementText && lineElementText.length) {
-        this.setState({ editorFormatBold: false })
+        this.setState({
+          editorFormatBold: false,
+          editorFormatBold: false
+        })
       }
     }
   }
@@ -458,11 +486,11 @@ class Midst extends React.Component {
             onClick: this.toggleFocusMode,
           }, 'F'),
           e('div', {
-            className: 'round-icon italic-toggle' + (editorFormatItalic ? ' active' : ''),
+            className: 'round-icon',
             onClick: this.fontSizeUp,
           }, '+'),
           e('div', {
-            className: 'round-icon italic-toggle' + (editorFormatItalic ? ' active' : ''),
+            className: 'round-icon',
             onClick: this.fontSizeDown,
           }, '-'),
           e('div', {
@@ -504,14 +532,14 @@ class Midst extends React.Component {
       e('div', {
         className: 'bottom-toolbar'
       },
-        editorTimelineFrames.length > 50 ?
+        // editorTimelineFrames.length > 50 ?
           e('div', { className: 'double-icon timeline-toggles' },
             e('div', {
               className: 'round-icon drawer-toggle',
               onClick: this.toggleTimeline,
             }, 'T'),
           )
-          : null,
+          // : null,
       )
     )
   }

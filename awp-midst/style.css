@@ -96,7 +96,7 @@
 .editor #editable {
   width: calc(100% - 140px);
   height: calc(100% - 40px);
-  padding: 40px 70px 0 70px;
+  margin: 40px 70px 0 70px;
 }
 
 .editor #editable:focus {
