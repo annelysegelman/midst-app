@@ -377,6 +377,7 @@ class Midst extends React.Component {
     })
 
     this.setState({
+      appTimelineMode: false,
       editorTimelineIndex: editorTimelineFrames.length,
       editorTimelineFrames: editorTimelineFrames.concat([nextFrame])
     })
