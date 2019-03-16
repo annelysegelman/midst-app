@@ -7,6 +7,13 @@
   opacity: 0.3;
   text-align: center;
   line-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.round-icon svg {
+  display: inline;
 }
 
 .round-icon.active {
@@ -29,7 +36,6 @@
   width: 90px;
   height: 60px;
   border-radius: 5px;
-  cursor: pointer;
 }
 
 .double-icon .round-icon {
@@ -216,6 +222,18 @@
 .focus-mode .timeline,
 .focus-mode .drawer {
   opacity: 0;
+}
+
+.timeline-toggle {
+  opacity: 0;
+  transition: opacity 250ms;
+  pointer-events: none;
+}
+
+.timeline-toggle.visible {
+  opacity: 1;
+  pointer-events: all;
+  cursor: pointer;
 }
 
 .timeline .hem-slider {
