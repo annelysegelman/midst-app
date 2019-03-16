@@ -32,6 +32,7 @@ class Midst extends React.Component {
       editorFormatBold: false,
       editorFormatItalic: false,
       editorNumLines: 0,
+      editorPlaying: false,
       editorTimelineFrames: [],
       editorTimelineIndex: 0,
       editorTitle: 'Untitled',
@@ -49,6 +50,8 @@ class Midst extends React.Component {
   this.fontSizeDefault = this.fontSizeDefault.bind(this)
   this.fontSizeDown = this.fontSizeDown.bind(this)
   this.fontSizeUp = this.fontSizeUp.bind(this)
+  this.pause = this.pause.bind(this)
+  this.play = this.play.bind(this)
   this.setFontFamily = this.setFontFamily.bind(this)
   this.setFontSize = this.setFontSize.bind(this)
   this.sliderOnChange = this.sliderOnChange.bind(this)
@@ -387,6 +390,37 @@ class Midst extends React.Component {
     })
   }
 
+  play() {
+    if (this.state.editorTimelineIndex >= this.state.editorTimelineFrames.length - 1) {
+      this.setPos(0)
+    }
+
+    this.setState({ editorPlaying: true }, this.autoScrub)
+  }
+
+  pause() {
+    this.setState({ editorPlaying: false })
+  }
+
+  autoScrub() {
+    const { editorPlaying, playbackSpeed, editorTimelineIndex, editorTimelineFrames } = this.state
+
+    if (!editorPlaying) return
+
+    if (editorTimelineIndex === undefined || editorTimelineIndex >= editorTimelineFrames.length) {
+      this.setState({ editorPlaying: false })
+      return
+    }
+
+    const advanceBy = playbackSpeed >= 1 ? playbackSpeed * 2 : 1
+    const timeout = playbackSpeed < 1 ? (1 / playbackSpeed) * 50 : 1
+
+    setTimeout(() => {
+      this.setPos(editorTimelineIndex + advanceBy)
+      this.autoScrub()
+    }, timeout)
+  }
+
 // ================================================================================
 // Render Helpers
 // ================================================================================
@@ -482,7 +516,7 @@ class Midst extends React.Component {
   }
 
   renderTimeline() {
-    const { appTimelineMode, editorTimelineIndex, editorTimelineFrames } = this.state
+    const { appTimelineMode, editorTimelineIndex, editorTimelineFrames, editorPlaying } = this.state
     const value = editorTimelineIndex / editorTimelineFrames.length
 
     return (
@@ -520,6 +554,7 @@ class Midst extends React.Component {
         }, '='),
         e('div', {
           className: 'round-icon timeline-button-3',
+          onClick: editorPlaying ? this.pause : this.play,
           style: {
             backgroundColor: 'red',
           }
