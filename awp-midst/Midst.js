@@ -463,18 +463,20 @@ class Midst extends React.Component {
   }
 
   renderBottomToolbar() {
-    const { appTimelineMode } = this.state
+    const { editorTimelineFrames } = this.state
 
     return (
       e('div', {
         className: 'bottom-toolbar'
       },
-        e('div', { className: 'double-icon timeline-toggles' },
-          e('div', {
-            className: 'round-icon drawer-toggle',
-            onClick: this.toggleTimeline,
-          }, 'T'),
-        ),
+        editorTimelineFrames.length > 50 ?
+          e('div', { className: 'double-icon timeline-toggles' },
+            e('div', {
+              className: 'round-icon drawer-toggle',
+              onClick: this.toggleTimeline,
+            }, 'T'),
+          )
+          : null,
       )
     )
   }
