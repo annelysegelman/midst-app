@@ -197,7 +197,6 @@ class Midst extends React.Component {
       const contentIsHtml = htmlContent.length
       let content = contentIsHtml ? htmlContent : textContent
 
-
       if (contentIsHtml) {
         if (content.includes('<body>')) {
           content = content.split('<body>')[1].split('</body>')[0]
@@ -217,9 +216,9 @@ class Midst extends React.Component {
         content = content.replace(/HTML_OPEN_TAG/g, '<')
         content = content.replace(/HTML_CLOSE_TAG/g, '>')
       }
-    }
 
-    document.execCommand('insertHtml', false, content)
+      document.execCommand('insertHtml', false, content)
+    }
 
     setTimeout(() => {
       this.detectFormatting()
@@ -549,14 +548,14 @@ class Midst extends React.Component {
       e('div', {
         className: 'bottom-toolbar'
       },
-        // editorTimelineFrames.length > 50 ?
+        editorTimelineFrames.length > 50 ?
           e('div', { className: 'double-icon timeline-toggles' },
             e('div', {
               className: 'round-icon drawer-toggle',
               onClick: this.toggleTimeline,
             }, 'T'),
           )
-          // : null,
+          : null,
       )
     )
   }
