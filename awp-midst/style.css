@@ -92,6 +92,18 @@
   fill: #FF91AF;
 }
 
+.focus-mode-toggle {
+
+}
+
+.focus-mode-toggle.active {
+  background: transparent;
+}
+
+.focus-mode-toggle.active svg {
+  stroke: blue;
+}
+
 .editor {
   width: 100vw;
   height: calc(100vh - 25px - 65px);
@@ -209,7 +221,8 @@
 }
 
 .title-bar,
-.top-toolbar,
+.logo,
+.toolbar-icons div:not(.focus-mode-toggle),
 .bottom-toolbar,
 .timeline,
 .drawer {
@@ -217,7 +230,8 @@
 }
 
 .focus-mode .title-bar,
-.focus-mode .top-toolbar,
+.focus-mode .logo,
+.focus-mode .toolbar-icons div:not(.focus-mode-toggle),
 .focus-mode .bottom-toolbar,
 .focus-mode .timeline,
 .focus-mode .drawer {
