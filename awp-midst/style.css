@@ -58,6 +58,7 @@
   height: 25px;
   -webkit-app-region: drag;
   font-size: 12px;
+  opacity: 0.3;
 }
 
 .title-bar .title {

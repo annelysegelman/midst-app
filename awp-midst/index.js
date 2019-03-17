@@ -100,6 +100,8 @@ const bootstrap = (menuItems, cb) => {
       titleBarStyle: 'hidden',
     })
 
+    mainWindow.setMinimumSize(640, 640)
+
     mainWindow.loadURL(`file://${__dirname}/index.html`)
 
     if (process.env.NODE_ENV === 'development') {
