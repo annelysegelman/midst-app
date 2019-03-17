@@ -16,32 +16,42 @@ class Midst extends React.Component {
 // ================================================================================#
   this.editorFontSizes = [10, 12, 14, 24, 36]
   this.defaultFontSize = 14
+  this.FILE_EXT = '.midst'
 
 // ================================================================================
 // Initial State
 // ================================================================================
-    this.state = {
-      appCursorFollowing: true,
-      appDrawerOpen: false,
-      appFocusMode: false,
-      appTimelineMode: false,
-      editorCachedSelection: [],
-      editorDraftMarkers: [],
-      editorFontFamily: 'Helvetica',
-      editorFontSize: this.defaultFontSize,
-      editorFormatBold: false,
-      editorFormatItalic: false,
-      editorNumLines: 0,
-      editorPlaying: false,
-      editorTimelineFrames: [],
-      editorTimelineIndex: 0,
-      editorTitle: 'Untitled',
-    }
+  this.initialState = {
+    appCursorFollowing: true,
+    appDrawerOpen: false,
+    appFileAbsPath: false,
+    appFocusMode: false,
+    appTimelineMode: false,
+    appTitle: 'Untitled',
+    editorAuthor: 'Anonymous',
+    editorCachedSelection: [],
+    editorCreatingDraftMarker: false,
+    editorDraftMarkers: [],
+    editorFontFamily: 'Helvetica',
+    editorFontSize: this.defaultFontSize,
+    editorFormatBold: false,
+    editorFormatItalic: false,
+    editorHasUnsavedChanges: false,
+    editorHighestEverDraftNumber: 0,
+    editorNumLines: 0,
+    editorPlaying: false,
+    editorTimelineFrames: [],
+    editorTimelineIndex: 0,
+    editorTitle: 'Untitled',
+  }
+
+  this.state = JSON.parse(JSON.stringify(this.initialState))
 
 // ================================================================================
 // Bound Methods
 // ================================================================================
   this.appOnKeyDown = this.appOnKeyDown.bind(this)
+  this.createDraftMarker = this.createDraftMarker.bind(this)
   this.editorOnBlur = this.editorOnBlur.bind(this)
   this.editorOnInput = this.editorOnInput.bind(this)
   this.editorOnKeyDown = this.editorOnKeyDown.bind(this)
@@ -51,15 +61,20 @@ class Midst extends React.Component {
   this.fontSizeDefault = this.fontSizeDefault.bind(this)
   this.fontSizeDown = this.fontSizeDown.bind(this)
   this.fontSizeUp = this.fontSizeUp.bind(this)
+  this.newFile = this.newFile.bind(this)
+  this.openFile = this.openFile.bind(this)
   this.pause = this.pause.bind(this)
   this.play = this.play.bind(this)
+  this.quit = this.quit.bind(this)
+  this.saveFile = this.saveFile.bind(this)
+  this.saveFileAs = this.saveFileAs.bind(this)
   this.setFontFamily = this.setFontFamily.bind(this)
   this.setFontSize = this.setFontSize.bind(this)
   this.sliderOnChange = this.sliderOnChange.bind(this)
   this.toggleDrawer = this.toggleDrawer.bind(this)
+  this.toggleFocusMode = this.toggleFocusMode.bind(this)
   this.toggleFontFormatBold = this.toggleFontFormatBold.bind(this)
   this.toggleFontFormatItalic = this.toggleFontFormatItalic.bind(this)
-  this.toggleFocusMode = this.toggleFocusMode.bind(this)
   this.toggleTimeline = this.toggleTimeline.bind(this)
 
 // ================================================================================
@@ -90,15 +105,16 @@ class Midst extends React.Component {
       ipc.on('menu.fontSizeDefault', this.fontSizeDefault)
       ipc.on('menu.fontSizeDown', this.fontSizeDown)
       ipc.on('menu.fontSizeUp', this.fontSizeUp)
+      ipc.on('menu.newFile', this.newFile)
+      ipc.on('menu.openFile', this.openFile)
+      ipc.on('menu.quit', this.quit)
+      ipc.on('menu.saveFile', this.saveFile)
+      ipc.on('menu.saveFileAs', this.saveFileAs)
       ipc.on('menu.setFontFamily', this.setFontFamily)
       ipc.on('menu.setFontSize', this.setFontSize)
       ipc.on('menu.toggleFocusMode', this.toggleFocusMode)
       ipc.on('menu.toggleFontFormatBold', this.toggleFontFormatBold)
-      // ipc.on('menu.toggleFontFormatItalic', this.toggleFontFormatItalic)
-      // ipc.on('menu.newFile', this.newFile)
-      // ipc.on('menu.openFile', this.openFile)
-      // ipc.on('menu.saveFile', this.saveFile)
-      // ipc.on('menu.saveFileAs', this.saveFileAs)
+      ipc.on('menu.toggleFontFormatItalic', this.toggleFontFormatItalic)
 
       ipc.on('fileOpened', (evt, fileData) => this.load(fileData))
     }
@@ -143,12 +159,17 @@ class Midst extends React.Component {
     }
   }
 
-  modelMidstFile({ timelineFrames, draftMarkers, fontFamily, fontSize }) {
-    return {
-      timelineFrames,
-      draftMarkers,
-      fontFamily,
-      fontSize,
+  modelMidstFile() {
+    const { editorTimelineFrames, editorDraftMarkers, editorHighestEverDraftNumber, editorAuthor, editorTitle } = this.state
+
+    return  {
+      editorTimelineFrames,
+      meta: {
+        editorDraftMarkers,
+        editorHighestEverDraftNumber,
+        editorAuthor,
+        editorTitle,
+      }
     }
   }
 
@@ -304,6 +325,10 @@ class Midst extends React.Component {
     })
   }
 
+  enterTimelineMode() {
+    this.setState({ appTimelineMode: true })
+  }
+
   exitTimelineMode(refocus) {
     this.setState({ appTimelineMode: false }, () => {
       refocus && setTimeout(() => {
@@ -382,40 +407,47 @@ class Midst extends React.Component {
   }
 
   detectFormatting(evt) {
-    if (this.$editable.text().length < 2) return
-
-    if (evt) {
-      const $target = $(evt.target)
-      const $subject = $target.prop('tagName') === 'P'
-        ? $target.children().last()
-        : $target
-
+    setTimeout(() => {
       this.setState({
-        editorFormatBold: this.hasBoldFormatting($subject),
-        editorFormatItalic: this.hasItalicFormatting($subject),
+        editorFormatBold: document.queryCommandState('bold'),
+        editorFormatItalic: document.queryCommandState('italic'),
       })
-    }
+    })
 
-    else {
-      const $subject = $(window.getSelection().anchorNode)
-      const $lineElement = $(window.getSelection().anchorNode).parents('p')
-      const lineElementText = $lineElement.text()
-      const hasFormatting = this.hasBoldFormatting($subject) || this.hasItalicFormatting($subject)
+    // if (this.$editable.text().length < 2) return
 
-      if (hasFormatting) {
-        this.setState({
-          editorFormatBold: this.hasBoldFormatting($subject),
-          editorFormatItalic: this.hasItalicFormatting($subject),
-        })
-      }
+    // if (evt) {
+    //   const $target = $(evt.target)
+    //   const $subject = $target.prop('tagName') === 'P'
+    //     ? $target.children().last()
+    //     : $target
 
-      else if (lineElementText && lineElementText.length) {
-        this.setState({
-          editorFormatBold: false,
-          editorFormatBold: false
-        })
-      }
-    }
+    //   this.setState({
+    //     editorFormatBold: this.hasBoldFormatting($subject),
+    //     editorFormatItalic: this.hasItalicFormatting($subject),
+    //   })
+    // }
+
+    // else {
+    //   const $subject = $(window.getSelection().anchorNode)
+    //   const $lineElement = $(window.getSelection().anchorNode).parents('p')
+    //   const lineElementText = $lineElement.text()
+    //   const hasFormatting = this.hasBoldFormatting($subject) || this.hasItalicFormatting($subject)
+
+    //   if (hasFormatting) {
+    //     this.setState({
+    //       editorFormatBold: this.hasBoldFormatting($subject),
+    //       editorFormatItalic: this.hasItalicFormatting($subject),
+    //     })
+    //   }
+
+    //   else if (lineElementText && lineElementText.length) {
+    //     this.setState({
+    //       editorFormatBold: false,
+    //       editorFormatBold: false
+    //     })
+    //   }
+    // }
   }
 
   reflowLineNumbers(force) {
@@ -445,7 +477,8 @@ class Midst extends React.Component {
     this.setState({
       appTimelineMode: false,
       editorTimelineIndex: editorTimelineFrames.length,
-      editorTimelineFrames: editorTimelineFrames.concat([nextFrame])
+      editorTimelineFrames: editorTimelineFrames.concat([nextFrame]),
+      editorHasUnsavedChanges: true,
     })
   }
 
@@ -488,23 +521,117 @@ class Midst extends React.Component {
     }, timeout)
   }
 
+  async checkForUnsavedChanges(message) {
+    if (this.state.editorHasUnsavedChanges) {
+      const res = await remote.getGlobal('confirm')(
+        message || 'The current document contains unsaved changes. Proceed anyway?',
+        ['Ok', 'Cancel'],
+      )
+
+      if (res === 1) return false
+    }
+
+    return true
+  }
+
+  async newFile() {
+    if (!await this.checkForUnsavedChanges()) return
+    this.setState(this.initialState)
+    this.$editable.html('')
+  }
+
+  async openFile() {
+    if (!await this.checkForUnsavedChanges()) return
+    remote.getGlobal('openFile')()
+  }
+
+  async saveFile () {
+    const { appFileAbsPath, editorHasUnsavedChanges } = this.state
+
+    if (!editorHasUnsavedChanges) return
+
+    if (!appFileAbsPath) {
+      this.saveFileAs()
+    }
+
+    else {
+      remote.getGlobal('saveFile')(appFileAbsPath, this.modelMidstFile())
+      this.setState({ editorHasUnsavedChanges: false })
+    }
+  }
+
+  async saveFileAs () {
+    const fileInfo = await remote.getGlobal('saveFileAs')(this.modelMidstFile())
+
+    if (!fileInfo) return
+
+    this.setState({
+      appFileAbsPath: fileInfo.fileAbsPath,
+      appTitle: fileInfo.fileName.replace(new RegExp(`${this.FILE_EXT}$`), ''),
+      editorHasUnsavedChanges: false
+    })
+  }
+
+  load(fileData) {
+    this.setState({
+      appTitle: fileData.fileName ? fileData.fileName.replace(this.FILE_EXT, '') : 'Untitled',
+      editorTimelineIndex: fileData.data.editorTimelineFrames.length,
+      editorTimelineFrames: fileData.data.editorTimelineFrames,
+      editorAuthor: fileData.data.meta.author,
+      editorTitle: fileData.data.meta.editorTitle,
+      editorDraftMarkers: fileData.data.meta.editorDraftMarkers,
+      editorHighestEverDraftNumber: fileData.data.meta.editorHighestEverDraftNumber || 0,
+      editorHasUnsavedChanges: false,
+      appFileAbsPath: fileData.path,
+    }, () => {
+      this.$editable.html(_.get(_.last(this.state.editorTimelineFrames), 'content'))
+    })
+  }
+
+  async quit() {
+    if (!await this.checkForUnsavedChanges()) return
+    remote.getGlobal('quit')()
+  }
+
+  createDraftMarker() {
+    const { editorDraftMarkers, editorTimelineIndex, appTimelineMode, editorHighestEverDraftNumber, editorTimelineFrames } = this.state
+    const markerIndices = editorDraftMarkers.map(marker => marker.index)
+    const realIndex = editorTimelineIndex === editorTimelineFrames.length ? editorTimelineIndex - 1 : editorTimelineIndex + 1
+
+    if (markerIndices.indexOf(realIndex) >= 0) return
+
+    this.setState({
+      hasUnsavedChanges: true,
+      creatingDraftMarker: true,
+      editorHighestEverDraftNumber: editorHighestEverDraftNumber + 1,
+      editorDraftMarkers: editorDraftMarkers.concat([this.modelDraftMarker({timelineIndex: realIndex})]),
+    }, () => {
+      // this.editDraftMarkerLabel(realIndex)()
+    })
+
+    if (!appTimelineMode) {
+      this.enterTimelineMode()
+    }
+  }
+
 // ================================================================================
 // Render Helpers
 // ================================================================================
   renderHeader() {
-    const { editorTitle } = this.state
+    const { appTitle } = this.state
 
     return (
       e('div', {
         className: 'title-bar'
       },
-        e('div', { className: 'title' }, editorTitle)
+        e('div', { className: 'title' }, appTitle)
       )
     )
   }
 
   renderTopToolbar() {
-    const { appFocusMode, editorFormatBold, editorFormatItalic } = this.state
+    const { appFocusMode, editorFormatBold, editorFormatItalic, editorTimelineIndex, editorCreatingDraftMarker, editorDraftMarkers } = this.state
+    const markerIndices = editorDraftMarkers.map(marker => marker.index)
 
     return (
       e('div', {
@@ -538,6 +665,12 @@ class Midst extends React.Component {
             className: 'round-icon bold-toggle' + (editorFormatBold ? ' active' : ''),
             onClick: this.toggleFontFormatBold,
           }, iconBold()),
+          e('div', {
+            className: 'round-icon draft-marker-create' +
+              (markerIndices.indexOf(editorTimelineIndex) >= 0 && !editorCreatingDraftMarker ? ' deactivated' : '') +
+              (editorCreatingDraftMarker ? ' active' : ''),
+            onMouseDown: !editorCreatingDraftMarker ? this.createDraftMarker : null,
+          }, iconMarker()),
         ),
       )
     )

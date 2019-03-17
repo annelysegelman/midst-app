@@ -93,10 +93,6 @@
   fill: #FF91AF;
 }
 
-.focus-mode-toggle {
-
-}
-
 .focus-mode-toggle.active {
   background: transparent;
 }
@@ -129,10 +125,6 @@
 
 #editable .bold {
   font-weight: bold;
-}
-
-.bottom-toolbar {
-
 }
 
 .timeline-toggles {
@@ -218,7 +210,19 @@
 
 .top-toolbar .toolbar-icons .round-icon {
   float: right;
-  margin-left: 10px;
+  margin-left: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+}
+
+.top-toolbar .toolbar-icons .round-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.draft-marker-create.active svg {
+  stroke: #ff0000;
 }
 
 .title-bar,

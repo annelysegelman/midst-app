@@ -87,6 +87,10 @@ global['openFile'] = () => {
 // Bootstrap
 // ================================================================================
 const bootstrap = (menuItems, cb) => {
+  const {systemPreferences} = require('electron')
+  systemPreferences.setUserDefault('NSDisabledDictationMenuItem', 'boolean', true)
+  systemPreferences.setUserDefault('NSDisabledCharacterPaletteMenuItem', 'boolean', true)
+
   app.on('ready', () => {
     const { size: { height: size }} = require('electron').screen.getPrimaryDisplay()
 
@@ -130,7 +134,7 @@ const menu = (mainWindow) => {
   const appMenu = {
     label: 'App',
     submenu: [
-      {label: 'About App', click: () => {}},
+      {label: 'About Midst', click: () => {}},
       {type: 'separator'},
       {role: 'services'},
       {type: 'separator'},
@@ -171,13 +175,8 @@ const menu = (mainWindow) => {
   const fontMenu = {
     label: 'Font',
     submenu: [
-      { label: 'Increase Font Size', accelerator: 'Command+Plus', click: () => mainWindow.webContents.send('menu.fontSizeUp')},
-      { label: 'Decrease Font Size', accelerator: 'Command+-', click: () => mainWindow.webContents.send('menu.fontSizeDown')},
-      { label: 'Default Font Size', accelerator: 'Command+0', click: () => mainWindow.webContents.send('menu.fontSizeDefault')},
-      { type: 'separator' },
-        { label: 'Bold', click: () => mainWindow.webContents.send('menu.toggleFontFormatBold')},
-        { label: 'Italic', click: () => mainWindow.webContents.send('menu.toggleFontFormatItalid')},
-      { type: 'separator' },
+      { label: 'Bold', click: () => mainWindow.webContents.send('menu.toggleFontFormatBold')},
+      { label: 'Italic', click: () => mainWindow.webContents.send('menu.toggleFontFormatItalid')},
       { label: 'Font Family', submenu: [
         { label: 'Helvetica', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Helvetica')},
         { label: 'Courier', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Courier')},
@@ -190,7 +189,7 @@ const menu = (mainWindow) => {
   }
 
   const viewMenu = {
-    label: 'View',
+    label: 'Options',
     submenu: [
       { label: 'Focus Mode', click: () => mainWindow.webContents.send('menu.toggleFocusMode')},
       { label: 'Cursor Following', click: () => mainWindow.webContents.send('menu.editorToggleCursorFollowing')},
