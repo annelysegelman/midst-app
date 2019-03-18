@@ -180,7 +180,7 @@
 }
 
 .timeline .round-icon svg {
-  color: rgb(255, 236, 242);
+  color: rgb(253, 237, 242);
 }
 
 .drawer {
@@ -345,7 +345,7 @@
 .draft-marker-label {
   position: absolute;
   bottom: 4px;
-  left: calc(50% - 40px);
+  left: calc(50% - 39px);
   font-size: 11px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
@@ -357,7 +357,7 @@
   text-align: center;
   text-overflow: ellipsis;
   padding: 3px 0;
-  border: 1px solid rgb(105, 0, 0);
+  border: 0px solid;
   border-radius: 20px;
   background: #fed7db;
 }
