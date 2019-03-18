@@ -40,6 +40,7 @@
 
 .double-icon .round-icon {
   float: right;
+  width: 35px;
 }
 
 .midst {
@@ -179,7 +180,7 @@
 }
 
 .timeline .round-icon svg {
-  color: #000;
+  color: #fff;
 }
 
 .drawer {
@@ -236,7 +237,7 @@
 }
 
 .draft-marker-create.deactivated svg {
-  color: #ccc;
+  color: #666;
 }
 
 .title-bar,
@@ -352,7 +353,7 @@
   padding: 3px 0;
   border: 2px solid #333;
   border-radius: 20px;
-  background: #FF91AF;
+  background: #fed7db;
 }
 
 .draft-marker-label input {
