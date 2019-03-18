@@ -26,7 +26,7 @@ class Midst extends React.Component {
     appDrawerOpen: false,
     appFileAbsPath: false,
     appFocusMode: false,
-    appTimelineMode: true,
+    appTimelineMode: false,
     appTitle: 'Untitled',
     editorAuthor: 'Anonymous',
     editorCachedSelection: [],
