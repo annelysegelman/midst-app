@@ -236,7 +236,8 @@
 }
 
 .draft-marker-create.deactivated svg {
-  color: #ccc;
+  color: rgb(245, 235, 228);
+  
 }
 
 .title-bar,
