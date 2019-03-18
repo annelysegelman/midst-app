@@ -148,10 +148,10 @@
   z-index: 9998;
   height: 40px;
   border-radius: 40px;
-  overflow: hidden;
   background: #FF91AF;
   transition: all 250ms;
   opacity: 0;
+  text-align: right;
 }
 
 .timeline.open {
@@ -160,10 +160,6 @@
   right: 15px;
   opacity: 1;
   border-radius: 5px;
-}
-
-.timeline {
-  text-align: right;
 }
 
 .timeline-controls {
@@ -178,6 +174,12 @@
   display: inline-flex;
   background: transparent;
   justify-content: center;
+  width: 35px;
+  opacity: 1;
+}
+
+.timeline .round-icon svg {
+  color: #000;
 }
 
 .drawer {
@@ -221,8 +223,20 @@
   height: 15px;
 }
 
+.draft-marker-create {
+  cursor: pointer;
+}
+
 .draft-marker-create.active svg {
-  stroke: #ff0000;
+  color: #ff0000;
+}
+
+.draft-marker-create.deactivated {
+  pointer-events: none;
+}
+
+.draft-marker-create.deactivated svg {
+  color: #ccc;
 }
 
 .title-bar,
@@ -250,6 +264,18 @@
 }
 
 .timeline-toggle.visible {
+  opacity: 1;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.draft-marker-create {
+  opacity: 0;
+  transition: opacity 250ms;
+  pointer-events: none;
+}
+
+.draft-marker-create.visible {
   opacity: 1;
   pointer-events: all;
   cursor: pointer;
@@ -288,34 +314,89 @@
   transform: scaleX(1.2) scaleY(1.2);
 }
 
-.debug-layout .title-bar {
-  background: red;
+.draft-markers {
+  position: absolute;
+  bottom: calc(100% - 10px);
+  left: 20px;
+  width: calc(100% - 180px);
+  height: 50px;
 }
 
-.debug-layout .top-toolbar {
-  background: green;
+.draft-markers .draft-marker {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #333;
+  font-family: Arial, Helvetica, sans-serif;
+  transform: translate(-13px, 0);
 }
 
-.debug-layout .editor {
-  background: yellow;
+.draft-marker-label {
+  position: absolute;
+  bottom: 4px;
+  left: calc(50% - 41px);
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  width: 80px;
+  height: 20px;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  padding: 3px 0;
+  border: 2px solid #333;
+  border-radius: 20px;
+  background: #FF91AF;
 }
 
-.debug-layout .round-icon {
-  background: blue;
+.draft-marker-label input {
+  display: none;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: center;
+  padding: 3px 0;
+  height: 14px;
+  line-height: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
 }
 
-.debug-layout .double-icon {
-  background: blue;
+.draft-marker-label input:focus,
+.draft-marker-label input:active {
+  outline: none;
 }
 
-.debug-layout .timeline-toggles .icon.timeline-toggle {
-  background: orange;
+.draft-marker-label span {
+  display: inline;
 }
 
-.debug-layout .timeline {
-  background: orange;
+.draft-marker-label.editing,
+.editing .draft-marker-label {
+  /* height: 26px;
+  padding: 0; */
 }
 
-.debug-layout .drawer {
-  background: blue;
+.draft-marker-label.editing span,
+.editing .draft-marker-label span {
+  display: none;
+}
+
+.draft-marker-label.editing input,
+.editing .draft-marker-label input {
+  display: inline-block;
+}
+
+.draft-markers .draft-marker.active {
+  z-index: 9999;
+}
+
+.draft-markers .draft-marker.active .draft-marker-label {
+
 }
