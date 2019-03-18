@@ -180,7 +180,7 @@
 }
 
 .timeline .round-icon svg {
-  color: #fff;
+  color: rgb(255, 236, 242);
 }
 
 .drawer {
@@ -240,6 +240,18 @@
   color: rgb(245, 235, 228);
 }
 
+.draft-marker-create {
+  opacity: 0;
+  transition: opacity 250ms;
+  pointer-events: none;
+}
+
+.draft-marker-create.visible {
+  opacity: 1;
+  pointer-events: all;
+  cursor: pointer;
+}
+
 .title-bar,
 .logo,
 .toolbar-icons div:not(.focus-mode-toggle),
@@ -270,30 +282,24 @@
   cursor: pointer;
 }
 
-.draft-marker-create {
-  opacity: 0;
-  transition: opacity 250ms;
-  pointer-events: none;
+.timeline .draft-marker-create.deactivated svg {
+  color: rgb(236, 124, 154);
 }
 
-.draft-marker-create.visible {
-  opacity: 1;
-  pointer-events: all;
-  cursor: pointer;
-}
 
 .timeline .hem-slider {
   width: calc(100% - 180px);
   margin: 20px 0 0 20px;
   height: 2px;
   border-radius: 3px;
-  background: gray;
+  background: rgb(236, 124, 154);
   border: 0;
 }
 
 .timeline .hem-slider .hem-slider__progress {
   position: relative;
   border-radius: 3px;
+  background: rgb(105, 0, 0);
 }
 
 .timeline .hem-slider .hem-slider__progress::after {
@@ -304,7 +310,7 @@
   width: 10px;
   height: 10px;
   border-radius: 10px;
-  border: 2px solid black;
+  border: 2px solid rgb(105, 0, 0);
   background: white;
   content: ' ';
   transition: all 150ms;
@@ -331,7 +337,7 @@
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 10px solid #333;
+  border-top: 10px solid rgb(105, 0, 0);
   font-family: Arial, Helvetica, sans-serif;
   transform: translate(-13px, 0);
 }
@@ -339,7 +345,7 @@
 .draft-marker-label {
   position: absolute;
   bottom: 4px;
-  left: calc(50% - 41px);
+  left: calc(50% - 40px);
   font-size: 11px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
@@ -351,7 +357,7 @@
   text-align: center;
   text-overflow: ellipsis;
   padding: 3px 0;
-  border: 2px solid #333;
+  border: 1px solid rgb(105, 0, 0);
   border-radius: 20px;
   background: #fed7db;
 }
