@@ -674,6 +674,21 @@ class Midst extends React.Component {
     return this.state.editorTimelineFrames.length > 50
   }
 
+  markerIndexFromTimelineIndex(timelineIndex) {
+    const { editorDraftMarkers } = this.state
+    return editorDraftMarkers.findIndex(({index}) => index === timelineIndex)
+  }
+
+  deleteDraftMarker(timelineIndex) {
+    const { editorDraftMarkers, appDrawerOpen } = this.state
+    const markerIndex = this.markerIndexFromTimelineIndex(timelineIndex)
+    editorDraftMarkers.splice(markerIndex, 1)
+    this.setState({ editorDraftMarkers })
+    if (appDrawerOpen && editorDraftMarkers.length < 1) {
+      this.exitTimelineMode()
+    }
+  }
+
 // ================================================================================
 // Render Helpers
 // ================================================================================
@@ -807,8 +822,10 @@ class Midst extends React.Component {
   }
 
   renderDraftMarkerLabel(name, timelineIndex, inDrawer, active) {
+    console.log(this.state.editorEditingDraftMarker)
+    console.log(timelineIndex + (inDrawer ? '-drawer' : ''))
     return e('div', {
-      className: 'draft-marker-label' + (this.state.editingDraftMarker === timelineIndex + (inDrawer ? '-drawer' : '') ? ' editing' : ''),
+      className: 'draft-marker-label' + (this.state.editorEditingDraftMarker === timelineIndex + (inDrawer ? '-drawer' : '') ? ' editing' : ''),
       onClick: active || inDrawer ? (evt) => evt.stopPropagation() : null
     },
       e('span', {
@@ -865,13 +882,35 @@ class Midst extends React.Component {
   }
 
   renderDrawer() {
-    const { appDrawerOpen }  = this.state
+    const { appDrawerOpen, editorDraftMarkers, editorShowDraftMarkers, editorShowDraftMarkerLabels }  = this.state
+    const reversedMarkers = [].concat(editorDraftMarkers).reverse()
 
     return (
       e('div', {
         className: 'drawer' + (appDrawerOpen ? ' open' : '')
       },
-
+        ...reversedMarkers.map(({name, defaultName, timelineIndex}) =>
+          e('div', {
+            className: 'marker-list-item',
+            onClick: () => this.setPos(timelineIndex),
+          },
+            this.renderDraftMarkerLabel(name || defaultName, timelineIndex, true),
+            e('span', {
+              className: 'marker-list-item-delete',
+              onClick: () => this.deleteDraftMarker(timelineIndex),
+            }, 'delete')
+          ),
+        ),
+        // e('div', { className: 'marker-list-controls' },
+        //   e('div', {
+        //     className: 'marker-list-control',
+        //     onClick: () => this.setState({ editorShowDraftMarkerLabels: !editorShowDraftMarkerLabels })
+        //   }, (editorShowDraftMarkerLabels ? 'Hide' : 'Show') + ' Draft Marker Labels'),
+        //   e('div', {
+        //     className: 'marker-list-control',
+        //     onClick: () => this.setState({ editorShowDraftMarkers: !editorShowDraftMarkers })
+        //   }, (editorShowDraftMarkers ? 'Hide' : 'Show') + ' Draft Markers'),
+        // ),
       )
     )
   }

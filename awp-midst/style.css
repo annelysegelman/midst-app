@@ -401,3 +401,48 @@
 .draft-markers .draft-marker.active .draft-marker-label {
 
 }
+
+.marker-list-item {
+  position: relative;
+  margin: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #000;
+  cursor: pointer;
+}
+
+.marker-list-item-delete {
+  float: right;
+  font-size: 9px;
+  text-decoration: underline;
+}
+
+.marker-list-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #000;
+}
+
+.marker-list-control {
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+
+.drawer .draft-marker-label {
+  display: inline;
+  position: static;
+  text-align: left;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.drawer .draft-marker-label input {
+  width: 100px;
+  height: 10px;
+  padding: 0;
+  text-align: left;
+}
