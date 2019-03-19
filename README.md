@@ -8,7 +8,8 @@
     `NODE_ENV=development electron awp-midst`
 
 ## Build
-    `node bin/build.js`
+    `node bin/build.js midst`
+    `node bin/build.js awp-midst`
 
 ## Manual Build
 1. Download the latest prebuilt binary from https://github.com/electron/electron/releases
