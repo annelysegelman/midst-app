@@ -110,9 +110,9 @@
 }
 
 .editor #editable {
-  width: calc(100% - 140px);
+  width: calc(100% - 160px);
   height: calc(100% - 40px);
-  margin: 40px 70px 0 70px;
+  padding: 40px 80px 0 80px;
 }
 
 .editor #editable:focus {
@@ -245,6 +245,10 @@
 }
 
 .draft-marker-create {
+  opacity: 1;
+}
+
+/* .draft-marker-create {
   opacity: 0;
   transition: opacity 250ms;
   pointer-events: none;
@@ -254,7 +258,7 @@
   opacity: 1;
   pointer-events: all;
   cursor: pointer;
-}
+} */
 
 .title-bar,
 .logo,
@@ -275,6 +279,14 @@
 }
 
 .timeline-toggle {
+  opacity: 1;
+}
+
+.timeline-toggle.deactivated svg {
+  color: rgb(245, 235, 228);
+}
+
+/* .timeline-toggle {
   opacity: 0;
   transition: opacity 250ms;
   pointer-events: none;
@@ -284,7 +296,7 @@
   opacity: 1;
   pointer-events: all;
   cursor: pointer;
-}
+} */
 
 .timeline .draft-marker-create.deactivated svg {
   color: rgb(236, 124, 154);
@@ -429,6 +441,7 @@
 .marker-list-item-delete svg {
   width: 14px;
   height: 14px;
+  color: rgb(105, 0, 0);
 }
 
 .marker-list-controls {
@@ -469,7 +482,7 @@
 
 .drawer .draft-marker-label input,
 .drawer .draft-marker-label span {
-  margin-left: 11px;
+  margin-left: 14px;
 }
 
 .drawer .draft-marker-label .edit-icon {
@@ -481,6 +494,7 @@
 .drawer .draft-marker-label .edit-icon svg {
   width: 14px;
   height: 14px;
+  color: rgb(105, 0, 0);
 }
 
 .drawer .draft-marker-label input {

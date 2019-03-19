@@ -164,7 +164,7 @@ class Midst extends React.Component {
   }
 
   modelMidstFile() {
-    const { editorTimelineFrames, editorDraftMarkers, editorHighestEverDraftNumber, editorAuthor, editorTitle } = this.state
+    const { editorTimelineFrames, editorDraftMarkers, editorHighestEverDraftNumber, editorAuthor, editorTitle, editorFontFamily, editorFontSize } = this.state
 
     return  {
       editorTimelineFrames,
@@ -173,6 +173,8 @@ class Midst extends React.Component {
         editorHighestEverDraftNumber,
         editorAuthor,
         editorTitle,
+        editorFontFamily,
+        editorFontSize,
       }
     }
   }
@@ -181,7 +183,7 @@ class Midst extends React.Component {
 // Handlers
 // ================================================================================
   appOnKeyDown(evt) {
-    const { appTimelineMode, editorTimelineIndex, appFocusMode } = this.state
+    const { appTimelineMode, editorTimelineIndex, appFocusMode, editorTimelineFrames } = this.state
 
     if (evt.keyCode === 27) {
       if (appFocusMode) {
@@ -194,11 +196,11 @@ class Midst extends React.Component {
     }
 
     if (appTimelineMode) {
-      if (evt.keyCode === 37) {
+      if (evt.keyCode === 37 && editorTimelineIndex > 0) {
         this.setPos(editorTimelineIndex - 1)
       }
 
-      else if (evt.keyCode === 39) {
+      else if (evt.keyCode === 39 && editorTimelineIndex < editorTimelineFrames.length) {
         this.setPos(editorTimelineIndex + 1)
       }
     }
@@ -299,7 +301,7 @@ class Midst extends React.Component {
 
       if (!this.state.appTimelineMode) {
         setTimeout(() => {
-          this.$editable.focus()
+          this.focusEditableAtEnd()
         }, 1)
       }
     })
@@ -338,7 +340,7 @@ class Midst extends React.Component {
       editorCreatingDraftMarker: false,
     }, () => {
       refocus && setTimeout(() => {
-        this.$editable.focus()
+        this.focusEditableAtEnd()
       }, 1)
     })
   }
@@ -377,13 +379,13 @@ class Midst extends React.Component {
   }
 
   toggleFontFormatBold() {
-    this.$editable.focus()
+    this.focusEditableAtEnd()
     document.execCommand('bold')
     this.setState({ editorFormatBold: !this.state.editorFormatBold })
   }
 
   toggleFontFormatItalic() {
-    this.$editable.focus()
+    this.focusEditableAtEnd()
     document.execCommand('italic')
     this.setState({ editorFormatItalic: !this.state.editorFormatItalic })
   }
@@ -494,6 +496,9 @@ class Midst extends React.Component {
         this.$editable.html(this.state.editorTimelineFrames[index].content)
       }
     })
+    setTimeout(() => {
+      this.focusEditableAtEnd()
+    }, 1)
   }
 
   play() {
@@ -589,8 +594,11 @@ class Midst extends React.Component {
       editorHighestEverDraftNumber: fileData.data.meta.editorHighestEverDraftNumber || 0,
       editorHasUnsavedChanges: false,
       appFileAbsPath: fileData.path,
+      editorFontFamily: fileData.data.meta.editorFontFamily || 'Helvetica',
+      editorFontSize: fileData.data.meta.editorFontSize || this.defaultFontSize,
     }, () => {
       this.$editable.html(_.get(_.last(this.state.editorTimelineFrames), 'content'))
+      this.focusEditableAtEnd()
     })
   }
 
@@ -658,6 +666,8 @@ class Midst extends React.Component {
       editorEditingDraftMarker: null,
       editorCreatingDraftMarker: false,
     })
+
+    this.focusEditableAtEnd()
   }
 
   draftMarkerLabelOnKeyDown(timelineIndex) {
@@ -677,7 +687,7 @@ class Midst extends React.Component {
 
   markerIndexFromTimelineIndex(timelineIndex) {
     const { editorDraftMarkers } = this.state
-    return editorDraftMarkers.findIndex(({index}) => index === timelineIndex)
+    return editorDraftMarkers.findIndex(({timelineIndex: index}) => index === timelineIndex)
   }
 
   deleteDraftMarker(timelineIndex) {
@@ -688,6 +698,16 @@ class Midst extends React.Component {
     if (appDrawerOpen && editorDraftMarkers.length < 1) {
       this.exitTimelineMode()
     }
+  }
+
+  focusEditableAtEnd() {
+    this.$editable.focus()
+    var range = document.createRange()
+    range.selectNodeContents(this.$editable[0])
+    range.collapse(false)
+    var sel = window.getSelection()
+    sel.removeAllRanges()
+    sel.addRange(range)
   }
 
 // ================================================================================
@@ -760,7 +780,7 @@ class Midst extends React.Component {
         e('div', {
           id: 'editable',
           contentEditable: !editorCreatingDraftMarker && !editorEditingDraftMarker,
-          onClick: this.exitTimelineMode,
+          // onClick: this.exitTimelineMode,
         }),
       )
     )
@@ -773,7 +793,7 @@ class Midst extends React.Component {
       },
         e('div', { className: 'double-icon timeline-toggles' },
           e('div', {
-            className: 'round-icon timeline-toggle' + (this.showTimeline() ? ' visible' : ''),
+            className: 'round-icon timeline-toggle' + (this.showTimeline() ? '' : ' deactivated'),
             onClick: this.toggleTimeline,
           }, iconTimeline()),
           this.renderDraftMarkerCreateIcon(),
@@ -789,9 +809,8 @@ class Midst extends React.Component {
 
     return e('div', {
       className: 'round-icon draft-marker-create'
-        + (markerExists && !editorCreatingDraftMarker ? ' deactivated' : '')
-        + (editorCreatingDraftMarker ? ' active' : '')
-        + (this.showTimeline() ? ' visible' : ''),
+        + ((markerExists && !editorCreatingDraftMarker) || !this.showTimeline() ? ' deactivated' : '')
+        + (editorCreatingDraftMarker ? ' active' : ''),
       onMouseDown: !markerExists && !editorCreatingDraftMarker ? this.createDraftMarker : null,
     }, iconMarker())
   }
