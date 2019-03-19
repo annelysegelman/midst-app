@@ -351,7 +351,8 @@ class Midst extends React.Component {
 
     if (index > 0) {
       this.setState({
-        editorFontSize: this.editorFontSizes[index - 1]
+        editorFontSize: this.editorFontSizes[index - 1],
+        editorHasUnsavedChanges: true,
       })
     }
   }
@@ -361,21 +362,31 @@ class Midst extends React.Component {
     const index = this.editorFontSizes.indexOf(editorFontSize)
     if (index > -1 && index < this.editorFontSizes.length - 1) {
       this.setState({
-        editorFontSize: this.editorFontSizes[index + 1]
+        editorFontSize: this.editorFontSizes[index + 1],
+        editorHasUnsavedChanges: true,
       })
     }
   }
 
   fontSizeDefault() {
-    this.setState({ editorFontSize: this.defaultFontSize })
+    this.setState({
+      editorFontSize: this.defaultFontSize,
+      editorHasUnsavedChanges: true,
+    })
   }
 
   setFontFamily(evt, data) {
-    this.setState({ editorFontFamily: data })
+    this.setState({
+      editorFontFamily: data,
+      editorHasUnsavedChanges: true,
+    })
   }
 
   setFontSize(evt, data) {
-    this.setState({ editorFontSize: data })
+    this.setState({
+      editorFontSize: data,
+      editorHasUnsavedChanges: true,
+    })
   }
 
   toggleFontFormatBold() {
@@ -558,6 +569,8 @@ class Midst extends React.Component {
 
   async saveFile () {
     const { appFileAbsPath, editorHasUnsavedChanges } = this.state
+
+    console.log(editorHasUnsavedChanges)
 
     if (!editorHasUnsavedChanges) return
 
