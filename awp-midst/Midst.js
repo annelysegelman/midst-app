@@ -244,6 +244,9 @@ class Midst extends React.Component {
         const o = 'HTML_OPEN_TAG'
         const c = 'HTML_CLOSE_TAG'
 
+        content = content.replace(/<br \/>/g, ':::MIDST_LINE_BREAK_TOKEN:::')
+        content = content.replace(/<br>/g, ':::MIDST_LINE_BREAK_TOKEN:::')
+
         content = content.replace(/<p[ a-zA-Z0-9="':;,\-\(\)]*>/g, o + 'p' + c)
         content = content.replace(/<\/p>/g, o + '/p' + c)
         content = content.replace(/<b[ a-zA-Z0-9="':;,\-\(\)]*>/g, o + 'b' + c)
@@ -254,6 +257,8 @@ class Midst extends React.Component {
 
         content = content.replace(/HTML_OPEN_TAG/g, '<')
         content = content.replace(/HTML_CLOSE_TAG/g, '>')
+
+        content = content.replace(/:::MIDST_LINE_BREAK_TOKEN:::/g, '<br>')
       }
 
       document.execCommand('insertHtml', false, content)
@@ -569,8 +574,6 @@ class Midst extends React.Component {
 
   async saveFile () {
     const { appFileAbsPath, editorHasUnsavedChanges } = this.state
-
-    console.log(editorHasUnsavedChanges)
 
     if (!editorHasUnsavedChanges) return
 
