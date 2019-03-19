@@ -258,7 +258,7 @@ class Midst extends React.Component {
         content = content.replace(/HTML_OPEN_TAG/g, '<')
         content = content.replace(/HTML_CLOSE_TAG/g, '>')
 
-        content = content.replace(/:::MIDST_LINE_BREAK_TOKEN:::/g, '<br>')
+        // content = content.replace(/:::MIDST_LINE_BREAK_TOKEN:::/g, '<br>')
       }
 
       document.execCommand('insertHtml', false, content)
