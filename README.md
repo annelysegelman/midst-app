@@ -1,11 +1,16 @@
 ## Install
 `yarn global add electron`
+`yarn global add electron-packager`
+`yarn global add electron-icon-maker`
 
 ## Dev
 `NODE_ENV=development electron midst`
 `NODE_ENV=development electron awp-midst`
 
-## Build App
+## Build
+`node bin/build.js`
+
+## Manual Build
 1. Download the latest prebuilt binary from https://github.com/electron/electron/releases
 1. Copy the project folder into Electron.app/Contents/Resources
 1. Rename the project folder to "app".
@@ -14,6 +19,3 @@
 1. Double-click Electron, deal with some security hassles, etc.
 1. <sup>\*</sup>Extra credit: In debug console enter `+ new Date()` and append this to the file name.
 __TODO: Write a script for this.__
-
-## Fully Package App
-TBD
