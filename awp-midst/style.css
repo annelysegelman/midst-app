@@ -183,6 +183,10 @@
   color: rgb(255, 236, 242);
 }
 
+.timeline .round-icon.active svg {
+  color: #ff0000;
+}
+
 .drawer {
   position: fixed;
   bottom: 15px;
@@ -335,11 +339,11 @@
   left: 0;
   width: 0;
   height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid rgb(105, 0, 0);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgb(105, 0, 0);
   font-family: Arial, Helvetica, sans-serif;
-  transform: translate(-13px, 0);
+  transform: translate(-9px, 0);
 }
 
 .draft-marker-label {
@@ -412,29 +416,45 @@
   position: relative;
   margin: 10px;
   padding: 10px;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid rgb(105, 0, 0);
   cursor: pointer;
 }
 
 .marker-list-item-delete {
-  float: right;
-  font-size: 9px;
-  text-decoration: underline;
+  position: absolute;
+  top: 13px;
+  right: 0;
+}
+
+.marker-list-item-delete svg {
+  width: 14px;
+  height: 14px;
 }
 
 .marker-list-controls {
   position: absolute;
-  bottom: 0;
+  bottom: 40px;
   left: 0;
   width: 100%;
-  border-top: 1px solid #000;
+  height: 25px;
+  line-height: 25px;
+  background: rgb(236, 124, 154);
+  text-align: right;
 }
 
 .marker-list-control {
-  padding: 5px;
-  margin: 5px;
-  border: 1px solid #000;
+  display: inline-block;
   cursor: pointer;
+  margin: 3px;
+  height: 25px;
+  line-height: 25px;
+}
+
+.marker-list-control svg {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  color: rgb(255, 236, 242);
 }
 
 .drawer .draft-marker-label {
@@ -444,6 +464,23 @@
   padding: 0;
   border: 0;
   background: transparent;
+  color: rgb(105, 0, 0);
+}
+
+.drawer .draft-marker-label input,
+.drawer .draft-marker-label span {
+  margin-left: 11px;
+}
+
+.drawer .draft-marker-label .edit-icon {
+  position: absolute;
+  top: 13px;
+  left: 0;
+}
+
+.drawer .draft-marker-label .edit-icon svg {
+  width: 14px;
+  height: 14px;
 }
 
 .drawer .draft-marker-label input {
@@ -451,4 +488,5 @@
   height: 10px;
   padding: 0;
   text-align: left;
+  color: rgb(105, 0, 0);
 }

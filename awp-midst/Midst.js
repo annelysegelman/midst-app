@@ -41,6 +41,7 @@ class Midst extends React.Component {
     editorNumLines: 0,
     editorPlaying: false,
     editorShowDraftMarkers: true,
+    editorShowDraftMarkerLabels: true,
     editorTimelineFrames: [],
     editorTimelineIndex: 0,
     editorTitle: 'Untitled',
@@ -120,7 +121,7 @@ class Midst extends React.Component {
       ipc.on('fileOpened', (evt, fileData) => this.load(fileData))
     }
 
-    this.$app = $('.midst')
+    this.$app = $('body')
 
     this.$app.on('keydown', this.appOnKeyDown)
   }
@@ -180,7 +181,17 @@ class Midst extends React.Component {
 // Handlers
 // ================================================================================
   appOnKeyDown(evt) {
-    const { appTimelineMode, editorTimelineIndex } = this.state
+    const { appTimelineMode, editorTimelineIndex, appFocusMode } = this.state
+
+    if (evt.keyCode === 27) {
+      if (appFocusMode) {
+        this.setState({ appFocusMode: false })
+      }
+
+      else {
+        this.exitTimelineMode()
+      }
+    }
 
     if (appTimelineMode) {
       if (evt.keyCode === 37) {
@@ -261,12 +272,6 @@ class Midst extends React.Component {
       document.execCommand('insertText', false, '\t')
     }
 
-    if (evt.keyCode === 27) {
-      this.setState({
-        appFocusMode: false,
-      })
-    }
-
     if (evt.metaKey) {
       if (evt.keyCode === 66) {
         this.setState({ editorFormatBold: !editorFormatBold })
@@ -319,14 +324,7 @@ class Midst extends React.Component {
   }
 
   toggleFocusMode() {
-    this.setState({ appFocusMode: !this.state.appFocusMode }, () => {
-      if (this.state.appFocusMode && this.state.appTimelineMode) {
-        this.setState({ appTimelineMode: false })
-        setTimeout(() => {
-          this.$editable.focus()
-        }, 1)
-      }
-    })
+    this.setState({ appFocusMode: !this.state.appFocusMode })
   }
 
   enterTimelineMode() {
@@ -336,6 +334,7 @@ class Midst extends React.Component {
   exitTimelineMode(refocus) {
     this.setState({
       appTimelineMode: false,
+      appDrawerOpen: false,
       editorCreatingDraftMarker: false,
     }, () => {
       refocus && setTimeout(() => {
@@ -601,15 +600,17 @@ class Midst extends React.Component {
   }
 
   createDraftMarker() {
-    const { editorDraftMarkers, editorTimelineIndex, appTimelineMode, editorHighestEverDraftNumber } = this.state
+    const { editorDraftMarkers, editorTimelineIndex, appTimelineMode, editorHighestEverDraftNumber, editorShowDraftMarkerLabels } = this.state
 
     this.setState({
       editorHasUnsavedChanges: true,
-      editorCreatingDraftMarker: true,
+      editorCreatingDraftMarker: editorShowDraftMarkerLabels,
       editorHighestEverDraftNumber: editorHighestEverDraftNumber + 1,
       editorDraftMarkers: editorDraftMarkers.concat([this.modelDraftMarker({ timelineIndex: editorTimelineIndex })]),
     }, () => {
-      this.editDraftMarkerLabel(editorTimelineIndex)()
+      if (editorShowDraftMarkerLabels) {
+        this.editDraftMarkerLabel(editorTimelineIndex)()
+      }
     })
 
     if (!appTimelineMode) {
@@ -796,7 +797,7 @@ class Midst extends React.Component {
   }
 
   renderDraftMarkers() {
-    const { editorDraftMarkers, editorTimelineFrames, editorEditingDraftMarker, editorTimelineIndex: currentTimelinePosition } = this.state
+    const { editorDraftMarkers, editorTimelineFrames, editorEditingDraftMarker, editorTimelineIndex: currentTimelinePosition, editorShowDraftMarkerLabels } = this.state
 
     return e('div', {
       className: 'draft-markers'
@@ -815,21 +816,23 @@ class Midst extends React.Component {
           },
           onClick: () => this.setPos(timelineIndex),
         },
-          this.renderDraftMarkerLabel(name || 'Draft ' + (markerNo + 1), timelineIndex, false, active),
+          editorShowDraftMarkerLabels ? this.renderDraftMarkerLabel(name || 'Draft ' + (markerNo + 1), timelineIndex, false, active) : null,
         )
       })
     )
   }
 
   renderDraftMarkerLabel(name, timelineIndex, inDrawer, active) {
-    console.log(this.state.editorEditingDraftMarker)
-    console.log(timelineIndex + (inDrawer ? '-drawer' : ''))
     return e('div', {
       className: 'draft-marker-label' + (this.state.editorEditingDraftMarker === timelineIndex + (inDrawer ? '-drawer' : '') ? ' editing' : ''),
       onClick: active || inDrawer ? (evt) => evt.stopPropagation() : null
     },
+      inDrawer ? e('em', {
+        className: 'edit-icon',
+        onClick: this.editDraftMarkerLabel(timelineIndex, inDrawer),
+      }, iconEdit()) : null,
       e('span', {
-        onClick: active || inDrawer ? this.editDraftMarkerLabel(timelineIndex, inDrawer) : null,
+        onClick: active && !inDrawer ? this.editDraftMarkerLabel(timelineIndex, inDrawer) : null,
       }, name),
       e('input', {
         id: 'draft-marker-' + timelineIndex + (inDrawer ? '-in-drawer' : ''),
@@ -840,7 +843,7 @@ class Midst extends React.Component {
 
   renderTimeline() {
     const { isPlayer } = this.props
-    const { appTimelineMode, editorTimelineIndex, editorTimelineFrames, editorPlaying, editorShowDraftMarkers } = this.state
+    const { appTimelineMode, appDrawerOpen, editorTimelineIndex, editorTimelineFrames, editorPlaying, editorShowDraftMarkers } = this.state
     const value = editorTimelineIndex / editorTimelineFrames.length
 
     return (
@@ -858,11 +861,11 @@ class Midst extends React.Component {
         }),
         e('div', { className: 'timeline-controls' },
           e('div', {
-            className: 'round-icon timeline-button-3',
+            className: 'round-icon timeline-button-3' + (editorPlaying ? ' active' : ''),
             onClick: editorPlaying ? this.pause : this.play,
           }, iconPlay()),
           e('div', {
-            className: 'round-icon timeline-button-2',
+            className: 'round-icon timeline-button-2' + (appDrawerOpen ? ' active' : ''),
             onClick: this.toggleDrawer,
           }, iconDrawer()),
           this.renderDraftMarkerCreateIcon(),
@@ -898,19 +901,33 @@ class Midst extends React.Component {
             e('span', {
               className: 'marker-list-item-delete',
               onClick: () => this.deleteDraftMarker(timelineIndex),
-            }, 'delete')
+            }, iconTrash())
           ),
         ),
-        // e('div', { className: 'marker-list-controls' },
-        //   e('div', {
-        //     className: 'marker-list-control',
-        //     onClick: () => this.setState({ editorShowDraftMarkerLabels: !editorShowDraftMarkerLabels })
-        //   }, (editorShowDraftMarkerLabels ? 'Hide' : 'Show') + ' Draft Marker Labels'),
-        //   e('div', {
-        //     className: 'marker-list-control',
-        //     onClick: () => this.setState({ editorShowDraftMarkers: !editorShowDraftMarkers })
-        //   }, (editorShowDraftMarkers ? 'Hide' : 'Show') + ' Draft Markers'),
-        // ),
+        e('div', { className: 'marker-list-controls' },
+          e('div', {
+            className: 'marker-list-control',
+            onClick: () => this.setState({ editorShowDraftMarkers: !editorShowDraftMarkers })
+          },
+            editorShowDraftMarkers ? iconCheckSquare() : iconSquare(),
+            iconMarker(),
+          ),
+          e('div', {
+            className: 'marker-list-control',
+            onClick: () => this.setState({ editorShowDraftMarkerLabels: !editorShowDraftMarkerLabels })
+          },
+            editorShowDraftMarkerLabels ? iconCheckSquare() : iconSquare(),
+            iconMessageCircle(),
+          )
+          // e('div', {
+          //   className: 'marker-list-control',
+          //   onClick: () => this.setState({ editorShowDraftMarkerLabels: !editorShowDraftMarkerLabels })
+          // }, (editorShowDraftMarkerLabels ? 'Hide' : 'Show') + ' Draft Marker Labels'),
+          // e('div', {
+          //   className: 'marker-list-control',
+          //   onClick: () => this.setState({ editorShowDraftMarkers: !editorShowDraftMarkers })
+          // }, (editorShowDraftMarkers ? 'Hide' : 'Show') + ' Draft Markers'),
+        ),
       )
     )
   }
