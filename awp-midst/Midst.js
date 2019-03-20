@@ -762,7 +762,7 @@ class Midst extends React.Component {
             onClick: this.toggleFocusMode,
           }, iconFocus()),
           e('div', {
-            className: 'round-icon',
+            className: 'round-icon font-size-up-button',
             onClick: this.fontSizeUp,
           }, iconPlus()),
           e('div', {
@@ -777,6 +777,14 @@ class Midst extends React.Component {
             className: 'round-icon bold-toggle' + (editorFormatBold ? ' active' : ''),
             onClick: this.toggleFontFormatBold,
           }, iconBold()),
+          e('div', {
+            className: 'round-icon open-button',
+            onClick: this.openFile,
+          }, iconOpen()),
+          e('div', {
+            className: 'round-icon save-button',
+            onClick: this.saveFile,
+          }, iconSave()),
         ),
       )
     )

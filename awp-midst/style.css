@@ -94,6 +94,14 @@
   fill: #FF91AF;
 }
 
+.open-button {
+  margin-right: 30px;
+}
+
+.font-size-up-button {
+  margin-right: 30px;
+}
+
 .focus-mode-toggle.active {
   background: transparent;
 }
