@@ -23,10 +23,10 @@ class Midst extends React.Component {
 // ================================================================================
   this.initialState = {
     appCursorFollowing: true,
-    appDrawerOpen: false,
+    appDrawerOpen: true,
     appFileAbsPath: false,
     appFocusMode: false,
-    appTimelineMode: false,
+    appTimelineMode: true,
     appTitle: 'Untitled',
     editorAuthor: 'Anonymous',
     editorCachedSelection: [],
@@ -832,12 +832,12 @@ class Midst extends React.Component {
     const existingMarkerIndex = markerIndices.indexOf(editorTimelineIndex)
     let markerExists = existingMarkerIndex >= 0
 
-    for (const index of markerIndices) {
-      if (index > editorTimelineIndex - 10 || index < editorTimelineIndex + 10) {
-        markerExists = true
-        break
-      }
-    }
+    // for (const index of markerIndices) {
+    //   if (index > editorTimelineIndex - 10 || index < editorTimelineIndex + 10) {
+    //     markerExists = true
+    //     break
+    //   }
+    // }
 
     return e('div', {
       className: 'round-icon draft-marker-create'
@@ -943,7 +943,14 @@ class Midst extends React.Component {
       e('div', {
         className: 'drawer' + (appDrawerOpen ? ' open' : '')
       },
-        ...reversedMarkers.map(({name, defaultName, timelineIndex}) =>
+        reversedMarkers.length < 1 ?
+        e('div', { className: 'empty-drawer-message' },
+          e('h2', {}, 'Your Drawer is empty!'),
+          e('p', {}, 'When you add Draft Markers'),
+          e('p', {}, iconMarker()),
+          e('p', {}, 'they\'ll show up here.'),
+        )
+        : reversedMarkers.map(({name, defaultName, timelineIndex}) =>
           e('div', {
             className: 'marker-list-item',
             onClick: () => this.setPos(timelineIndex),
@@ -981,6 +988,10 @@ class Midst extends React.Component {
         ),
       )
     )
+  }
+
+  renderDrawerMarkers() {
+    return
   }
 
 // ================================================================================
