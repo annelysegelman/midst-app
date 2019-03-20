@@ -23,10 +23,10 @@ class Midst extends React.Component {
 // ================================================================================
   this.initialState = {
     appCursorFollowing: true,
-    appDrawerOpen: true,
+    appDrawerOpen: false,
     appFileAbsPath: false,
     appFocusMode: false,
-    appTimelineMode: true,
+    appTimelineMode: false,
     appTitle: 'Untitled',
     editorAuthor: 'Anonymous',
     editorCachedSelection: [],
@@ -791,7 +791,7 @@ class Midst extends React.Component {
   }
 
   renderEditor() {
-    const { editorFontFamily, editorFontSize, editorCreatingDraftMarker, editorEditingDraftMarker } = this.state
+    const { editorFontFamily, editorFontSize, editorCreatingDraftMarker, editorEditingDraftMarker, appDrawerOpen, appFocusMode } = this.state
 
     return (
       e('div', {
@@ -803,8 +803,8 @@ class Midst extends React.Component {
       },
         e('div', {
           id: 'editable',
+          className: appDrawerOpen && !appFocusMode ? 'with-drawer' : '',
           contentEditable: !editorCreatingDraftMarker && !editorEditingDraftMarker,
-          // onClick: this.exitTimelineMode,
         }),
       )
     )
