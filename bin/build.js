@@ -12,7 +12,8 @@ execSync('mv icons/icons/mac/icon.icns icon.icns', opts)
 execSync('yarn init -y', opts)
 execSync('yarn add electron@3.1.1 --dev', opts)
 execSync('electron-packager . Midst --overwrite --platform=darwin --arch=x64 --icon=icon.icns', opts)
-execSync('cp -r ./Midst-darwin-x64 ../releases/Midst-darwin-x64_' + + new Date(), opts)
+execSync('mkdir ../releases/midst', opts)
+execSync('cp -r ./Midst-darwin-x64 ../releases/midst/Midst-darwin-x64_' + + new Date(), opts)
 
 setTimeout(() => {
   execSync('rm -rf ' + wDir)

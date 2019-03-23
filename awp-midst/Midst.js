@@ -244,8 +244,6 @@ class Midst extends React.Component {
         const o = 'HTML_OPEN_TAG'
         const c = 'HTML_CLOSE_TAG'
 
-        console.log(1, content)
-
         content = content.replace(/<br[ a-zA-Z0-9="':;,\-\(\)]* \/>/g, ':::MIDST_LINE_BREAK_TOKEN:::')
         content = content.replace(/<br[ a-zA-Z0-9="':;,\-\(\)]*>/g, ':::MIDST_LINE_BREAK_TOKEN:::')
 
@@ -259,8 +257,6 @@ class Midst extends React.Component {
 
         content = content.replace(/HTML_OPEN_TAG/g, '<')
         content = content.replace(/HTML_CLOSE_TAG/g, '>')
-
-        console.log(2, content)
 
         content = content.replace(/:::MIDST_LINE_BREAK_TOKEN:::/g, '<br>')
       }
