@@ -395,13 +395,13 @@ class Midst extends React.Component {
   }
 
   toggleFontFormatBold() {
-    this.focusEditableAtEnd()
+    // this.focusEditableAtEnd()
     document.execCommand('bold')
     this.setState({ editorFormatBold: !this.state.editorFormatBold })
   }
 
   toggleFontFormatItalic() {
-    this.focusEditableAtEnd()
+    // this.focusEditableAtEnd()
     document.execCommand('italic')
     this.setState({ editorFormatItalic: !this.state.editorFormatItalic })
   }
