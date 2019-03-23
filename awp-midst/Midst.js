@@ -769,14 +769,14 @@ class Midst extends React.Component {
             className: 'round-icon',
             onClick: this.fontSizeDown,
           }, iconMinus()),
-          e('div', {
-            className: 'round-icon italic-toggle' + (editorFormatItalic ? ' active' : ''),
-            onClick: this.toggleFontFormatItalic,
-          }, iconItalic()),
-          e('div', {
-            className: 'round-icon bold-toggle' + (editorFormatBold ? ' active' : ''),
-            onClick: this.toggleFontFormatBold,
-          }, iconBold()),
+          // e('div', {
+          //   className: 'round-icon italic-toggle' + (editorFormatItalic ? ' active' : ''),
+          //   onClick: this.toggleFontFormatItalic,
+          // }, iconItalic()),
+          // e('div', {
+          //   className: 'round-icon bold-toggle' + (editorFormatBold ? ' active' : ''),
+          //   onClick: this.toggleFontFormatBold,
+          // }, iconBold()),
           e('div', {
             className: 'round-icon open-button',
             onClick: this.openFile,
