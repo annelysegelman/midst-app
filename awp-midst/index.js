@@ -195,11 +195,10 @@ const menu = (mainWindow) => {
       { label: 'Cursor Following', click: () => mainWindow.webContents.send('menu.editorToggleCursorFollowing')},
       { type: 'separator' },
       { label: 'Increase Zoom', accelerator: 'Command+L', click: () => {
-        console.log("???")
         mainWindow.webContents.send('menu.fontSizeUp')
       }},
       { label: 'Decrease Zoom', accelerator: 'Command+-', click: () => mainWindow.webContents.send('menu.fontSizeDown')},
-      { label: 'Default Zoom', accelerator: 'Command+0', click: () => mainWindow.webContents.send('menu.fontSizeDefault')},
+      { label: 'Default Zoom', accelerator: 'Command+M', click: () => mainWindow.webContents.send('menu.fontSizeDefault')},
       { type: 'separator' },
       { label: 'Zoom Level', submenu: [
         { label: 'Tiny', click: () => mainWindow.webContents.send('menu.setFontSize', 10)},
