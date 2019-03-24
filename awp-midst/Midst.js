@@ -724,6 +724,16 @@ class Midst extends React.Component {
     var sel = window.getSelection()
     sel.removeAllRanges()
     sel.addRange(range)
+
+    // const $currentLine = this.$editable.find('[data-line-number="' + this.state.ed + '"]')
+    // console.log(_.get(this.state.editorTimelineFrames, '[this.state.editorTimelineIndex].lineNumber'))
+    const currentFrame = this.state.editorTimelineFrames[this.state.editorTimelineIndex]
+    if (currentFrame) {
+      const $currentLine = this.$editable.find('[data-line-number="' + currentFrame.lineNumber + '"]')
+      if ($currentLine.length) {
+        $currentLine[0].scrollIntoView()
+      }
+    }
   }
 
 // ================================================================================
@@ -791,11 +801,11 @@ class Midst extends React.Component {
   }
 
   renderEditor() {
-    const { editorFontFamily, editorFontSize, editorCreatingDraftMarker, editorEditingDraftMarker, appDrawerOpen, appFocusMode } = this.state
+    const { editorFontFamily, editorFontSize, editorCreatingDraftMarker, editorEditingDraftMarker, appDrawerOpen, appFocusMode, appTimelineMode } = this.state
 
     return (
       e('div', {
-        className: 'editor',
+        className: 'editor' + (appTimelineMode ? ' with-timeline' : ''),
         style: {
           fontFamily: editorFontFamily,
           fontSize: editorFontSize + 'px',

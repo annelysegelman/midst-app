@@ -120,6 +120,11 @@
   height: calc(100vh - 25px - 65px);
   overflow-x: hidden;
   overflow-y: scroll;
+  transition: all 250ms;
+}
+
+.editor.with-timeline {
+  height: calc(100vh - 25px - 125px);
 }
 
 .editor #editable {
