@@ -82,16 +82,19 @@
   background: #FF91AF;
   transition: all 250ms;
   overflow: hidden;
+  text-align: center;
+  font-size: 25px;
+  line-height: 40px;
+  color: rgb(105, 0, 0);
+  font-family: 'HelveticaNeueThin';
 }
 
 .about.open {
   width: 450px;
   height: 450px;
   margin-top: -225px;
+  padding-top: 70px;
   margin-left: -225px;
-  text-align: center;
-  font-size: 25px;
-  color: rgb(105, 0, 0);
 }
 
 .about .close-x {
@@ -103,6 +106,11 @@
 
 .about .close-x svg {
   stroke: #FFF5EE;
+}
+
+.about a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .top-toolbar {

@@ -1018,19 +1018,23 @@ class Midst extends React.Component {
         e('div', {
           className: 'close-x',
           onClick: () => this.setState({ appAboutOpen: false })
-        },
-          e('span', {}, 'The Midst app was built by'),
-          e('br'),
-          e('span', {}, 'Annelyse Gelman'),
-          e('br'),
-          e('span', {}, 'and Jason Grier.'),
-          e('br'),
-          e('span', {}, '&copy; 2019 All Rights Reserved'),
-          e('br'),
-          e('br'),
-          e('span', {}, ''),
-          iconCloseX()
-        ),
+        }, iconCloseX()),
+        e('span', {}, 'The Midst app was built by'),
+        e('br'),
+        e('span', {}, 'Annelyse Gelman'),
+        e('br'),
+        e('span', {}, 'and Jason Grier.'),
+        e('br'),
+        e('span', {}, '© 2019 All Rights Reserved'),
+        e('br'),
+        e('br'),
+        e('span', {}, 'Comments, feature requests,'),
+        e('br'),
+        e('span', {}, 'technical problems, questions?'),
+        e('br'),
+        e('span', {}, 'Contact'),
+        e('br'),
+        e('a', { href: 'mailto:midsthq@gmail.com' }, 'midsthq@gmail.com'),
       )
     )
   }
