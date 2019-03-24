@@ -733,9 +733,20 @@ class Midst extends React.Component {
       const currentFrame = this.state.editorTimelineFrames[this.state.editorTimelineIndex]
 
       if (currentFrame) {
-        const $currentLine = this.$editable.find('[data-line-number="' + currentFrame.lineNumber + '"]')
+        const currentLineNumber = parseInt(currentFrame.lineNumber)
+        const $currentLine = this.$editable.find('[data-line-number="' + currentLineNumber + '"]')
+        const $fifthLineAbove = this.$editable.find('[data-line-number="' + (currentLineNumber - 5) + '"]')
+        const $topLine = this.$editable.find('[data-line-number="0"]')
 
-        if ($currentLine.length) {
+        if ($fifthLineAbove.length) {
+          $fifthLineAbove[0].scrollIntoView()
+        }
+
+        else if ($topLine.length) {
+          $topLine[0].scrollIntoView()
+        }
+
+        else if ($currentLine.length) {
           $currentLine[0].scrollIntoView()
         }
       }

@@ -9,18 +9,6 @@
   src: url('BELL.TTF') format('truetype');
 }
 
-/* @font-face {
-  font-family: 'Bell';
-  font-weight: 'bold';
-  src: url('BELLB.TTF') format('truetype');
-} */
-
-/* @font-face {
-  font-family: 'Bell';
-  font-style: 'italic';
-  src: url('belli.ttf') format('truetype');
-} */
-
 .round-icon {
   width: 40px;
   height: 40px;
