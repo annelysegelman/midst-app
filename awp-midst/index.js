@@ -178,12 +178,12 @@ const menu = (mainWindow) => {
       { label: 'Bold', click: () => mainWindow.webContents.send('menu.toggleFontFormatBold')},
       { label: 'Italic', click: () => mainWindow.webContents.send('menu.toggleFontFormatItalid')},
       { label: 'Font Family', submenu: [
-        { label: 'Helvetica', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Helvetica')},
+        { label: 'Bell', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Bell')},
         { label: 'Courier', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Courier')},
-        { label: 'Times New Roman', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Times New Roman')},
-        { label: 'Arial', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Arial')},
         { label: 'Garamond', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Garamond')},
+        { label: 'Helvetica', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Helvetica')},
         { label: 'Lato', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Lato')},
+        { label: 'Times New Roman', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Times New Roman')},
       ]},
     ]
   }
