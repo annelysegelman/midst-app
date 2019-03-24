@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'HelveticaNeueThin';
+  src: url('HNT.ttf') format('truetype');
+}
+
 .round-icon {
   width: 40px;
   height: 40px;
@@ -115,6 +120,11 @@
   height: calc(100vh - 25px - 65px);
   overflow-x: hidden;
   overflow-y: scroll;
+  transition: all 250ms;
+}
+
+.editor.with-timeline {
+  height: calc(100vh - 25px - 125px);
 }
 
 .editor #editable {
@@ -223,7 +233,14 @@
 
 .empty-drawer-message {
   text-align: center;
-  padding-top:50%;
+  font-family: 'HelveticaNeueThin';
+  font-size: 25px;
+  color: rgb(105, 0, 0);
+  padding: 50% 10px 0 10px;
+}
+
+.empty-drawer-message svg {
+  stroke: rgb(105, 0, 0);
 }
 
 .top-toolbar .toolbar-icons {
