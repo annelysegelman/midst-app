@@ -965,8 +965,13 @@ class Midst extends React.Component {
             e('br', {}),
             e('span', {}, 'is empty!'),
           ),
-          e('p', { className: 'shake animated' }, iconMarker()),
-          e('p', {}, 'Add Draft Markers to fill it up.'),
+          // e('p', { className: 'shake animated' }, iconMarker()),
+         e('p', {},
+          e('span', {}, 'Add Draft Markers'),
+          e('br', {}),
+          e('span', {}, 'to fill it up.'),
+        ),
+          // e('p', {}, 'Add Draft Markers to fill it up.'),
         )
         : reversedMarkers.map(({name, defaultName, timelineIndex}) =>
           e('div', {
