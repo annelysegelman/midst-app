@@ -827,7 +827,7 @@ class Midst extends React.Component {
   }
 
   renderDraftMarkerCreateIcon() {
-    const { editorDraftMarkers, editorTimelineIndex, editorCreatingDraftMarker } = this.state
+    const { editorDraftMarkers, editorTimelineIndex, editorCreatingDraftMarker, appDrawerOpen } = this.state
     const markerIndices = editorDraftMarkers.map(marker => marker.timelineIndex)
     const existingMarkerIndex = markerIndices.indexOf(editorTimelineIndex)
     let markerExists = existingMarkerIndex >= 0
@@ -842,7 +842,8 @@ class Midst extends React.Component {
     return e('div', {
       className: 'round-icon draft-marker-create'
         + ((markerExists && !editorCreatingDraftMarker) || !this.showTimeline() ? ' deactivated' : '')
-        + (editorCreatingDraftMarker ? ' active' : ''),
+        + (editorCreatingDraftMarker ? ' active' : '')
+        + (appDrawerOpen && editorDraftMarkers.length < 1 ? ' shake animated' : ''),
       onMouseDown: !markerExists && !editorCreatingDraftMarker ? this.createDraftMarker : null,
     }, iconMarker())
   }
@@ -945,10 +946,13 @@ class Midst extends React.Component {
       },
         reversedMarkers.length < 1 ?
         e('div', { className: 'empty-drawer-message' },
-          e('h2', {}, 'Your Drawer is empty!'),
-          e('p', {}, 'When you add Draft Markers'),
-          e('p', {}, iconMarker()),
-          e('p', {}, 'they\'ll show up here.'),
+          e('p', {},
+            e('span', {}, 'Your Drawer'),
+            e('br', {}),
+            e('span', {}, 'is empty!'),
+          ),
+          e('p', { className: 'shake animated' }, iconMarker()),
+          e('p', {}, 'Add Draft Markers to fill it up.'),
         )
         : reversedMarkers.map(({name, defaultName, timelineIndex}) =>
           e('div', {
