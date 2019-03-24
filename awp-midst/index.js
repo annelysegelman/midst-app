@@ -134,7 +134,7 @@ const menu = (mainWindow) => {
   const appMenu = {
     label: 'App',
     submenu: [
-      {label: 'About Midst', click: () => {}},
+      {label: 'About Midst', click: () => mainWindow.webContents.send('menu.about')},
       {type: 'separator'},
       {role: 'services'},
       {type: 'separator'},

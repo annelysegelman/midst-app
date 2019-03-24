@@ -73,6 +73,38 @@
   text-align: center;
 }
 
+.about {
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  width: 0;
+  height: 0;
+  background: #FF91AF;
+  transition: all 250ms;
+  overflow: hidden;
+}
+
+.about.open {
+  width: 450px;
+  height: 450px;
+  margin-top: -225px;
+  margin-left: -225px;
+  text-align: center;
+  font-size: 25px;
+  color: rgb(105, 0, 0);
+}
+
+.about .close-x {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+.about .close-x svg {
+  stroke: #FFF5EE;
+}
+
 .top-toolbar {
   width: 100vw;
   height: 65px;

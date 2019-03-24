@@ -22,6 +22,7 @@ class Midst extends React.Component {
 // Initial State
 // ================================================================================
   this.initialState = {
+    appAboutOpen: false,
     appCursorFollowing: true,
     appDrawerOpen: false,
     appFileAbsPath: false,
@@ -102,6 +103,7 @@ class Midst extends React.Component {
     this.$editable.on('paste', this.editorOnPaste)
 
     if (typeof ipc !== 'undefined') {
+      ipc.on('menu.about', () => this.setState({ appAboutOpen: true }))
       ipc.on('menu.cursorFollowingOff', () => this.setState({ cursorFollowing: false }))
       ipc.on('menu.cursorFollowingOn', () => this.setState({ cursorFollowing: true }))
       ipc.on('menu.fontSizeDefault', this.fontSizeDefault)
@@ -725,13 +727,15 @@ class Midst extends React.Component {
     sel.removeAllRanges()
     sel.addRange(range)
 
-    // const $currentLine = this.$editable.find('[data-line-number="' + this.state.ed + '"]')
-    // console.log(_.get(this.state.editorTimelineFrames, '[this.state.editorTimelineIndex].lineNumber'))
-    const currentFrame = this.state.editorTimelineFrames[this.state.editorTimelineIndex]
-    if (currentFrame) {
-      const $currentLine = this.$editable.find('[data-line-number="' + currentFrame.lineNumber + '"]')
-      if ($currentLine.length) {
-        $currentLine[0].scrollIntoView()
+    if (this.state.appCursorFollowing) {
+      const currentFrame = this.state.editorTimelineFrames[this.state.editorTimelineIndex]
+
+      if (currentFrame) {
+        const $currentLine = this.$editable.find('[data-line-number="' + currentFrame.lineNumber + '"]')
+
+        if ($currentLine.length) {
+          $currentLine[0].scrollIntoView()
+        }
       }
     }
   }
@@ -746,7 +750,7 @@ class Midst extends React.Component {
       e('div', {
         className: 'title-bar'
       },
-        e('div', { className: 'title' }, appTitle)
+        e('div', { className: 'title' }, appTitle),
       )
     )
   }
@@ -1004,8 +1008,31 @@ class Midst extends React.Component {
     )
   }
 
-  renderDrawerMarkers() {
-    return
+  renderAbout() {
+    const { appAboutOpen }  = this.state
+
+    return (
+      e('div', {
+        className: 'about' + (appAboutOpen ? ' open' : '')
+      },
+        e('div', {
+          className: 'close-x',
+          onClick: () => this.setState({ appAboutOpen: false })
+        },
+          e('span', {}, 'The Midst app was built by'),
+          e('br'),
+          e('span', {}, 'Annelyse Gelman'),
+          e('br'),
+          e('span', {}, 'and Jason Grier.'),
+          e('br'),
+          e('span', {}, '&copy; 2019 All Rights Reserved'),
+          e('br'),
+          e('br'),
+          e('span', {}, ''),
+          iconCloseX()
+        ),
+      )
+    )
   }
 
 // ================================================================================
@@ -1016,6 +1043,7 @@ class Midst extends React.Component {
 
     return (
       e('div', { className: 'midst' + (appFocusMode ? ' focus-mode' : '')},
+        e('div', { id: 'about' }, this.renderAbout()),
         e('header', { id: 'title-bar' }, this.renderHeader()),
         e('section', { id: 'top-toolbar' }, this.renderTopToolbar()),
         e('main', {}, this.renderEditor()),
