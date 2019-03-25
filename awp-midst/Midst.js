@@ -568,7 +568,7 @@ class Midst extends React.Component {
   async newFile() {
     if (!await this.checkForUnsavedChanges()) return
     this.setState(this.initialState)
-    this.$editable.html('')
+    this.$editable.html('<p><br></p>')
   }
 
   async openFile() {
@@ -738,17 +738,24 @@ class Midst extends React.Component {
         const $fifthLineAbove = this.$editable.find('[data-line-number="' + (currentLineNumber - 5) + '"]')
         const $topLine = this.$editable.find('[data-line-number="0"]')
 
+        console.log(currentLineNumber)
+
         if ($fifthLineAbove.length) {
+          console.log('fifthline', $fifthLineAbove.text())
           $fifthLineAbove[0].scrollIntoView()
         }
 
         else if ($topLine.length) {
+          console.log('topline', $topLine.text())
           $topLine[0].scrollIntoView()
         }
 
         else if ($currentLine.length) {
+          console.log('fallback', $currentLine.text())
           $currentLine[0].scrollIntoView()
         }
+
+        console.log('=============================')
       }
     }
   }
