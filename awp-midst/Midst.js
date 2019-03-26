@@ -1056,13 +1056,13 @@ class Midst extends React.Component {
         e('span', {}, '© 2019 All Rights Reserved'),
         e('br'),
         e('br'),
-        e('span', {}, 'Comments, feature requests,'),
+        e('span', {}, "Please don't share it."),
         e('br'),
-        e('span', {}, 'technical problems, questions?'),
+        e('span', {}, 'If you find bugs'),
         e('br'),
-        e('span', {}, 'Contact'),
+        e('span', {}, 'let us know at'),
         e('br'),
-        e('a', { href: 'mailto:midsthq@gmail.com' }, 'midsthq@gmail.com'),
+        e('a', { href: 'mailto:midsthq@gmail.com' }, 'midsthq@gmail.com!'),
       )
     )
   }
