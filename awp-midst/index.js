@@ -106,6 +106,8 @@ const bootstrap = (menuItems, cb) => {
 
     mainWindow.setMinimumSize(500, 500)
 
+    mainWindow.on('closed', () => app.quit())
+
     mainWindow.loadURL(`file://${__dirname}/index.html`)
 
     if (process.env.NODE_ENV === 'development') {
