@@ -185,6 +185,10 @@
   width: calc(100% - 160px - 190px);
 }
 
+.editor #editable.with-timeline {
+  caret-color: #FFF5EE;
+}
+
 .editor #editable:focus {
   outline: none;
 }

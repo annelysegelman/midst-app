@@ -46,6 +46,7 @@ class Midst extends React.Component {
     editorTimelineFrames: [],
     editorTimelineIndex: 0,
     editorTitle: 'Untitled',
+    playerPlaybackSpeed: 0.7,
   }
 
   this.state = JSON.parse(JSON.stringify(this.initialState))
@@ -399,13 +400,11 @@ class Midst extends React.Component {
   }
 
   toggleFontFormatBold() {
-    // this.focusEditableAtEnd()
     document.execCommand('bold')
     this.setState({ editorFormatBold: !this.state.editorFormatBold })
   }
 
   toggleFontFormatItalic() {
-    // this.focusEditableAtEnd()
     document.execCommand('italic')
     this.setState({ editorFormatItalic: !this.state.editorFormatItalic })
   }
@@ -517,7 +516,7 @@ class Midst extends React.Component {
       }
     })
     setTimeout(() => {
-      this.focusEditableAtEnd()
+      this.scrollCursorIntoView()
     }, 1)
   }
 
@@ -534,7 +533,7 @@ class Midst extends React.Component {
   }
 
   autoScrub() {
-    const { editorPlaying, playbackSpeed, editorTimelineIndex, editorTimelineFrames } = this.state
+    const { editorPlaying, playerPlaybackSpeed, editorTimelineIndex, editorTimelineFrames } = this.state
 
     if (!editorPlaying) return
 
@@ -543,8 +542,8 @@ class Midst extends React.Component {
       return
     }
 
-    const advanceBy = playbackSpeed >= 1 ? playbackSpeed * 2 : 1
-    const timeout = playbackSpeed < 1 ? (1 / playbackSpeed) * 50 : 1
+    const advanceBy = playerPlaybackSpeed >= 1 ? playerPlaybackSpeed * 2 : 1
+    const timeout = playerPlaybackSpeed < 1 ? (1 / playerPlaybackSpeed) * 50 : 1
 
     setTimeout(() => {
       this.setPos(editorTimelineIndex + advanceBy)
@@ -618,7 +617,7 @@ class Midst extends React.Component {
       editorFontSize: fileData.data.meta.editorFontSize || this.defaultFontSize,
     }, () => {
       this.$editable.html(_.get(_.last(this.state.editorTimelineFrames), 'content'))
-      this.focusEditableAtEnd()
+      this.$editable.focus()
     })
   }
 
@@ -687,7 +686,7 @@ class Midst extends React.Component {
       editorCreatingDraftMarker: false,
     })
 
-    this.focusEditableAtEnd()
+    this.$editable.focus()
   }
 
   draftMarkerLabelOnKeyDown(timelineIndex) {
@@ -728,7 +727,9 @@ class Midst extends React.Component {
     var sel = window.getSelection()
     sel.removeAllRanges()
     sel.addRange(range)
+  }
 
+  scrollCursorIntoView() {
     if (this.state.appCursorFollowing) {
       const currentFrame = this.state.editorTimelineFrames[this.state.editorTimelineIndex]
 
@@ -738,24 +739,17 @@ class Midst extends React.Component {
         const $fifthLineAbove = this.$editable.find('[data-line-number="' + (currentLineNumber - 5) + '"]')
         const $topLine = this.$editable.find('[data-line-number="0"]')
 
-        console.log(currentLineNumber)
-
         if ($fifthLineAbove.length) {
-          console.log('fifthline', $fifthLineAbove.text())
-          $fifthLineAbove[0].scrollIntoView()
+          $fifthLineAbove[0].scrollIntoView({ behavior: 'smooth' })
         }
 
         else if ($topLine.length) {
-          console.log('topline', $topLine.text())
-          $topLine[0].scrollIntoView()
+          $topLine[0].scrollIntoView({ behavior: 'smooth' })
         }
 
         else if ($currentLine.length) {
-          console.log('fallback', $currentLine.text())
-          $currentLine[0].scrollIntoView()
+          $currentLine[0].scrollIntoView({ behavior: 'smooth' })
         }
-
-        console.log('=============================')
       }
     }
   }
@@ -840,7 +834,8 @@ class Midst extends React.Component {
       },
         e('div', {
           id: 'editable',
-          className: appDrawerOpen && !appFocusMode ? 'with-drawer' : '',
+          className: (appDrawerOpen && !appFocusMode ? 'with-drawer' : '')
+            + (appTimelineMode ? ' with-timeline' : ''),
           contentEditable: !editorCreatingDraftMarker && !editorEditingDraftMarker,
         }),
       )
