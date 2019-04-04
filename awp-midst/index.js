@@ -106,6 +106,11 @@ const bootstrap = (menuItems, cb) => {
 
     mainWindow.setMinimumSize(500, 500)
 
+    mainWindow.on('close', (evt) => {
+      evt.preventDefault()
+      mainWindow.webContents.send('menu.quit')
+    })
+
     mainWindow.on('closed', () => app.quit())
 
     mainWindow.loadURL(`file://${__dirname}/index.html`)
