@@ -9,6 +9,7 @@ const { app, BrowserWindow, dialog, Menu } = require('electron')
 // Windows
 // ================================================================================
 let mainWindow
+let okToCloseWindow = false
 
 // ================================================================================
 // Config
@@ -18,6 +19,10 @@ const FILE_EXT = 'midst'
 // ================================================================================
 // Globals
 // ================================================================================
+global['setOkToCloseWindow'] = (val) => {
+  okToCloseWindow = val
+}
+
 global['quit'] = () => {
   app.quit()
 }
@@ -107,8 +112,10 @@ const bootstrap = (menuItems, cb) => {
     mainWindow.setMinimumSize(500, 500)
 
     mainWindow.on('close', (evt) => {
-      evt.preventDefault()
-      mainWindow.webContents.send('menu.quit')
+      if (!okToCloseWindow) {
+        evt.preventDefault()
+        mainWindow.webContents.send('menu.quit')
+      }
     })
 
     mainWindow.on('closed', () => app.quit())

@@ -623,6 +623,7 @@ class Midst extends React.Component {
 
   async quit() {
     if (!await this.checkForUnsavedChanges()) return
+    remote.getGlobal('setOkToCloseWindow')(true)
     remote.getGlobal('quit')()
   }
 
