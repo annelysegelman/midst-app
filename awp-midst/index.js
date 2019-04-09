@@ -190,7 +190,7 @@ const menu = (mainWindow) => {
     label: 'Font',
     submenu: [
       { label: 'Bold', click: () => mainWindow.webContents.send('menu.toggleFontFormatBold')},
-      { label: 'Italic', click: () => mainWindow.webContents.send('menu.toggleFontFormatItalid')},
+      { label: 'Italic', click: () => mainWindow.webContents.send('menu.toggleFontFormatItalic')},
       { label: 'Font Family', submenu: [
         { label: 'Bell', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Bell')},
         { label: 'Courier', click: () => mainWindow.webContents.send('menu.setFontFamily', 'Courier')},
