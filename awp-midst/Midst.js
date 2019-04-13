@@ -4,7 +4,7 @@
 class Midst extends React.Component {
   static get defaultProps() {
     return {
-      isPlayer: true,
+      isPlayer: false,
     }
   }
 
