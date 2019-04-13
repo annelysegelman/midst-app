@@ -10,6 +10,7 @@ class Midst extends React.Component {
 
   constructor(props) {
     super(props)
+    console.log('??')
 
 // ================================================================================
 // Class Properties
