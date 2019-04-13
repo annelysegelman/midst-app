@@ -4,7 +4,7 @@
 class Midst extends React.Component {
   static get defaultProps() {
     return {
-      isPlayer: false,
+      isPlayer: true,
     }
   }
 
@@ -14,72 +14,73 @@ class Midst extends React.Component {
 // ================================================================================
 // Class Properties
 // ================================================================================#
-  this.editorFontSizes = [10, 12, 14, 24, 36]
-  this.defaultFontSize = 14
-  this.FILE_EXT = '.midst'
+    this.editorFontSizes = [10, 12, 14, 24, 36]
+    this.defaultFontSize = 14
+    this.FILE_EXT = '.midst'
 
 // ================================================================================
 // Initial State
 // ================================================================================
-  this.initialState = {
-    appAboutOpen: false,
-    appCursorFollowing: true,
-    appDrawerOpen: false,
-    appFileAbsPath: false,
-    appFocusMode: false,
-    appTimelineMode: false,
-    appTitle: 'Untitled',
-    editorAuthor: 'Anonymous',
-    editorCachedSelection: [],
-    editorCreatingDraftMarker: false,
-    editorDraftMarkers: [],
-    editorFontFamily: 'Helvetica',
-    editorFontSize: this.defaultFontSize,
-    editorFormatBold: false,
-    editorFormatItalic: false,
-    editorHasUnsavedChanges: false,
-    editorHighestEverDraftNumber: 0,
-    editorNumLines: 0,
-    editorPlaying: false,
-    editorShowDraftMarkers: true,
-    editorShowDraftMarkerLabels: true,
-    editorTimelineFrames: [],
-    editorTimelineIndex: 0,
-    editorTitle: 'Untitled',
-    playerPlaybackSpeed: 0.7,
-  }
+    this.initialState = {
+      appAboutOpen: false,
+      appCursorFollowing: true,
+      appDrawerOpen: false,
+      appFileAbsPath: false,
+      appFocusMode: false,
+      appTimelineMode: false,
+      appTitle: 'Untitled',
+      editorAuthor: 'Anonymous',
+      editorCachedSelection: [],
+      editorCreatingDraftMarker: false,
+      editorDraftMarkers: [],
+      editorFontFamily: 'Helvetica',
+      editorFontSize: this.defaultFontSize,
+      editorFormatBold: false,
+      editorFormatItalic: false,
+      editorHasUnsavedChanges: false,
+      editorHighestEverDraftNumber: 0,
+      editorNumLines: 0,
+      editorPlaying: false,
+      editorShowDraftMarkers: true,
+      editorShowDraftMarkerLabels: true,
+      editorTimelineFrames: [],
+      editorTimelineIndex: 0,
+      editorTitle: 'Untitled',
+      playerPlaybackSpeed: 1,
+      playerPlaybackSpeedDropOpen: false,
+    }
 
-  this.state = JSON.parse(JSON.stringify(this.initialState))
+    this.state = JSON.parse(JSON.stringify(this.initialState))
 
 // ================================================================================
 // Bound Methods
 // ================================================================================
-  this.appOnKeyDown = this.appOnKeyDown.bind(this)
-  this.createDraftMarker = this.createDraftMarker.bind(this)
-  this.editorOnBlur = this.editorOnBlur.bind(this)
-  this.editorOnInput = this.editorOnInput.bind(this)
-  this.editorOnKeyDown = this.editorOnKeyDown.bind(this)
-  this.editorOnMouseDown = this.editorOnMouseDown.bind(this)
-  this.editorOnPaste = this.editorOnPaste.bind(this)
-  this.exitTimelineMode = this.exitTimelineMode.bind(this)
-  this.fontSizeDefault = this.fontSizeDefault.bind(this)
-  this.fontSizeDown = this.fontSizeDown.bind(this)
-  this.fontSizeUp = this.fontSizeUp.bind(this)
-  this.newFile = this.newFile.bind(this)
-  this.openFile = this.openFile.bind(this)
-  this.pause = this.pause.bind(this)
-  this.play = this.play.bind(this)
-  this.quit = this.quit.bind(this)
-  this.saveFile = this.saveFile.bind(this)
-  this.saveFileAs = this.saveFileAs.bind(this)
-  this.setFontFamily = this.setFontFamily.bind(this)
-  this.setFontSize = this.setFontSize.bind(this)
-  this.sliderOnChange = this.sliderOnChange.bind(this)
-  this.toggleDrawer = this.toggleDrawer.bind(this)
-  this.toggleFocusMode = this.toggleFocusMode.bind(this)
-  this.toggleFontFormatBold = this.toggleFontFormatBold.bind(this)
-  this.toggleFontFormatItalic = this.toggleFontFormatItalic.bind(this)
-  this.toggleTimeline = this.toggleTimeline.bind(this)
+    this.appOnKeyDown = this.appOnKeyDown.bind(this)
+    this.createDraftMarker = this.createDraftMarker.bind(this)
+    this.editorOnBlur = this.editorOnBlur.bind(this)
+    this.editorOnInput = this.editorOnInput.bind(this)
+    this.editorOnKeyDown = this.editorOnKeyDown.bind(this)
+    this.editorOnMouseDown = this.editorOnMouseDown.bind(this)
+    this.editorOnPaste = this.editorOnPaste.bind(this)
+    this.exitTimelineMode = this.exitTimelineMode.bind(this)
+    this.fontSizeDefault = this.fontSizeDefault.bind(this)
+    this.fontSizeDown = this.fontSizeDown.bind(this)
+    this.fontSizeUp = this.fontSizeUp.bind(this)
+    this.newFile = this.newFile.bind(this)
+    this.openFile = this.openFile.bind(this)
+    this.pause = this.pause.bind(this)
+    this.play = this.play.bind(this)
+    this.quit = this.quit.bind(this)
+    this.saveFile = this.saveFile.bind(this)
+    this.saveFileAs = this.saveFileAs.bind(this)
+    this.setFontFamily = this.setFontFamily.bind(this)
+    this.setFontSize = this.setFontSize.bind(this)
+    this.sliderOnChange = this.sliderOnChange.bind(this)
+    this.toggleDrawer = this.toggleDrawer.bind(this)
+    this.toggleFocusMode = this.toggleFocusMode.bind(this)
+    this.toggleFontFormatBold = this.toggleFontFormatBold.bind(this)
+    this.toggleFontFormatItalic = this.toggleFontFormatItalic.bind(this)
+    this.toggleTimeline = this.toggleTimeline.bind(this)
 
 // ================================================================================
 // Styles
@@ -542,8 +543,9 @@ class Midst extends React.Component {
       return
     }
 
-    const advanceBy = playerPlaybackSpeed >= 1 ? playerPlaybackSpeed * 2 : 1
-    const timeout = playerPlaybackSpeed < 1 ? (1 / playerPlaybackSpeed) * 50 : 1
+    const adjustedSpeed = playerPlaybackSpeed / 2
+    const advanceBy = adjustedSpeed >= 1 ? adjustedSpeed * 2 : 1
+    const timeout = adjustedSpeed < 1 ? (1 / adjustedSpeed) * 50 : 1
 
     setTimeout(() => {
       this.setPos(editorTimelineIndex + advanceBy)
@@ -823,6 +825,7 @@ class Midst extends React.Component {
   }
 
   renderEditor() {
+    const { isPlayer } = this.props
     const { editorFontFamily, editorFontSize, editorCreatingDraftMarker, editorEditingDraftMarker, appDrawerOpen, appFocusMode, appTimelineMode } = this.state
 
     return (
@@ -837,7 +840,7 @@ class Midst extends React.Component {
           id: 'editable',
           className: (appDrawerOpen && !appFocusMode ? 'with-drawer' : '')
             + (appTimelineMode ? ' with-timeline' : ''),
-          contentEditable: !editorCreatingDraftMarker && !editorEditingDraftMarker,
+          contentEditable: !editorCreatingDraftMarker && !editorEditingDraftMarker && !isPlayer,
         }),
       )
     )
@@ -928,12 +931,12 @@ class Midst extends React.Component {
 
   renderTimeline() {
     const { isPlayer } = this.props
-    const { appTimelineMode, appDrawerOpen, editorTimelineIndex, editorTimelineFrames, editorPlaying, editorShowDraftMarkers } = this.state
+    const { appTimelineMode, editorTimelineIndex, editorTimelineFrames, editorShowDraftMarkers } = this.state
     const value = editorTimelineIndex / editorTimelineFrames.length
 
     return (
       e('div', {
-        className: 'timeline' + (appTimelineMode ? ' open' : ''),
+        className: 'timeline' + (appTimelineMode || isPlayer ? ' open' : ''),
       },
         e(Slider, {
           id: 'midst-slider',
@@ -944,27 +947,78 @@ class Midst extends React.Component {
           onChange: this.sliderOnChange,
           onMouseDown: this.pause,
         }),
-        e('div', { className: 'timeline-controls' },
-          e('div', {
-            className: 'round-icon timeline-button-3' + (editorPlaying ? ' active' : ''),
-            onClick: editorPlaying ? this.pause : this.play,
-          }, iconPlay()),
-          e('div', {
-            className: 'round-icon timeline-button-2' + (appDrawerOpen ? ' active' : ''),
-            onClick: this.toggleDrawer,
-          }, iconDrawer()),
-          this.renderDraftMarkerCreateIcon(),
-          e('div', {
-            className: 'round-icon timeline-button-1',
-            onClick: () => {
-              this.setState({
-                appTimelineMode: false,
-                appDrawerOpen: false,
-              })
-            },
-          }, iconCloseX()),
-        ),
+        isPlayer ?
+          this.renderTimelineControlsPlayer()
+          : this.renderTimelineControlsApp(),
         editorShowDraftMarkers && !isPlayer ? this.renderDraftMarkers() : null,
+      )
+    )
+  }
+
+  renderTimelineControlsPlayer() {
+    const { appDrawerOpen, editorPlaying, playerPlaybackSpeed, playerPlaybackSpeedDropOpen } = this.state
+
+    return (
+      e('div', { className: 'timeline-controls' },
+        e('div', {
+          className: 'round-icon timeline-button-3' + (editorPlaying ? ' active' : ''),
+          onClick: editorPlaying ? this.pause : this.play,
+        }, iconPlay()),
+        e('div', {
+          className: 'round-icon timeline-button-2 speed-selector' + (appDrawerOpen ? ' active' : ''),
+          onClick: this.toggleDrawer,
+        },
+          e(Drop, {
+            direction: 'up',
+            label: playerPlaybackSpeed + 'x',
+            controlled: true,
+            open: playerPlaybackSpeedDropOpen,
+            onDropToggled: () => {
+              this.setState({ playerPlaybackSpeedDropOpen: !playerPlaybackSpeedDropOpen })
+            },
+          },
+            e('div', { onClick: () => this.setState({ playerPlaybackSpeedDropOpen: false, playerPlaybackSpeed: 0.25 }) }, '.25x'),
+            e('div', { onClick: () => this.setState({ playerPlaybackSpeedDropOpen: false, playerPlaybackSpeed: 0.5 }) }, '.5x'),
+            e('div', { onClick: () => this.setState({ playerPlaybackSpeedDropOpen: false, playerPlaybackSpeed: 1 }) }, '1x'),
+            e('div', { onClick: () => this.setState({ playerPlaybackSpeedDropOpen: false, playerPlaybackSpeed: 2 }) }, '2x'),
+            e('div', { onClick: () => this.setState({ playerPlaybackSpeedDropOpen: false, playerPlaybackSpeed: 4 }) }, '4x'),
+          ),
+        ),
+        e('div', {
+          className: 'round-icon timeline-button-1',
+          onClick: () => {},
+        }, iconVolume2()),
+        e('div', {
+          className: 'round-icon timeline-button-1',
+          onClick: () => {},
+        }, iconSettings()),
+      )
+    )
+  }
+
+  renderTimelineControlsApp() {
+    const { appDrawerOpen, editorPlaying } = this.state
+
+    return (
+      e('div', { className: 'timeline-controls' },
+        e('div', {
+          className: 'round-icon timeline-button-3' + (editorPlaying ? ' active' : ''),
+          onClick: editorPlaying ? this.pause : this.play,
+        }, iconPlay()),
+        e('div', {
+          className: 'round-icon timeline-button-2' + (appDrawerOpen ? ' active' : ''),
+          onClick: this.toggleDrawer,
+        }, iconDrawer()),
+        this.renderDraftMarkerCreateIcon(),
+        e('div', {
+          className: 'round-icon timeline-button-1',
+          onClick: () => {
+            this.setState({
+              appTimelineMode: false,
+              appDrawerOpen: false,
+            })
+          },
+        }, iconCloseX()),
       )
     )
   }
@@ -1067,17 +1121,18 @@ class Midst extends React.Component {
 // Render
 // ================================================================================
   render() {
+    const { isPlayer } = this.props
     const { appFocusMode } = this.state
 
     return (
       e('div', { className: 'midst' + (appFocusMode ? ' focus-mode' : '')},
-        e('div', { id: 'about' }, this.renderAbout()),
-        e('header', { id: 'title-bar' }, this.renderHeader()),
-        e('section', { id: 'top-toolbar' }, this.renderTopToolbar()),
+        isPlayer ? null : e('div', { id: 'about' }, this.renderAbout()),
+        isPlayer ? null : e('header', { id: 'title-bar' }, this.renderHeader()),
+        isPlayer ? null : e('section', { id: 'top-toolbar' }, this.renderTopToolbar()),
         e('main', {}, this.renderEditor()),
-        e('section', { id: 'bottom-toolbar' }, this.renderBottomToolbar()),
+        isPlayer ? null : e('section', { id: 'bottom-toolbar' }, this.renderBottomToolbar()),
         e('section', { id: 'timeline' }, this.renderTimeline()),
-        e('aside', { id: 'drawer' }, this.renderDrawer()),
+        isPlayer ? null : e('aside', { id: 'drawer' }, this.renderDrawer()),
       )
     )
   }
