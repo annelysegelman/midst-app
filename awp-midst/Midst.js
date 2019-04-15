@@ -827,13 +827,17 @@ class Midst extends React.Component {
           //   onClick: this.toggleFontFormatBold,
           // }, iconBold()),
           e('div', {
+            className: 'round-icon save-button',
+            onClick: this.saveFile,
+          }, iconSave()),
+          e('div', {
             className: 'round-icon open-button',
             onClick: this.openFile,
           }, iconOpen()),
           e('div', {
-            className: 'round-icon save-button',
-            onClick: this.saveFile,
-          }, iconSave()),
+            className: 'round-icon new-button',
+            onClick: this.newFile,
+          }, iconNew()),
         ),
       )
     )
