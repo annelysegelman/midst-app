@@ -92,17 +92,34 @@ class Midst extends React.Component {
 // Lifecycle
 // ================================================================================#
   componentDidMount() {
+    const { isPlayer } = this.props
+
     this.$editable = $('#editable')
 
     // Force first line of contenteditable to be wrapped in a <p>.
     this.$editable.html('<p><br></p>')
 
-    this.$editable.on('blur', this.editorOnBlur)
-    this.$editable.on('input', this.editorOnInput)
-    this.$editable.on('keydown', this.editorOnKeyDown)
-    this.$editable.on('keyup', this.editorOnKeyUp)
-    this.$editable.on('mousedown', this.editorOnMouseDown)
-    this.$editable.on('paste', this.editorOnPaste)
+    if (isPlayer && !_.isEmpty(MIDST_DATA_URL)) {
+      $.ajax({
+        url: MIDST_DATA_URL,
+        success: res => {
+          this.load({
+            data: JSON.parse(res),
+          })
+        }
+      })
+    }
+
+    else {
+      $('body').on('keydown', this.appOnKeyDown)
+
+      this.$editable.on('blur', this.editorOnBlur)
+      this.$editable.on('input', this.editorOnInput)
+      this.$editable.on('keydown', this.editorOnKeyDown)
+      this.$editable.on('keyup', this.editorOnKeyUp)
+      this.$editable.on('mousedown', this.editorOnMouseDown)
+      this.$editable.on('paste', this.editorOnPaste)
+    }
 
     if (typeof ipc !== 'undefined') {
       ipc.on('menu.about', () => this.setState({ appAboutOpen: true }))
@@ -124,10 +141,6 @@ class Midst extends React.Component {
 
       ipc.on('fileOpened', (evt, fileData) => this.load(fileData))
     }
-
-    this.$app = $('body')
-
-    this.$app.on('keydown', this.appOnKeyDown)
   }
 
   componentDidUpdate() {
@@ -135,13 +148,15 @@ class Midst extends React.Component {
   }
 
   componentWillUnmount() {
-    this.$editable.off('blur')
-    this.$editable.off('input')
-    this.$editable.off('keydown')
-    this.$editable.off('keyup')
-    this.$editable.off('mousedown')
-    this.$editable.off('paste')
-    this.$app.off('keydown')
+    if (!this.props.isPlayer) {
+      this.$editable.off('blur')
+      this.$editable.off('input')
+      this.$editable.off('keydown')
+      this.$editable.off('keyup')
+      this.$editable.off('mousedown')
+      this.$editable.off('paste')
+      $('body').off('keydown')
+    }
   }
 
 // ================================================================================
