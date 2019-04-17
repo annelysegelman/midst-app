@@ -1,9 +1,9 @@
 // ================================================================================
 // Imports
 // ================================================================================
-const { basename, join } = require('path')
+const { basename } = require('path')
 const { watch, writeFileSync, readFileSync } = require('fs')
-const { app, BrowserWindow, dialog, Menu } = require('electron')
+const { app, BrowserWindow, dialog, Menu, protocol } = require('electron')
 
 // ================================================================================
 // Windows
@@ -98,6 +98,14 @@ const bootstrap = (menuItems, cb) => {
 
   app.on('ready', () => {
     const { size: { height: size }} = require('electron').screen.getPrimaryDisplay()
+
+    // protocol.registerFileProtocol('midst', (request, callback) => {
+    //   const url = request.url.substr(7)
+    //   console.log('Works?')
+    //   callback({ path: path.normalize(`${__dirname}/${url}`) })
+    // }, (error) => {
+    //   if (error) console.error('Failed to register protocol')
+    // })
 
     mainWindow = new BrowserWindow({
       x: 20,
