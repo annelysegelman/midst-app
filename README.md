@@ -4,12 +4,10 @@
     `yarn global add electron-icon-maker`
 
 ## Dev
-    `NODE_ENV=development electron midst`
-    `NODE_ENV=development electron awp-midst`
+    `NODE_ENV=development electron`
 
 ## Build
-    `node bin/build.js midst`
-    `node bin/build.js awp-midst`
+    `node bin/build.js`
 
 ## Manual Build
 1. Download the latest prebuilt binary from https://github.com/electron/electron/releases
