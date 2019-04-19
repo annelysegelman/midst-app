@@ -5,7 +5,7 @@
     `yarn global add create-dmg`
 
 ## Dev
-    `NODE_ENV=development electron`
+    `NODE_ENV=development electron src`
 
 ## Build
     `node bin/build.js`

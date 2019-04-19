@@ -139,7 +139,10 @@ class Midst extends React.Component {
       ipc.on('menu.toggleFontFormatBold', this.toggleFontFormatBold)
       ipc.on('menu.toggleFontFormatItalic', this.toggleFontFormatItalic)
 
+      ipc.on('alert', (evt, msg) => alert(msg))
       ipc.on('fileOpened', (evt, fileData) => this.load(fileData))
+      ipc.on('fileOpenedFromIcon', (evt, fileData) => this.load(fileData))
+      ipc.on('openFileFromFileIcon', (evt, path) => this.openFileFromFileIcon(path))
     }
   }
 
@@ -590,6 +593,11 @@ class Midst extends React.Component {
   async openFile() {
     if (!await this.checkForUnsavedChanges()) return
     remote.getGlobal('openFile')()
+  }
+
+  async openFileFromFileIcon(path) {
+    if (!await this.checkForUnsavedChanges()) return
+    remote.getGlobal('openFileFromPath')(path)
   }
 
   async saveFile () {

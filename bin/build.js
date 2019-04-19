@@ -77,6 +77,12 @@ const newPlistBuiltData = plist.build(newPlistData)
 
 writeFileSync(plistFile, newPlistBuiltData)
 
-execSync('create-dmg ' + builtApp + ' ' + distDir)
+try {
+  execSync('create-dmg ' + builtApp + ' ' + distDir)
+}
+
+catch(err) {
+  console.log(err)
+}
 
 cleanup(true)

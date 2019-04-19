@@ -9,6 +9,7 @@ const { app, BrowserWindow, dialog, Menu, protocol } = require('electron')
 // Windows
 // ================================================================================
 let mainWindow
+let filePathToLoadOnReady
 let okToCloseWindow = false
 
 // ================================================================================
@@ -70,22 +71,30 @@ global['saveFile'] = (fileAbsPath, fileData) => {
 global['openFile'] = () => {
   dialog.showOpenDialog({properties: ['openFile'], filters: [{name: FILE_EXT, extensions: [FILE_EXT]}]}, (filePaths) => {
     if (filePaths) {
-      app.addRecentDocument(filePaths[0])
-      const fileName = basename(filePaths[0])
-      let data
-
-      try {
-        data = JSON.parse(readFileSync(filePaths[0], 'utf8'))
-      }
-
-      catch (err) {
-        console.log(err)
-        data = false
-      }
-
-      mainWindow.webContents.send('fileOpened', {fileName, data, path: filePaths[0]})
+      global['openFileFromPath'](filePaths[0])
     }
   })
+}
+
+global['openFileFromPath'] = (path) => {
+  openFileFromPath(path)
+}
+
+function openFileFromPath(path) {
+  app.addRecentDocument(path)
+  const fileName = basename(path)
+  let data
+
+  try {
+    data = JSON.parse(readFileSync(path, 'utf8'))
+  }
+
+  catch (err) {
+    console.log(err)
+    data = false
+  }
+
+  mainWindow.webContents.send('fileOpenedFromIcon', { fileName, data, path })
 }
 
 // ================================================================================
@@ -96,16 +105,17 @@ const bootstrap = (menuItems, cb) => {
   systemPreferences.setUserDefault('NSDisabledDictationMenuItem', 'boolean', true)
   systemPreferences.setUserDefault('NSDisabledCharacterPaletteMenuItem', 'boolean', true)
 
+  app.on('open-file', (evt, path) => {
+    if (!mainWindow) {
+      filePathToLoadOnReady = path
+      return
+    }
+
+    mainWindow.webContents.send('openFileFromFileIcon', path)
+  })
+
   app.on('ready', () => {
     const { size: { height: size }} = require('electron').screen.getPrimaryDisplay()
-
-    // protocol.registerFileProtocol('midst', (request, callback) => {
-    //   const url = request.url.substr(7)
-    //   console.log('Works?')
-    //   callback({ path: path.normalize(`${__dirname}/${url}`) })
-    // }, (error) => {
-    //   if (error) console.error('Failed to register protocol')
-    // })
 
     mainWindow = new BrowserWindow({
       x: 20,
@@ -142,6 +152,12 @@ const bootstrap = (menuItems, cb) => {
         Menu.buildFromTemplate(menuItems(mainWindow))
       )
     }
+
+    setTimeout(() => {
+      if (filePathToLoadOnReady) {
+        mainWindow.webContents.send('openFileFromFileIcon', filePathToLoadOnReady)
+      }
+    }, 1000)
 
     if (cb) {
       cb()
