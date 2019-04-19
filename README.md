@@ -2,6 +2,7 @@
     `yarn global add electron`
     `yarn global add electron-packager`
     `yarn global add electron-icon-maker`
+    `yarn global add create-dmg`
 
 ## Dev
     `NODE_ENV=development electron`

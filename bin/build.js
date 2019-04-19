@@ -7,6 +7,7 @@ const tmpDir = 'tmp'
 const distDir = 'dist'
 const buildTmpDir = tmpDir + '/Midst-darwin-x64'
 const buildDistDir = distDir + '/Midst-darwin-x64_' + + new Date()
+const builtApp = buildDistDir + '/Midst.app'
 const plistFile = buildDistDir + '/Midst.app/Contents/Info.plist'
 
 const dirtyFiles = [
@@ -43,7 +44,7 @@ cleanup()
 execSync('cp -r ' + srcDir + ' ' + tmpDir)
 execSync('electron-icon-maker --input=icon.png --output=icons', opts)
 execSync('mv icons/icons/mac/icon.icns icon.icns', opts)
-execSync('yarn init -y')
+execSync('yarn init -y', opts)
 execSync('yarn add electron@3.1.1 --dev')
 execSync('electron-packager ../tmp Midst --overwrite --platform=darwin --arch=x64 --icon=icon.icns', opts)
 execSync('mkdir ' + distDir)
@@ -74,6 +75,8 @@ const newPlistData = Object.assign({}, plistParsedData, {
 
 const newPlistBuiltData = plist.build(newPlistData)
 
-// writeFileSync(plistFile, newPlistBuiltData)
+writeFileSync(plistFile, newPlistBuiltData)
+
+execSync('create-dmg ' + builtApp + ' ' + distDir)
 
 cleanup(true)
