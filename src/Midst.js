@@ -144,6 +144,10 @@ class Midst extends React.Component {
       ipc.on('fileOpenedFromIcon', (evt, fileData) => this.load(fileData))
       ipc.on('openFileFromFileIcon', (evt, path) => this.openFileFromFileIcon(path))
     }
+
+    $('.tooltip').tooltipster({
+      theme: ['tooltipster-noir', 'midst-tooltip-theme'],
+    })
   }
 
   componentDidUpdate() {
@@ -814,36 +818,34 @@ class Midst extends React.Component {
           ),
         ),
         e('div', { className: 'toolbar-icons' },
-          e('div', {
-            className: 'round-icon focus-mode-toggle' + (appFocusMode ? ' active' : ''),
+          e('a', {
+            className: 'round-icon focus-mode-toggle tooltip' + (appFocusMode ? ' active' : ''),
+            title: 'Focus mode',
             onClick: this.toggleFocusMode,
           }, iconFocus()),
-          e('div', {
-            className: 'round-icon font-size-up-button',
+          e('a', {
+            className: 'round-icon font-size-up-button tooltip',
+            title: 'Increase font size',
             onClick: this.fontSizeUp,
           }, iconPlus()),
-          e('div', {
-            className: 'round-icon',
+          e('a', {
+            className: 'round-icon tooltip',
+            title: 'Decrease font size',
             onClick: this.fontSizeDown,
           }, iconMinus()),
-          // e('div', {
-          //   className: 'round-icon italic-toggle' + (editorFormatItalic ? ' active' : ''),
-          //   onClick: this.toggleFontFormatItalic,
-          // }, iconItalic()),
-          // e('div', {
-          //   className: 'round-icon bold-toggle' + (editorFormatBold ? ' active' : ''),
-          //   onClick: this.toggleFontFormatBold,
-          // }, iconBold()),
-          e('div', {
-            className: 'round-icon save-button',
+          e('a', {
+            className: 'round-icon save-button tooltip',
+            title: 'Save file',
             onClick: this.saveFile,
           }, iconSave()),
-          e('div', {
-            className: 'round-icon open-button',
+          e('a', {
+            className: 'round-icon open-button tooltip',
+            title: 'Open file',
             onClick: this.openFile,
           }, iconOpen()),
-          e('div', {
-            className: 'round-icon new-button',
+          e('a', {
+            className: 'round-icon new-button tooltip',
+            title: 'New file',
             onClick: this.newFile,
           }, iconNew()),
         ),

@@ -638,3 +638,28 @@
   text-align: center;
   color: rgb(253, 237, 242);
 }
+
+.tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme .tooltipster-box {
+	background: #FF91AF;
+	border: 0;
+	border-radius: 10px;
+	box-shadow: none;
+}
+
+.tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme .tooltipster-content {
+	color: purple;
+  padding: 5px 10px;
+  font-family: 'HelveticaNeueLTStd-Md';
+  font-size: 12px;
+  text-align: center;
+  color: rgb(253, 237, 242);
+  white-space: nowrap;
+}
+
+.tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme .tooltipster-arrow-background {
+  border: 0;
+}
+
+.tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-border {
+	border-bottom-color: #FF91AF;
+}
