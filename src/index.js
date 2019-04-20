@@ -237,9 +237,9 @@ const menu = (mainWindow) => {
       { label: 'Default Zoom', accelerator: 'Command+0', click: () => mainWindow.webContents.send('menu.fontSizeDefault')},
       { type: 'separator' },
       { label: 'Zoom Level', submenu: [
-        { label: 'Tiny', click: () => mainWindow.webContents.send('menu.setFontSize', 10)},
-        { label: 'Small', click: () => mainWindow.webContents.send('menu.setFontSize', 12)},
-        { label: 'Medium', click: () => mainWindow.webContents.send('menu.setFontSize', 14)},
+        { label: 'Tiny', click: () => mainWindow.webContents.send('menu.setFontSize', 12)},
+        { label: 'Small', click: () => mainWindow.webContents.send('menu.setFontSize', 14)},
+        { label: 'Medium', click: () => mainWindow.webContents.send('menu.setFontSize', 16)},
         { label: 'Large', click: () => mainWindow.webContents.send('menu.setFontSize', 24)},
         { label: 'Extra Large', click: () => mainWindow.webContents.send('menu.setFontSize', 36)},
       ]}

@@ -14,7 +14,7 @@ class Midst extends React.Component {
 // ================================================================================
 // Class Properties
 // ================================================================================#
-    this.editorFontSizes = [10, 12, 14, 24, 36]
+    this.editorFontSizes = [12, 14, 16, 24, 36]
     this.defaultFontSize = 14
     this.FILE_EXT = '.midst'
 
@@ -416,6 +416,7 @@ class Midst extends React.Component {
   }
 
   setFontSize(evt, data) {
+    console.log(data)
     this.setState({
       editorFontSize: data,
       editorHasUnsavedChanges: true,
