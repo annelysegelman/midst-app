@@ -71,6 +71,7 @@ class App extends React.Component {
     this.pause = this.pause.bind(this)
     this.play = this.play.bind(this)
     this.closeWindow = this.closeWindow.bind(this)
+    this.closeWindowQuitSequence = this.closeWindowQuitSequence.bind(this)
     this.saveFile = this.saveFile.bind(this)
     this.saveFileAs = this.saveFileAs.bind(this)
     this.setFontFamily = this.setFontFamily.bind(this)
@@ -131,6 +132,7 @@ class App extends React.Component {
       ipc.on('menu.newFile', this.newFile)
       ipc.on('menu.openFile', this.openFile)
       ipc.on('menu.closeWindow', this.closeWindow)
+      ipc.on('menu.closeWindowQuitSequence', this.closeWindowQuitSequence)
       ipc.on('menu.saveFile', this.saveFile)
       ipc.on('menu.saveFileAs', this.saveFileAs)
       ipc.on('menu.setFontFamily', this.setFontFamily)
@@ -663,6 +665,11 @@ class App extends React.Component {
   }
 
   async closeWindow() {
+    if (!await this.checkForUnsavedChanges()) return
+    remote.getCurrentWindow().close()
+  }
+
+  async closeWindowQuitSequence() {
     if (!await this.checkForUnsavedChanges()) return
     remote.getGlobal('closeWindowQuitSequence')(remote.getCurrentWindow().id)
   }

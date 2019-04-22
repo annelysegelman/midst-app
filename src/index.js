@@ -31,7 +31,7 @@ global['closeWindowQuitSequence'] = (id) => {
     const nextWindow = BrowserWindow.getFocusedWindow()
 
     if (nextWindow) {
-      nextWindow.webContents.send('menu.closeWindow')
+      nextWindow.webContents.send('menu.closeWindowQuitSequence')
     }
   }, 250)
 }
@@ -56,7 +56,7 @@ global['confirm'] = (message, buttons) => {
 global['saveFileAs'] = (fileData) => {
   return new Promise((resolve) => {
     dialog.showSaveDialog(
-      BrowserWindow. getFocusedWindow(),
+      BrowserWindow.getFocusedWindow(),
       {filters: [{name: 'Midst Files', extensions: [FILE_EXT]}]},
       fileAbsPath => {
         if (fileAbsPath) {
@@ -102,7 +102,7 @@ function openFileFromPath(path) {
     data = false
   }
 
-  BrowserWindow. getFocusedWindow().webContents.send('fileOpenedFromIcon', { fileName, data, path })
+  BrowserWindow.getFocusedWindow().webContents.send('fileOpenedFromIcon', { fileName, data, path })
 }
 
 // ================================================================================
@@ -139,12 +139,12 @@ function bootstrap(menuItems, cb) {
   systemPreferences.setUserDefault('NSDisabledCharacterPaletteMenuItem', 'boolean', true)
 
   app.on('open-file', (evt, path) => {
-    if (!BrowserWindow. getFocusedWindow()) {
+    if (!BrowserWindow.getFocusedWindow()) {
       filePathToLoadOnReady = path
       return
     }
 
-    BrowserWindow. getFocusedWindow().webContents.send('openFileFromFileIcon', path)
+    BrowserWindow.getFocusedWindow().webContents.send('openFileFromFileIcon', path)
   })
 
   app.on('ready', () => {
@@ -158,7 +158,7 @@ function bootstrap(menuItems, cb) {
 
     setTimeout(() => {
       if (filePathToLoadOnReady) {
-        BrowserWindow. getFocusedWindow().webContents.send('openFileFromFileIcon', filePathToLoadOnReady)
+        BrowserWindow.getFocusedWindow().webContents.send('openFileFromFileIcon', filePathToLoadOnReady)
       }
     }, 1000)
 
@@ -175,7 +175,7 @@ const menu = () => {
   const appMenu = {
     label: 'App',
     submenu: [
-      {label: 'About Midst', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.about')},
+      {label: 'About Midst', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.about')},
       {type: 'separator'},
       {role: 'services'},
       {type: 'separator'},
@@ -188,7 +188,7 @@ const menu = () => {
         const window = last(windows)
 
         if (window) {
-          window.webContents.send('menu.closeWindow')
+          window.webContents.send('menu.closeWindowQuitSequence')
         }
       }},
     ]
@@ -199,12 +199,14 @@ const menu = () => {
     submenu: [
       {label: 'New', accelerator: 'Cmd+N', click: createWindow},
       {type: 'separator'},
-      {label: 'Open...', accelerator: 'Cmd+O', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.openFile')},
+      {label: 'Open...', accelerator: 'Cmd+O', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.openFile')},
       {type: 'separator'},
-      {label: 'Save', accelerator: 'Cmd+S', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.saveFile')},
-      {label: 'Save As...', accelerator: 'Shift+Cmd+S', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.saveFileAs')},
+      {label: 'Save', accelerator: 'Cmd+S', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.saveFile')},
+      {label: 'Save As...', accelerator: 'Shift+Cmd+S', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.saveFileAs')},
       {type: 'separator'},
-      {role: 'close'},
+      {label: 'Close', accelerator: 'Cmd+W', click: () => {
+        BrowserWindow.getFocusedWindow().send('menu.closeWindow')
+      }},
     ],
   }
 
@@ -225,15 +227,15 @@ const menu = () => {
   const fontMenu = {
     label: 'Font',
     submenu: [
-      { label: 'Bold', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.toggleFontFormatBold')},
-      { label: 'Italic', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.toggleFontFormatItalic')},
+      { label: 'Bold', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.toggleFontFormatBold')},
+      { label: 'Italic', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.toggleFontFormatItalic')},
       { label: 'Font Family', submenu: [
-        { label: 'Bell', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.setFontFamily', 'Bell')},
-        { label: 'Courier', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.setFontFamily', 'Courier')},
-        { label: 'Garamond', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.setFontFamily', 'Garamond')},
-        { label: 'Helvetica', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.setFontFamily', 'Helvetica')},
-        { label: 'Lato', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.setFontFamily', 'Lato')},
-        { label: 'Times New Roman', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.setFontFamily', 'Times New Roman')},
+        { label: 'Bell', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.setFontFamily', 'Bell')},
+        { label: 'Courier', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.setFontFamily', 'Courier')},
+        { label: 'Garamond', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.setFontFamily', 'Garamond')},
+        { label: 'Helvetica', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.setFontFamily', 'Helvetica')},
+        { label: 'Lato', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.setFontFamily', 'Lato')},
+        { label: 'Times New Roman', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.setFontFamily', 'Times New Roman')},
       ]},
     ]
   }
@@ -241,19 +243,19 @@ const menu = () => {
   const viewMenu = {
     label: 'Options',
     submenu: [
-      { label: 'Focus Mode', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.toggleFocusMode')},
-      { label: 'Cursor Following', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.editorToggleCursorFollowing')},
+      { label: 'Focus Mode', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.toggleFocusMode')},
+      { label: 'Cursor Following', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.editorToggleCursorFollowing')},
       { type: 'separator' },
-      { label: 'Increase Zoom', accelerator: 'Command+Plus', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.fontSizeUp')},
-      { label: 'Decrease Zoom', accelerator: 'Command+-', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.fontSizeDown')},
-      { label: 'Default Zoom', accelerator: 'Command+0', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.fontSizeDefault')},
+      { label: 'Increase Zoom', accelerator: 'Command+Plus', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.fontSizeUp')},
+      { label: 'Decrease Zoom', accelerator: 'Command+-', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.fontSizeDown')},
+      { label: 'Default Zoom', accelerator: 'Command+0', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.fontSizeDefault')},
       { type: 'separator' },
       { label: 'Zoom Level', submenu: [
-        { label: 'Tiny', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.setFontSize', 12)},
-        { label: 'Small', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.setFontSize', 14)},
-        { label: 'Medium', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.setFontSize', 16)},
-        { label: 'Large', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.setFontSize', 24)},
-        { label: 'Extra Large', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.setFontSize', 36)},
+        { label: 'Tiny', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.setFontSize', 12)},
+        { label: 'Small', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.setFontSize', 14)},
+        { label: 'Medium', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.setFontSize', 16)},
+        { label: 'Large', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.setFontSize', 24)},
+        { label: 'Extra Large', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.setFontSize', 36)},
       ]}
     ],
   }
