@@ -3,13 +3,13 @@
 // ================================================================================
 const { basename } = require('path')
 const { watch, writeFileSync, readFileSync } = require('fs')
-const { app, BrowserWindow, dialog, Menu, protocol } = require('electron')
+const { app, BrowserWindow, dialog, Menu } = require('electron')
+const { find, last } = require('./lodash')
 
 // ================================================================================
 // Windows
 // ================================================================================
 let filePathToLoadOnReady
-let okToCloseWindow = false
 
 // ================================================================================
 // Config
@@ -19,12 +19,21 @@ const FILE_EXT = 'midst'
 // ================================================================================
 // Globals
 // ================================================================================
-global['setOkToCloseWindow'] = (val) => {
-  okToCloseWindow = val
-}
+global['closeWindowQuitSequence'] = (id) => {
+  const windows = BrowserWindow.getAllWindows()
+  const window = find(windows, { id })
 
-global['quit'] = () => {
-  app.quit()
+  if (window) {
+    window.close()
+  }
+
+  setTimeout(() => {
+    const nextWindow = BrowserWindow.getFocusedWindow()
+
+    if (nextWindow) {
+      nextWindow.webContents.send('menu.closeWindow')
+    }
+  }, 250)
 }
 
 global['confirm'] = (message, buttons) => {
@@ -115,19 +124,9 @@ function createWindow() {
 
   newWindow.setMinimumSize(500, 500)
 
-  // newWindow.on('close', (evt) => {
-  //   if (!okToCloseWindow) {
-  //     evt.preventDefault()
-  //     newWindow.webContents.send('menu.quit')
-  //   }
-  // })
-
-  // newWindow.on('closed', () => app.quit())
-
   newWindow.loadURL(`file://${__dirname}/index.html`)
 
   if (process.env.NODE_ENV === 'development') {
-    newWindow.toggleDevTools()
     watch(__dirname, {recursive: true}, () => {
       newWindow.webContents.reloadIgnoringCache()
     })
@@ -184,7 +183,14 @@ const menu = () => {
       {role: 'hideothers'},
       {role: 'unhide'},
       {type: 'separator'},
-      {label: 'Quit', accelerator: 'Cmd+Q', click: () => BrowserWindow. getFocusedWindow().webContents.send('menu.quit')},
+      {label: 'Quit', accelerator: 'Cmd+Q', click: () => {
+        const windows = BrowserWindow.getAllWindows()
+        const window = last(windows)
+
+        if (window) {
+          window.webContents.send('menu.closeWindow')
+        }
+      }},
     ]
   }
 

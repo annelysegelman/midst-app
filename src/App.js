@@ -70,7 +70,7 @@ class App extends React.Component {
     this.openFile = this.openFile.bind(this)
     this.pause = this.pause.bind(this)
     this.play = this.play.bind(this)
-    this.quit = this.quit.bind(this)
+    this.closeWindow = this.closeWindow.bind(this)
     this.saveFile = this.saveFile.bind(this)
     this.saveFileAs = this.saveFileAs.bind(this)
     this.setFontFamily = this.setFontFamily.bind(this)
@@ -130,7 +130,7 @@ class App extends React.Component {
       ipc.on('menu.fontSizeUp', this.fontSizeUp)
       ipc.on('menu.newFile', this.newFile)
       ipc.on('menu.openFile', this.openFile)
-      ipc.on('menu.quit', this.quit)
+      ipc.on('menu.closeWindow', this.closeWindow)
       ipc.on('menu.saveFile', this.saveFile)
       ipc.on('menu.saveFileAs', this.saveFileAs)
       ipc.on('menu.setFontFamily', this.setFontFamily)
@@ -148,6 +148,8 @@ class App extends React.Component {
     $('.tooltip').tooltipster({
       theme: ['tooltipster-noir', 'midst-tooltip-theme'],
     })
+
+    this.$editable.focus()
   }
 
   componentDidUpdate() {
@@ -660,10 +662,9 @@ class App extends React.Component {
     })
   }
 
-  async quit() {
+  async closeWindow() {
     if (!await this.checkForUnsavedChanges()) return
-    remote.getGlobal('setOkToCloseWindow')(true)
-    remote.getGlobal('quit')()
+    remote.getGlobal('closeWindowQuitSequence')(remote.getCurrentWindow().id)
   }
 
   createDraftMarker() {
