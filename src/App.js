@@ -152,6 +152,10 @@ class App extends React.Component {
     })
 
     this.$editable.focus()
+
+    if (remote.getGlobal('waitingFileData')) {
+      this.load(remote.getGlobal('waitingFileData'))
+    }
   }
 
   componentDidUpdate() {
@@ -609,7 +613,6 @@ class App extends React.Component {
   }
 
   async openFile() {
-    if (!await this.checkForUnsavedChanges()) return
     remote.getGlobal('openFile')()
   }
 
@@ -661,6 +664,7 @@ class App extends React.Component {
     }, () => {
       this.$editable.html(_.get(_.last(this.state.editorTimelineFrames), 'content'))
       this.$editable.focus()
+      remote.getGlobal('resetWaitingFileData')()
     })
   }
 

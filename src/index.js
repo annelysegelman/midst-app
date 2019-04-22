@@ -88,6 +88,12 @@ global['openFileFromPath'] = (path) => {
   openFileFromPath(path)
 }
 
+global['waitingFileData'] = null
+
+global['resetWaitingFileData'] = (path) => {
+  global['waitingFileData'] = null
+}
+
 function openFileFromPath(path) {
   app.addRecentDocument(path)
   const fileName = basename(path)
@@ -102,7 +108,9 @@ function openFileFromPath(path) {
     data = false
   }
 
-  BrowserWindow.getFocusedWindow().webContents.send('fileOpenedFromIcon', { fileName, data, path })
+  createWindow()
+
+  global['waitingFileData'] = { fileName, data, path }
 }
 
 // ================================================================================
@@ -127,6 +135,7 @@ function createWindow() {
   newWindow.loadURL(`file://${__dirname}/index.html`)
 
   if (process.env.NODE_ENV === 'development') {
+    // newWindow.toggleDevTools()
     watch(__dirname, {recursive: true}, () => {
       newWindow.webContents.reloadIgnoringCache()
     })
@@ -145,6 +154,10 @@ function bootstrap(menuItems, cb) {
     }
 
     BrowserWindow.getFocusedWindow().webContents.send('openFileFromFileIcon', path)
+  })
+
+  app.on('window-all-closed', (evt) => {
+    evt.preventDefault()
   })
 
   app.on('ready', () => {
@@ -190,6 +203,10 @@ const menu = () => {
         if (window) {
           window.webContents.send('menu.closeWindowQuitSequence')
         }
+
+        else {
+          app.quit()
+        }
       }},
     ]
   }
@@ -199,7 +216,16 @@ const menu = () => {
     submenu: [
       {label: 'New', accelerator: 'Cmd+N', click: createWindow},
       {type: 'separator'},
-      {label: 'Open...', accelerator: 'Cmd+O', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.openFile')},
+      {label: 'Open...', accelerator: 'Cmd+O', click: () => {
+        if (BrowserWindow.getAllWindows().length) {
+          BrowserWindow.getFocusedWindow().webContents.send('menu.openFile')
+        }
+
+        else {
+          global['openFile']()
+        }
+      }},
+      { role: 'recentDocuments' },
       {type: 'separator'},
       {label: 'Save', accelerator: 'Cmd+S', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.saveFile')},
       {label: 'Save As...', accelerator: 'Shift+Cmd+S', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.saveFileAs')},
