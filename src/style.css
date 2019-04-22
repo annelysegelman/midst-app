@@ -348,20 +348,33 @@
 
 .title-bar,
 .logo,
-.toolbar-icons div:not(.focus-mode-toggle),
 .bottom-toolbar,
 .timeline,
+.font-size-up-button,
+.font-size-down-button,
+.save-button,
+.open-button,
+.new-button,
 .drawer {
   transition: all 250ms;
 }
 
 .focus-mode .title-bar,
 .focus-mode .logo,
-.focus-mode .toolbar-icons div:not(.focus-mode-toggle),
 .focus-mode .bottom-toolbar,
 .focus-mode .timeline,
+.focus-mode .font-size-up-button,
+.focus-mode .font-size-down-button,
+.focus-mode .save-button,
+.focus-mode .open-button,
+.focus-mode .new-button,
 .focus-mode .drawer {
   opacity: 0;
+}
+
+.body-with-focus-mode .tooltipster-base.tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme {
+  display: none !important;
+  pointer-events: none !important;
 }
 
 .timeline-toggle {
@@ -640,14 +653,13 @@
 }
 
 .tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme .tooltipster-box {
-	background: #FF91AF;
+  background: #FF91AF;
 	border: 0;
 	border-radius: 10px;
 	box-shadow: none;
 }
 
 .tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme .tooltipster-content {
-	color: purple;
   padding: 5px 10px;
   font-family: 'HelveticaNeueLTStd-Md';
   font-size: 12px;

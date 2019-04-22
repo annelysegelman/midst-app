@@ -359,7 +359,16 @@ class App extends React.Component {
   }
 
   toggleFocusMode() {
-    this.setState({ appFocusMode: !this.state.appFocusMode })
+    const appFocusMode = !this.state.appFocusMode
+    this.setState({ appFocusMode })
+
+    if (appFocusMode && !$('body').hasClass('body-with-focus-mode')) {
+      $('body').addClass('body-with-focus-mode')
+    }
+
+    else {
+      $('body').removeClass('body-with-focus-mode')
+    }
   }
 
   enterTimelineMode() {
@@ -820,7 +829,8 @@ class App extends React.Component {
         ),
         e('div', { className: 'toolbar-icons' },
           e('a', {
-            className: 'round-icon focus-mode-toggle tooltip' + (appFocusMode ? ' active' : ''),
+            className: 'round-icon focus-mode-toggle tooltip'
+              + (appFocusMode ? ' active' : ''),
             title: 'Focus mode',
             onClick: this.toggleFocusMode,
           }, iconFocus()),
@@ -830,7 +840,7 @@ class App extends React.Component {
             onClick: this.fontSizeUp,
           }, iconPlus()),
           e('a', {
-            className: 'round-icon tooltip',
+            className: 'round-icon font-size-down-button tooltip',
             title: 'Decrease font size',
             onClick: this.fontSizeDown,
           }, iconMinus()),

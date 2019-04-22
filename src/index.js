@@ -127,7 +127,7 @@ function createWindow() {
   newWindow.loadURL(`file://${__dirname}/index.html`)
 
   if (process.env.NODE_ENV === 'development') {
-    // newWindow.toggleDevTools()
+    newWindow.toggleDevTools()
     watch(__dirname, {recursive: true}, () => {
       newWindow.webContents.reloadIgnoringCache()
     })

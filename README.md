@@ -13,6 +13,9 @@ Poetry in process!
 ## Test
     `node bin/build.js && node bin/test.js`
 
+## Lint
+    `node bin/build.js && node bin/lint.js`
+
 ## Clean up old build files
     `node bin/cleanup.js`
 
