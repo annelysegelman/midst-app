@@ -9,7 +9,9 @@ const { find, last } = require('./lodash')
 // ================================================================================
 // Windows
 // ================================================================================
-let filePathToLoadOnReady
+let openPaths = []
+let filePathToLoadOnReady // TODO: This may be redundant with global['waitingFileData']
+let okToClose = false
 
 // ================================================================================
 // Config
@@ -19,6 +21,10 @@ const FILE_EXT = 'midst'
 // ================================================================================
 // Globals
 // ================================================================================
+global['setOkToClose'] = () => {
+  okToClose = true
+}
+
 global['closeWindowQuitSequence'] = (id) => {
   const windows = BrowserWindow.getAllWindows()
   const window = find(windows, { id })
@@ -94,6 +100,11 @@ global['resetWaitingFileData'] = (path) => {
   global['waitingFileData'] = null
 }
 
+global['removePath'] = (path) => {
+  const index = openPaths.indexOf(path)
+  openPaths.splice(index, 1)
+}
+
 function openFileFromPath(path) {
   app.addRecentDocument(path)
   const fileName = basename(path)
@@ -108,9 +119,21 @@ function openFileFromPath(path) {
     data = false
   }
 
-  createWindow()
+  const alreadyOpenFileObj = find(openPaths, { path })
 
-  global['waitingFileData'] = { fileName, data, path }
+  if (alreadyOpenFileObj) {
+    const alreadyOpenFileWindow = find(BrowserWindow.getAllWindows(), { id: alreadyOpenFileObj.id })
+
+    if (alreadyOpenFileWindow) {
+      alreadyOpenFileWindow.focus()
+    }
+  }
+
+  else {
+    createWindow()
+    openPaths.push({ path, id: BrowserWindow.getFocusedWindow().id})
+    global['waitingFileData'] = { fileName, data, path }
+  }
 }
 
 // ================================================================================
@@ -133,6 +156,17 @@ function createWindow() {
   newWindow.setMinimumSize(500, 500)
 
   newWindow.loadURL(`file://${__dirname}/index.html`)
+
+  newWindow.on('close', (evt) => {
+    if (!okToClose) {
+      evt.preventDefault()
+      BrowserWindow.getFocusedWindow().send('menu.closeWindow')
+    }
+
+    else {
+      okToClose = false
+    }
+  })
 
   if (process.env.NODE_ENV === 'development') {
     // newWindow.toggleDevTools()
@@ -230,9 +264,7 @@ const menu = () => {
       {label: 'Save', accelerator: 'Cmd+S', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.saveFile')},
       {label: 'Save As...', accelerator: 'Shift+Cmd+S', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.saveFileAs')},
       {type: 'separator'},
-      {label: 'Close', accelerator: 'Cmd+W', click: () => {
-        BrowserWindow.getFocusedWindow().send('menu.closeWindow')
-      }},
+      {role: 'close'},
     ],
   }
 

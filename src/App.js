@@ -670,6 +670,8 @@ class App extends React.Component {
 
   async closeWindow() {
     if (!await this.checkForUnsavedChanges()) return
+    remote.getGlobal('removePath')(this.state.appFileAbsPath)
+    remote.getGlobal('setOkToClose')()
     remote.getCurrentWindow().close()
   }
 
