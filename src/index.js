@@ -176,6 +176,8 @@ function createWindow() {
   }
 }
 
+global['createWindow'] = createWindow
+
 function bootstrap(menuItems, cb) {
   const {systemPreferences} = require('electron')
   systemPreferences.setUserDefault('NSDisabledDictationMenuItem', 'boolean', true)

@@ -608,8 +608,7 @@ class App extends React.Component {
 
   async newFile() {
     if (!await this.checkForUnsavedChanges()) return
-    this.setState(this.initialState)
-    this.$editable.html('<p><br></p>')
+    remote.getGlobal('createWindow')()
   }
 
   async openFile() {
