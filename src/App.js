@@ -1,7 +1,7 @@
 // ================================================================================
 // Constructor
 // ================================================================================
-class Midst extends React.Component {
+class App extends React.Component {
   static get defaultProps() {
     return {
       isPlayer: false,
@@ -1168,4 +1168,4 @@ class Midst extends React.Component {
   }
 }
 
-window.Midst = Midst
+window.App = App

@@ -1,3 +1,6 @@
+# Midst
+Poetry in process!
+
 ## Install
     `node bin/install.js`
 
@@ -12,3 +15,5 @@
 
 ## Clean up old build files
     `node bin/cleanup.js`
+
+(If cleanup reports an error, just run it again.)

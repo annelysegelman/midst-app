@@ -8,6 +8,6 @@ module.exports = async function(app) {
 
     // Main window has the correct title.
     const title = await app.client.getTitle()
-    assert.equal(title, 'Midst Foo')
+    assert.equal(title, 'Midst App')
 
 }
