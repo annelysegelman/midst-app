@@ -224,7 +224,7 @@ const menu = () => {
   const appMenu = {
     label: 'App',
     submenu: [
-      {label: 'About Midst', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.about')},
+      {label: 'About Midst Beta', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.about')},
       {type: 'separator'},
       {role: 'services'},
       {type: 'separator'},
