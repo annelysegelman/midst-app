@@ -21,6 +21,12 @@ const FILE_EXT = 'midst'
 // ================================================================================
 // Globals
 // ================================================================================
+global['rerenderMenuWithState'] = (state) => {
+  Menu.setApplicationMenu(
+    Menu.buildFromTemplate(menu(state))
+  )
+}
+
 global['setOkToClose'] = () => {
   okToClose = true
 }
@@ -220,7 +226,7 @@ function bootstrap(menuItems, cb) {
 // ================================================================================
 // Menu
 // ================================================================================
-const menu = () => {
+const menu = (state = {}) => {
   const appMenu = {
     label: 'App',
     submenu: [
@@ -302,8 +308,8 @@ const menu = () => {
   const viewMenu = {
     label: 'Options',
     submenu: [
-      { label: 'Focus Mode', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.toggleFocusMode')},
-      { label: 'Cursor Following', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.editorToggleCursorFollowing')},
+      { label: 'Focus Mode', type: 'checkbox', checked: state.focusMode, click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.toggleFocusMode')},
+      { label: 'Cursor Following', type: 'checkbox', checked: state.cursorFollowing, click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.editorToggleCursorFollowing')},
       { type: 'separator' },
       { label: 'Increase Zoom', accelerator: 'Command+Plus', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.fontSizeUp')},
       { label: 'Decrease Zoom', accelerator: 'Command+-', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.fontSizeDown')},

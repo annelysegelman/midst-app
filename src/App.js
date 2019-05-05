@@ -174,8 +174,18 @@ class App extends React.Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    const { appCursorFollowing, appFocusMode } = this.state
 
+    if (
+      appCursorFollowing !== prevState.appCursorFollowing
+      || appFocusMode !== prevState.appFocusMode
+    ) {
+      remote.getGlobal('rerenderMenuWithState')({
+        cursorFollowing: appCursorFollowing,
+        focusMode: appFocusMode,
+      })
+    }
   }
 
   componentWillUnmount() {
