@@ -261,7 +261,6 @@ const menu = () => {
           global['openFile']()
         }
       }},
-      { role: 'recentDocuments' },
       {type: 'separator'},
       {label: 'Save', accelerator: 'Cmd+S', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.saveFile')},
       {label: 'Save As...', accelerator: 'Shift+Cmd+S', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.saveFileAs')},
