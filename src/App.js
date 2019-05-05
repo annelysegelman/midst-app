@@ -151,6 +151,27 @@ class App extends React.Component {
 
     $('.tooltip').tooltipster({
       theme: ['tooltipster-noir', 'midst-tooltip-theme'],
+      functionFormat: (instance, helper, content) => {
+        if (instance.__Content === 'Focus mode' && this.state.appFocusMode) {
+          return  'Exit focus mode'
+        }
+
+        else {
+          return content
+        }
+      },
+      functionPosition: function(instance, helper, positions) {
+
+        if (instance.__Content !== 'Focus mode') return
+
+        console.log($(window).width())
+        console.log(positions.coord.left)
+        console.log(positions.size.width)
+
+        positions.coord.left = positions.coord.left - 12
+
+        return positions
+      }
     })
 
     this.$editable.focus()
@@ -858,7 +879,7 @@ class App extends React.Component {
           e('a', {
             className: 'round-icon focus-mode-toggle tooltip'
               + (appFocusMode ? ' active' : ''),
-            title: 'Toggle focus mode',
+            title: 'Focus mode',
             onClick: this.toggleFocusMode,
             onMouseEnter: this.toggleFocusModeTooltipException,
             onMouseLeave: this.toggleFocusModeTooltipException,
