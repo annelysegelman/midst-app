@@ -377,6 +377,11 @@
   pointer-events: none !important;
 }
 
+.body-with-focus-mode.focus-mode-tooltip-exception .tooltipster-base.tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme {
+  display: block !important;
+  pointer-events: all !important;
+}
+
 .timeline-toggle {
   opacity: 1;
 }

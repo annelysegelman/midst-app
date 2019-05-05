@@ -169,7 +169,7 @@ function createWindow() {
   })
 
   if (process.env.NODE_ENV === 'development') {
-    // newWindow.toggleDevTools()
+    newWindow.toggleDevTools()
     watch(__dirname, {recursive: true}, () => {
       newWindow.webContents.reloadIgnoringCache()
     })

@@ -27,6 +27,7 @@ class App extends React.Component {
       appDrawerOpen: false,
       appFileAbsPath: false,
       appFocusMode: false,
+      appFocusModeTooltipException: false,
       appTimelineMode: false,
       appTitle: 'Untitled',
       editorAuthor: 'Anonymous',
@@ -79,6 +80,7 @@ class App extends React.Component {
     this.sliderOnChange = this.sliderOnChange.bind(this)
     this.toggleDrawer = this.toggleDrawer.bind(this)
     this.toggleFocusMode = this.toggleFocusMode.bind(this)
+    this.toggleFocusModeTooltipException = this.toggleFocusModeTooltipException.bind(this)
     this.toggleFontFormatBold = this.toggleFontFormatBold.bind(this)
     this.toggleFontFormatItalic = this.toggleFontFormatItalic.bind(this)
     this.toggleTimeline = this.toggleTimeline.bind(this)
@@ -376,6 +378,19 @@ class App extends React.Component {
 
     else {
       $('body').removeClass('body-with-focus-mode')
+    }
+  }
+
+  toggleFocusModeTooltipException() {
+    const appFocusModeTooltipException = !this.state.appFocusModeTooltipException
+    this.setState({ appFocusModeTooltipException })
+
+    if (appFocusModeTooltipException && !$('body').hasClass('focus-mode-tooltip-exception')) {
+      $('body').addClass('focus-mode-tooltip-exception')
+    }
+
+    else {
+      $('body').removeClass('focus-mode-tooltip-exception')
     }
   }
 
@@ -843,8 +858,10 @@ class App extends React.Component {
           e('a', {
             className: 'round-icon focus-mode-toggle tooltip'
               + (appFocusMode ? ' active' : ''),
-            title: 'Focus mode',
+            title: 'Toggle focus mode',
             onClick: this.toggleFocusMode,
+            onMouseEnter: this.toggleFocusModeTooltipException,
+            onMouseLeave: this.toggleFocusModeTooltipException,
           }, iconFocus()),
           e('a', {
             className: 'round-icon font-size-up-button tooltip',
