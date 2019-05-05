@@ -607,7 +607,6 @@ class App extends React.Component {
   }
 
   async newFile() {
-    if (!await this.checkForUnsavedChanges()) return
     remote.getGlobal('createWindow')()
   }
 
