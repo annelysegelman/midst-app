@@ -161,15 +161,8 @@ class App extends React.Component {
         }
       },
       functionPosition: function(instance, helper, positions) {
-
         if (instance.__Content !== 'Focus mode') return
-
-        console.log($(window).width())
-        console.log(positions.coord.left)
-        console.log(positions.size.width)
-
         positions.coord.left = positions.coord.left - 12
-
         return positions
       }
     })
@@ -251,6 +244,8 @@ class App extends React.Component {
 
       else {
         this.exitTimelineMode()
+        this.setPos(editorTimelineFrames.length - 1)
+        this.focusEditableAtEnd()
       }
     }
 
