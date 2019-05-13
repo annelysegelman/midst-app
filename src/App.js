@@ -41,7 +41,7 @@ class App extends React.Component {
       editorHasUnsavedChanges: false,
       editorHighestEverDraftNumber: 0,
       editorNumLines: 0,
-      editorPristine: false,
+      editorPristine: true,
       editorPlaying: false,
       editorShowDraftMarkers: true,
       editorShowDraftMarkerLabels: true,
@@ -176,7 +176,7 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { appCursorFollowing, appFocusMode, editorPristine } = this.state
+    const { appCursorFollowing, appFocusMode } = this.state
 
     if (
       appCursorFollowing !== prevState.appCursorFollowing
@@ -657,7 +657,7 @@ class App extends React.Component {
   }
 
   async openFile() {
-    remote.getGlobal('openFile')(!this.state.editorPristine)
+    remote.getGlobal('openFile')(this.state.editorPristine)
   }
 
   async openFileFromFileIcon(path) {
@@ -721,6 +721,7 @@ class App extends React.Component {
 
   async closeWindowQuitSequence() {
     if (!await this.checkForUnsavedChanges()) return
+    remote.getGlobal('setOkToClose')()
     remote.getGlobal('closeWindowQuitSequence')(remote.getCurrentWindow().id)
   }
 

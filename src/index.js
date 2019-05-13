@@ -40,6 +40,7 @@ global['closeWindowQuitSequence'] = (id) => {
 
   if (window) {
     window.close()
+    okToClose = false
   }
 
   setTimeout(() => {
@@ -52,7 +53,7 @@ global['closeWindowQuitSequence'] = (id) => {
     else {
       app.quit()
     }
-  }, 20)
+  }, 250)
 }
 
 global['confirm'] = (message, buttons) => {
@@ -136,7 +137,6 @@ function openFileFromPath(path) {
   const alreadyOpenFileObj = find(openPaths, { path })
 
   if (alreadyOpenFileObj) {
-    console.log(1)
     const alreadyOpenFileWindow = find(BrowserWindow.getAllWindows(), { id: alreadyOpenFileObj.id })
 
     if (alreadyOpenFileWindow) {
@@ -145,14 +145,12 @@ function openFileFromPath(path) {
   }
 
   else if (openFileRequestedByPristineWindow && appPristine) {
-    console.log(2)
     openFileRequestedByCleanWindow = false
     appPristine = false
     BrowserWindow.getFocusedWindow().webContents.send('fileOpened', { fileName, data, path })
   }
 
   else {
-    console.log(3)
     createWindow()
     openPaths.push({ path, id: BrowserWindow.getFocusedWindow().id})
     global['waitingFileData'] = { fileName, data, path }
@@ -164,7 +162,6 @@ function openFileFromPath(path) {
 // ================================================================================
 function createWindow() {
   createWindowCalled ++
-  console.log('>>>>', createWindowCalled)
 
   const { size: { height: size }} = require('electron').screen.getPrimaryDisplay()
   const windows = BrowserWindow.getAllWindows()
@@ -186,7 +183,7 @@ function createWindow() {
   newWindow.on('close', (evt) => {
     if (!okToClose) {
       evt.preventDefault()
-      BrowserWindow.getFocusedWindow().send('menu.closeWindow')
+      evt.sender.webContents.send('menu.closeWindow')
     }
 
     else {
