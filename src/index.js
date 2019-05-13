@@ -12,6 +12,9 @@ const { find, last } = require('./lodash')
 let openPaths = []
 let filePathToLoadOnReady // TODO: This may be redundant with global['waitingFileData']
 let okToClose = false
+let createWindowCalled = 0
+let openFileRequestedByPristineWindow = false
+let appPristine = true
 
 // ================================================================================
 // Config
@@ -92,7 +95,8 @@ global['saveFile'] = (fileAbsPath, fileData) => {
   writeFileSync(fileAbsPath, JSON.stringify(fileData))
 }
 
-global['openFile'] = () => {
+global['openFile'] = (windowIsPristine) => {
+  openFileRequestedByPristineWindow = windowIsPristine
   dialog.showOpenDialog({properties: ['openFile'], filters: [{name: FILE_EXT, extensions: [FILE_EXT]}]}, (filePaths) => {
     if (filePaths) {
       global['openFileFromPath'](filePaths[0])
@@ -132,6 +136,7 @@ function openFileFromPath(path) {
   const alreadyOpenFileObj = find(openPaths, { path })
 
   if (alreadyOpenFileObj) {
+    console.log(1)
     const alreadyOpenFileWindow = find(BrowserWindow.getAllWindows(), { id: alreadyOpenFileObj.id })
 
     if (alreadyOpenFileWindow) {
@@ -139,7 +144,15 @@ function openFileFromPath(path) {
     }
   }
 
+  else if (openFileRequestedByPristineWindow && appPristine) {
+    console.log(2)
+    openFileRequestedByCleanWindow = false
+    appPristine = false
+    BrowserWindow.getFocusedWindow().webContents.send('fileOpened', { fileName, data, path })
+  }
+
   else {
+    console.log(3)
     createWindow()
     openPaths.push({ path, id: BrowserWindow.getFocusedWindow().id})
     global['waitingFileData'] = { fileName, data, path }
@@ -150,6 +163,9 @@ function openFileFromPath(path) {
 // Bootstrap
 // ================================================================================
 function createWindow() {
+  createWindowCalled ++
+  console.log('>>>>', createWindowCalled)
+
   const { size: { height: size }} = require('electron').screen.getPrimaryDisplay()
   const windows = BrowserWindow.getAllWindows()
 
@@ -183,6 +199,10 @@ function createWindow() {
     watch(__dirname, {recursive: true}, () => {
       newWindow.webContents.reloadIgnoringCache()
     })
+  }
+
+  if (createWindowCalled > 1) {
+    appPristine = false
   }
 }
 
