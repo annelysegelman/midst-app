@@ -45,7 +45,11 @@ global['closeWindowQuitSequence'] = (id) => {
     if (nextWindow) {
       nextWindow.webContents.send('menu.closeWindowQuitSequence')
     }
-  }, 250)
+
+    else {
+      app.quit()
+    }
+  }, 20)
 }
 
 global['confirm'] = (message, buttons) => {
@@ -175,7 +179,7 @@ function createWindow() {
   })
 
   if (process.env.NODE_ENV === 'development') {
-    newWindow.toggleDevTools()
+    // newWindow.toggleDevTools()
     watch(__dirname, {recursive: true}, () => {
       newWindow.webContents.reloadIgnoringCache()
     })
