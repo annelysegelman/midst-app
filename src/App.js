@@ -176,7 +176,7 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { appCursorFollowing, appFocusMode } = this.state
+    const { appCursorFollowing, appFocusMode, editorPristine, editorTimelineFrames } = this.state
 
     if (
       appCursorFollowing !== prevState.appCursorFollowing
@@ -188,7 +188,7 @@ class App extends React.Component {
       })
     }
 
-    if (prevState.editorPristine) {
+    if (editorPristine && editorTimelineFrames.length > 0) {
       this.setState({ editorPristine: false })
     }
   }
