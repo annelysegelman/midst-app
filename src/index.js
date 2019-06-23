@@ -4,57 +4,14 @@
 const { basename } = require('path')
 const { watch, writeFileSync, readFileSync } = require('fs')
 const { app, BrowserWindow, dialog, Menu } = require('electron')
-const { find, last } = require('./lodash')
-
-// ================================================================================
-// Windows
-// ================================================================================
-let openPaths = []
-let filePathToLoadOnReady // TODO: This may be redundant with global['waitingFileData']
-let okToClose = false
-let createWindowCalled = 0
-let openFileRequestedByPristineWindow = false
-let appPristine = true
-
-// ================================================================================
-// Config
-// ================================================================================
-const FILE_EXT = 'midst'
+const { find } = require('./lodash')
 
 // ================================================================================
 // Globals
 // ================================================================================
-global['rerenderMenuWithState'] = (state) => {
-  Menu.setApplicationMenu(
-    Menu.buildFromTemplate(menu(state))
-  )
-}
+const FILE_EXT = 'midst'
 
-global['setOkToClose'] = () => {
-  okToClose = true
-}
-
-global['closeWindowQuitSequence'] = (id) => {
-  const windows = BrowserWindow.getAllWindows()
-  const window = find(windows, { id })
-
-  if (window) {
-    window.close()
-    okToClose = false
-  }
-
-  setTimeout(() => {
-    const nextWindow = BrowserWindow.getFocusedWindow()
-
-    if (nextWindow) {
-      nextWindow.webContents.send('menu.closeWindowQuitSequence')
-    }
-
-    else {
-      app.quit()
-    }
-  }, 250)
-}
+let filePathToLoadOnReady
 
 global['confirm'] = (message, buttons) => {
   return new Promise((resolve) => {
@@ -109,17 +66,6 @@ global['openFileFromPath'] = (path) => {
   openFileFromPath(path)
 }
 
-global['waitingFileData'] = null
-
-global['resetWaitingFileData'] = (path) => {
-  global['waitingFileData'] = null
-}
-
-global['removePath'] = (path) => {
-  const index = openPaths.indexOf(path)
-  openPaths.splice(index, 1)
-}
-
 function openFileFromPath(path) {
   app.addRecentDocument(path)
   const fileName = basename(path)
@@ -134,35 +80,13 @@ function openFileFromPath(path) {
     data = false
   }
 
-  const alreadyOpenFileObj = find(openPaths, { path })
-
-  if (alreadyOpenFileObj) {
-    const alreadyOpenFileWindow = find(BrowserWindow.getAllWindows(), { id: alreadyOpenFileObj.id })
-
-    if (alreadyOpenFileWindow) {
-      alreadyOpenFileWindow.focus()
-    }
-  }
-
-  else if (openFileRequestedByPristineWindow && appPristine) {
-    openFileRequestedByCleanWindow = false
-    appPristine = false
-    BrowserWindow.getFocusedWindow().webContents.send('fileOpened', { fileName, data, path })
-  }
-
-  else {
-    createWindow()
-    openPaths.push({ path, id: BrowserWindow.getFocusedWindow().id})
-    global['waitingFileData'] = { fileName, data, path }
-  }
+  BrowserWindow.getFocusedWindow().webContents.send('fileOpened', { fileName, data, path })
 }
 
 // ================================================================================
 // Bootstrap
 // ================================================================================
-function createWindow() {
-  createWindowCalled ++
-
+function createWindow(openFilePath) {
   const { size: { height: size }} = require('electron').screen.getPrimaryDisplay()
   const windows = BrowserWindow.getAllWindows()
 
@@ -191,29 +115,28 @@ function createWindow() {
     }
   })
 
+  if (openFilePath) {
+    newWindow.webContents.send('openFileFromFileIcon', filePathToLoadOnReady)
+  }
+
   if (process.env.NODE_ENV === 'development') {
     // newWindow.toggleDevTools()
     watch(__dirname, {recursive: true}, () => {
       newWindow.webContents.reloadIgnoringCache()
     })
   }
-
-  if (createWindowCalled > 1) {
-    appPristine = false
-  }
 }
 
-global['createWindow'] = createWindow
-
 function bootstrap(menuItems, cb) {
-  const {systemPreferences} = require('electron')
-  systemPreferences.setUserDefault('NSDisabledDictationMenuItem', 'boolean', true)
-  systemPreferences.setUserDefault('NSDisabledCharacterPaletteMenuItem', 'boolean', true)
+  // const { systemPreferences } = require('electron')
+  // systemPreferences.setUserDefault('NSDisabledDictationMenuItem', 'boolean', true)
+  // systemPreferences.setUserDefault('NSDisabledCharacterPaletteMenuItem', 'boolean', true)
 
   app.on('open-file', (evt, path) => {
-    if (!BrowserWindow.getFocusedWindow()) {
-      filePathToLoadOnReady = path
-      return
+    const window = BrowserWindow.getFocusedWindow()
+
+    if (!window) {
+      createWindow(path)
     }
 
     BrowserWindow.getFocusedWindow().webContents.send('openFileFromFileIcon', path)
@@ -232,12 +155,6 @@ function bootstrap(menuItems, cb) {
       )
     }
 
-    setTimeout(() => {
-      if (filePathToLoadOnReady) {
-        BrowserWindow.getFocusedWindow().webContents.send('openFileFromFileIcon', filePathToLoadOnReady)
-      }
-    }, 1000)
-
     if (cb) {
       cb()
     }
@@ -252,23 +169,18 @@ const menu = (state = {}) => {
     label: 'App',
     submenu: [
       {label: 'About Midst Beta', click: () => BrowserWindow.getFocusedWindow().webContents.send('menu.about')},
-      {type: 'separator'},
-      {role: 'services'},
-      {type: 'separator'},
+      // {type: 'separator'},
+      // {role: 'services'},
+      // {type: 'separator'},
       {role: 'hide'},
       {role: 'hideothers'},
       {role: 'unhide'},
       {type: 'separator'},
       {label: 'Quit', accelerator: 'Cmd+Q', click: () => {
-        const windows = BrowserWindow.getAllWindows()
-        const window = last(windows)
+        const window = BrowserWindow.getFocusedWindow()
 
         if (window) {
           window.webContents.send('menu.closeWindowQuitSequence')
-        }
-
-        else {
-          app.quit()
         }
       }},
     ]
@@ -356,11 +268,11 @@ const menu = (state = {}) => {
 
   return [
     appMenu,
-    fileMenu,
-    editMenu,
-    fontMenu,
-    viewMenu,
-    windowMenu,
+    // fileMenu,
+    // editMenu,
+    // fontMenu,
+    // viewMenu,
+    // windowMenu,
   ]
 }
 
