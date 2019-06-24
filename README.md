@@ -1,3 +1,9 @@
+## Recovery branch
+
+This branch branches off from the April 2019 builds and is for triage bugfixes/features only.
+
+Future development is happening in the "CRA" branch.
+
 ## Install
     `yarn global add electron`
     `yarn global add electron-packager`
