@@ -146,7 +146,7 @@
   fill: #FF91AF;
 }
 
-.open-button {
+.save-button {
   margin-right: 30px;
 }
 
@@ -357,11 +357,25 @@
 
 .focus-mode .title-bar,
 .focus-mode .logo,
-.focus-mode .toolbar-icons div:not(.focus-mode-toggle),
 .focus-mode .bottom-toolbar,
 .focus-mode .timeline,
+.focus-mode .font-size-up-button,
+.focus-mode .font-size-down-button,
+.focus-mode .save-button,
+.focus-mode .open-button,
+.focus-mode .new-button,
 .focus-mode .drawer {
   opacity: 0;
+}
+
+.body-with-focus-mode .tooltipster-base.tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.body-with-focus-mode.focus-mode-tooltip-exception .tooltipster-base.tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme {
+  display: block !important;
+  pointer-events: all !important;
 }
 
 .timeline-toggle {
@@ -589,4 +603,28 @@
   padding: 0;
   text-align: left;
   color: rgb(105, 0, 0);
+}
+
+.tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme .tooltipster-box {
+  background: #FF91AF;
+	border: 0;
+	border-radius: 10px;
+	box-shadow: none;
+}
+
+.tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme .tooltipster-content {
+  padding: 5px 10px;
+  font-family: 'HelveticaNeueLTStd-Md';
+  font-size: 12px;
+  text-align: center;
+  color: rgb(253, 237, 242);
+  white-space: nowrap;
+}
+
+.tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme .tooltipster-arrow-background {
+  border: 0;
+}
+
+.tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-border {
+	border-bottom-color: #FF91AF;
 }

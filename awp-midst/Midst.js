@@ -77,6 +77,7 @@ class Midst extends React.Component {
   this.sliderOnChange = this.sliderOnChange.bind(this)
   this.toggleDrawer = this.toggleDrawer.bind(this)
   this.toggleFocusMode = this.toggleFocusMode.bind(this)
+  this.toggleFocusModeTooltipException = this.toggleFocusModeTooltipException.bind(this)
   this.toggleFontFormatBold = this.toggleFontFormatBold.bind(this)
   this.toggleFontFormatItalic = this.toggleFontFormatItalic.bind(this)
   this.toggleTimeline = this.toggleTimeline.bind(this)
@@ -123,6 +124,24 @@ class Midst extends React.Component {
 
       ipc.on('fileOpened', (evt, fileData) => this.load(fileData))
     }
+
+    $('.tooltip').tooltipster({
+      theme: ['tooltipster-noir', 'midst-tooltip-theme'],
+      functionFormat: (instance, helper, content) => {
+        if (instance.__Content === 'Focus mode' && this.state.appFocusMode) {
+          return  'Exit focus mode'
+        }
+
+        else {
+          return content
+        }
+      },
+      functionPosition: function(instance, helper, positions) {
+        if (instance.__Content !== 'Focus mode') return
+        positions.coord.left = positions.coord.left - 12
+        return positions
+      }
+    })
 
     this.$app = $('body')
 
@@ -336,7 +355,29 @@ class Midst extends React.Component {
   }
 
   toggleFocusMode() {
-    this.setState({ appFocusMode: !this.state.appFocusMode })
+    const appFocusMode = !this.state.appFocusMode
+    this.setState({ appFocusMode })
+
+    if (appFocusMode && !$('body').hasClass('body-with-focus-mode')) {
+      $('body').addClass('body-with-focus-mode')
+    }
+
+    else {
+      $('body').removeClass('body-with-focus-mode')
+    }
+  }
+
+  toggleFocusModeTooltipException() {
+    const appFocusModeTooltipException = !this.state.appFocusModeTooltipException
+    this.setState({ appFocusModeTooltipException })
+
+    if (appFocusModeTooltipException && !$('body').hasClass('focus-mode-tooltip-exception')) {
+      $('body').addClass('focus-mode-tooltip-exception')
+    }
+
+    else {
+      $('body').removeClass('focus-mode-tooltip-exception')
+    }
   }
 
   enterTimelineMode() {
@@ -789,34 +830,39 @@ class Midst extends React.Component {
           ),
         ),
         e('div', { className: 'toolbar-icons' },
-          e('div', {
-            className: 'round-icon focus-mode-toggle' + (appFocusMode ? ' active' : ''),
+          e('a', {
+            className: 'round-icon focus-mode-toggle tooltip'
+              + (appFocusMode ? ' active' : ''),
+            title: 'Focus mode',
             onClick: this.toggleFocusMode,
+            onMouseEnter: this.toggleFocusModeTooltipException,
+            onMouseLeave: this.toggleFocusModeTooltipException,
           }, iconFocus()),
-          e('div', {
-            className: 'round-icon font-size-up-button',
+          e('a', {
+            className: 'round-icon font-size-up-button tooltip',
+            title: 'Increase font size',
             onClick: this.fontSizeUp,
           }, iconPlus()),
-          e('div', {
-            className: 'round-icon',
+          e('a', {
+            className: 'round-icon font-size-down-button tooltip',
+            title: 'Decrease font size',
             onClick: this.fontSizeDown,
           }, iconMinus()),
-          // e('div', {
-          //   className: 'round-icon italic-toggle' + (editorFormatItalic ? ' active' : ''),
-          //   onClick: this.toggleFontFormatItalic,
-          // }, iconItalic()),
-          // e('div', {
-          //   className: 'round-icon bold-toggle' + (editorFormatBold ? ' active' : ''),
-          //   onClick: this.toggleFontFormatBold,
-          // }, iconBold()),
-          e('div', {
-            className: 'round-icon open-button',
-            onClick: this.openFile,
-          }, iconOpen()),
-          e('div', {
-            className: 'round-icon save-button',
+          e('a', {
+            className: 'round-icon save-button tooltip',
+            title: 'Save file',
             onClick: this.saveFile,
           }, iconSave()),
+          e('a', {
+            className: 'round-icon open-button tooltip',
+            title: 'Open file',
+            onClick: this.openFile,
+          }, iconOpen()),
+          e('a', {
+            className: 'round-icon new-button tooltip',
+            title: 'New file',
+            onClick: this.newFile,
+          }, iconNew()),
         ),
       )
     )
