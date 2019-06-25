@@ -132,14 +132,23 @@ class Midst extends React.Component {
           return  'Exit focus mode'
         }
 
+        else if (instance.__Content === 'Open drawer' && this.state.appDrawerOpen) {
+          return  'Close drawer'
+        }
+
         else {
           return content
         }
       },
       functionPosition: function(instance, helper, positions) {
-        if (instance.__Content !== 'Focus mode') return
-        positions.coord.left = positions.coord.left - 12
-        return positions
+        if (
+          instance.__Content === 'Focus mode' ||
+          instance.__Content === 'Open timeline' ||
+          instance.__Content === 'Add new draft marker'
+        ) {
+          positions.coord.left = positions.coord.left - 12
+          return positions
+        }
       }
     })
 
@@ -337,21 +346,16 @@ class Midst extends React.Component {
   }
 
   toggleDrawer() {
-    this.setState({
-      appDrawerOpen: !this.state.appDrawerOpen,
-    }, () => {
-      // if (this.state.appDrawerOpen) {
-      //   this.setState({
-      //     appTimelineMode: true,
-      //   })
-      // }
+    const appDrawerOpen = !this.state.appDrawerOpen
+    this.setState({ appDrawerOpen })
 
-      // else {
-      //   this.setState({
-      //     appTimelineMode: false,
-      //   })
-      // }
-    })
+    if (appDrawerOpen && !$('body').hasClass('body-with-drawer')) {
+      $('body').addClass('body-with-drawer')
+    }
+
+    else {
+      $('body').removeClass('body-with-drawer')
+    }
   }
 
   toggleFocusMode() {
@@ -896,7 +900,8 @@ class Midst extends React.Component {
       },
         e('div', { className: 'double-icon timeline-toggles' },
           e('div', {
-            className: 'round-icon timeline-toggle' + (this.showTimeline() ? '' : ' deactivated'),
+            className: 'round-icon timeline-toggle tooltip' + (this.showTimeline() ? '' : ' deactivated'),
+            title: 'Open timeline',
             onClick: this.toggleTimeline,
           }, iconTimeline()),
           this.renderDraftMarkerCreateIcon(),
@@ -919,10 +924,11 @@ class Midst extends React.Component {
     // }
 
     return e('div', {
-      className: 'round-icon draft-marker-create'
+      className: 'round-icon draft-marker-create tooltip'
         + ((markerExists && !editorCreatingDraftMarker) || !this.showTimeline() ? ' deactivated' : '')
         + (editorCreatingDraftMarker ? ' active' : '')
         + (appDrawerOpen && editorDraftMarkers.length < 1 ? ' shake animated' : ''),
+      title: 'Add new draft marker',
       onMouseDown: !markerExists && !editorCreatingDraftMarker ? this.createDraftMarker : null,
     }, iconMarker())
   }
@@ -996,12 +1002,14 @@ class Midst extends React.Component {
             onClick: editorPlaying ? this.pause : this.play,
           }, iconPlay()),
           e('div', {
-            className: 'round-icon timeline-button-2' + (appDrawerOpen ? ' active' : ''),
+            className: 'round-icon timeline-button-2 tooltip' + (appDrawerOpen ? ' active' : ''),
+            title: 'Open drawer',
             onClick: this.toggleDrawer,
           }, iconDrawer()),
           this.renderDraftMarkerCreateIcon(),
           e('div', {
-            className: 'round-icon timeline-button-1',
+            className: 'round-icon timeline-button-1 tooltip',
+            title: 'Close timeline',
             onClick: () => {
               this.setState({
                 appTimelineMode: false,

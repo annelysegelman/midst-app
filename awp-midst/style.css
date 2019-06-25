@@ -382,6 +382,11 @@
   opacity: 1;
 }
 
+.timeline-toggle.deactivated {
+  cursor: default;
+  pointer-events: none;
+}
+
 .timeline-toggle.deactivated svg {
   color: rgb(245, 235, 228);
 }
@@ -623,6 +628,18 @@
 
 .tooltipster-sidetip.tooltipster-noir.midst-tooltip-theme .tooltipster-arrow-background {
   border: 0;
+}
+
+.body-with-drawer .tooltipster-sidetip.tooltipster-top .tooltipster-box {
+  background-color: rgb(105, 0, 0);
+}
+
+.tooltipster-sidetip.tooltipster-top .tooltipster-arrow-border {
+  border-top-color: #FF91AF;
+}
+
+.body-with-drawer .tooltipster-sidetip.tooltipster-top .tooltipster-arrow-border {
+  border-top-color: rgb(105, 0, 0);
 }
 
 .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-border {
