@@ -1,7 +1,7 @@
 // ================================================================================
 // Imports
 // ================================================================================
-const { basename, join } = require('path')
+const { basename } = require('path')
 const { watch, writeFileSync, readFileSync } = require('fs')
 const { app, BrowserWindow, dialog, Menu } = require('electron')
 
@@ -19,6 +19,8 @@ const FILE_EXT = 'midst'
 // ================================================================================
 // Globals
 // ================================================================================
+openPathWhenReady = null
+
 global['setOkToCloseWindow'] = (val) => {
   okToCloseWindow = val
 }
@@ -70,22 +72,27 @@ global['saveFile'] = (fileAbsPath, fileData) => {
 global['openFile'] = () => {
   dialog.showOpenDialog({properties: ['openFile'], filters: [{name: FILE_EXT, extensions: [FILE_EXT]}]}, (filePaths) => {
     if (filePaths) {
-      app.addRecentDocument(filePaths[0])
-      const fileName = basename(filePaths[0])
-      let data
-
-      try {
-        data = JSON.parse(readFileSync(filePaths[0], 'utf8'))
-      }
-
-      catch (err) {
-        console.log(err)
-        data = false
-      }
-
-      mainWindow.webContents.send('fileOpened', {fileName, data, path: filePaths[0]})
+      openFile(filePaths[0])
     }
   })
+}
+
+function openFile(path) {
+  app.addRecentDocument(path)
+  const fileName = basename(path)
+  let data
+
+  try {
+    data = JSON.parse(readFileSync(path, 'utf8'))
+  }
+
+  catch (err) {
+    dialog.showMessageBox({ message: 'catch' })
+    console.log(err)
+    data = false
+  }
+
+  mainWindow.webContents.send('fileOpened', { fileName, data, path })
 }
 
 // ================================================================================
@@ -135,8 +142,24 @@ const bootstrap = (menuItems, cb) => {
       )
     }
 
+    if (openPathWhenReady) {
+      setTimeout(function() {
+        openFile(openPathWhenReady)
+      }, 500)
+    }
+
     if (cb) {
       cb()
+    }
+  })
+
+  app.on('open-file', (evt, path) => {
+    if (app.isReady()) {
+      openFile(path)
+    }
+
+    else {
+      openPathWhenReady = path
     }
   })
 }
