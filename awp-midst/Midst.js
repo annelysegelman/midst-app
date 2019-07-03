@@ -65,6 +65,7 @@ class Midst extends React.Component {
   this.fontSizeDefault = this.fontSizeDefault.bind(this)
   this.fontSizeDown = this.fontSizeDown.bind(this)
   this.fontSizeUp = this.fontSizeUp.bind(this)
+  this.load = this.load.bind(this)
   this.newFile = this.newFile.bind(this)
   this.openFile = this.openFile.bind(this)
   this.pause = this.pause.bind(this)
@@ -647,7 +648,8 @@ class Midst extends React.Component {
     })
   }
 
-  load(fileData) {
+  async load(fileData) {
+    if (!await this.checkForUnsavedChanges()) return
     this.setState({
       appTitle: fileData.fileName ? fileData.fileName.replace(this.FILE_EXT, '') : 'Untitled',
       editorTimelineIndex: fileData.data.editorTimelineFrames.length,
