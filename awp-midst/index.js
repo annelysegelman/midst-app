@@ -145,7 +145,7 @@ const bootstrap = (menuItems, cb) => {
     if (openPathWhenReady) {
       setTimeout(function() {
         openFile(openPathWhenReady)
-      }, 2000)
+      }, 1000)
     }
 
     if (cb) {
