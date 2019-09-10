@@ -1,3 +1,6 @@
+const fs = window.require('fs')
+const path = window.require('path')
+
 // ================================================================================
 // Constructor
 // ================================================================================
@@ -29,6 +32,7 @@ class Midst extends React.Component {
     appFocusMode: false,
     appTimelineMode: false,
     appTitle: 'Untitled',
+    appAutosaveCount: 0,
     editorAuthor: 'Anonymous',
     editorCachedSelection: [],
     editorCreatingDraftMarker: false,
@@ -68,6 +72,7 @@ class Midst extends React.Component {
   this.load = this.load.bind(this)
   this.newFile = this.newFile.bind(this)
   this.openFile = this.openFile.bind(this)
+  this.openAutosave = this.openAutosave.bind(this)
   this.pause = this.pause.bind(this)
   this.play = this.play.bind(this)
   this.quit = this.quit.bind(this)
@@ -114,6 +119,7 @@ class Midst extends React.Component {
       ipc.on('menu.fontSizeUp', this.fontSizeUp)
       ipc.on('menu.newFile', this.newFile)
       ipc.on('menu.openFile', this.openFile)
+      ipc.on('menu.openAutosave', this.openAutosave)
       ipc.on('menu.quit', this.quit)
       ipc.on('menu.saveFile', this.saveFile)
       ipc.on('menu.saveFileAs', this.saveFileAs)
@@ -252,6 +258,20 @@ class Midst extends React.Component {
     this.captureTimelineFrame(this.$editable.html())
     this.exitTimelineMode()
     this.detectFormatting()
+
+    console.log(this.state.appAutosaveCount)
+
+    if (this.state.appAutosaveCount === 5) {
+      this.setState({ appAutosaveCount: 0 })
+      console.log('now')
+      fs.writeFile(path.join(__dirname, 'midst-autosave.midst'), JSON.stringify(this.modelMidstFile()), () => {
+        console.log('??')
+      })
+    }
+
+    else {
+      this.setState({ appAutosaveCount: this.state.appAutosaveCount + 1 })
+    }
   }
 
   editorOnBlur() {
@@ -619,6 +639,10 @@ class Midst extends React.Component {
   async openFile() {
     if (!await this.checkForUnsavedChanges()) return
     remote.getGlobal('openFile')()
+  }
+
+  async openAutosave() {
+    remote.getGlobal('openAutosave')()
   }
 
   async saveFile () {

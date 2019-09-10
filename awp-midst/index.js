@@ -1,8 +1,8 @@
 // ================================================================================
 // Imports
 // ================================================================================
-const { basename } = require('path')
-const { watch, writeFileSync, readFileSync } = require('fs')
+const { basename, join } = require('path')
+const { watch, writeFileSync, readFileSync, writeFile } = require('fs')
 const { app, BrowserWindow, dialog, Menu } = require('electron')
 
 // ================================================================================
@@ -69,12 +69,24 @@ global['saveFile'] = (fileAbsPath, fileData) => {
   writeFileSync(fileAbsPath, JSON.stringify(fileData))
 }
 
+global['autosave'] = () => {
+  writeFile(autosavePath(), JSON.stringify(fileData), () => {})
+}
+
 global['openFile'] = () => {
   dialog.showOpenDialog({properties: ['openFile'], filters: [{name: FILE_EXT, extensions: [FILE_EXT]}]}, (filePaths) => {
     if (filePaths) {
       openFile(filePaths[0])
     }
   })
+}
+
+global['openAutosave'] = () => {
+  openFile(autosavePath())
+}
+
+function autosavePath() {
+  return join(__dirname, 'midst-autosave.midst')
 }
 
 function openFile(path) {
@@ -192,6 +204,8 @@ const menu = (mainWindow) => {
       {type: 'separator'},
       {label: 'Save', accelerator: 'Cmd+S', click: () => mainWindow.webContents.send('menu.saveFile')},
       {label: 'Save As...', accelerator: 'Shift+Cmd+S', click: () => mainWindow.webContents.send('menu.saveFileAs')},
+      {type: 'separator'},
+      {label: 'Rescue Autosave', click: () => mainWindow.webContents.send('menu.openAutosave')},
     ],
   }
 
