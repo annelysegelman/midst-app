@@ -2,29 +2,18 @@
 // Imports
 // ================================================================================
 const { basename, join } = require('path')
-const { watch, writeFileSync, readFileSync, writeFile } = require('fs')
+const { execSync } = require('child_process')
+const { watch, writeFile, writeFileSync, readFileSync } = require('fs')
 const { app, BrowserWindow, dialog, Menu } = require('electron')
 
 // ================================================================================
-// Windows
+// Window
 // ================================================================================
 let mainWindow
-let okToCloseWindow = false
-
-// ================================================================================
-// Config
-// ================================================================================
-const FILE_EXT = 'midst'
 
 // ================================================================================
 // Globals
 // ================================================================================
-openPathWhenReady = null
-
-global['setOkToCloseWindow'] = (val) => {
-  okToCloseWindow = val
-}
-
 global['quit'] = () => {
   app.quit()
 }
@@ -46,11 +35,40 @@ global['confirm'] = (message, buttons) => {
 // ================================================================================
 // File Handling
 // ================================================================================
+let openPathWhenReady = null
+let okToCloseWindow = false
+
+function openFileHelper(path, addToRecentDocuments = true) {
+  if (addToRecentDocuments) {
+    app.addRecentDocument(path)
+  }
+
+  const fileName = basename(path)
+
+  let data
+
+  try {
+    data = JSON.parse(readFileSync(path, 'utf8'))
+  }
+
+  catch (err) {
+    dialog.showMessageBox({ message: 'catch' })
+    console.log(err)
+    data = false
+  }
+
+  mainWindow.webContents.send('fileOpened', { fileName, data, path, isAutosave })
+}
+
+global['saveFile'] = (fileAbsPath, fileData) => {
+  writeFileSync(fileAbsPath, JSON.stringify(fileData))
+}
+
 global['saveFileAs'] = (fileData) => {
   return new Promise((resolve) => {
     dialog.showSaveDialog(
       mainWindow,
-      {filters: [{name: 'Midst Files', extensions: [FILE_EXT]}]},
+      {filters: [{name: 'Midst Files', extensions: ['midst']}]},
       fileAbsPath => {
         if (fileAbsPath) {
           writeFileSync(fileAbsPath, JSON.stringify(fileData))
@@ -65,46 +83,36 @@ global['saveFileAs'] = (fileData) => {
   }).then()
 }
 
-global['saveFile'] = (fileAbsPath, fileData) => {
-  writeFileSync(fileAbsPath, JSON.stringify(fileData))
-}
-
-global['autosave'] = () => {
-  writeFile(autosavePath(), JSON.stringify(fileData), () => {})
-}
-
 global['openFile'] = () => {
-  dialog.showOpenDialog({properties: ['openFile'], filters: [{name: FILE_EXT, extensions: [FILE_EXT]}]}, (filePaths) => {
+  dialog.showOpenDialog({properties: ['openFile'], filters: [{name: 'midst', extensions: ['midst']}]}, (filePaths) => {
     if (filePaths) {
-      openFile(filePaths[0])
+      openFileHelper(filePaths[0])
     }
   })
 }
 
+global['setOkToCloseWindow'] = (val) => {
+  okToCloseWindow = val
+}
+
+// ================================================================================
+// Autosave
+// ================================================================================
+const autosaveBlankPath = join(__dirname, 'midst-autosave.blank.midst')
+const autosaveWorkingPath = join(__dirname, 'midst-autosave.working.midst')
+const autosaveCurrentPath = join(__dirname, 'midst-autosave.current.midst')
+
+function initAutosave() {
+  execSync(`cp ${autosaveWorkingPath} ${autosaveCurrentPath}`)
+  execSync(`cp ${autosaveBlankPath} ${autosaveWorkingPath}`)
+}
+
+global['saveAutosave'] = (data) => {
+  writeFile(join(__dirname, autosaveWorkingPath), JSON.stringify(data), () => {})
+}
+
 global['openAutosave'] = () => {
-  openFile(autosavePath())
-}
-
-function autosavePath() {
-  return join(__dirname, 'midst-autosave.midst')
-}
-
-function openFile(path) {
-  app.addRecentDocument(path)
-  const fileName = basename(path)
-  let data
-
-  try {
-    data = JSON.parse(readFileSync(path, 'utf8'))
-  }
-
-  catch (err) {
-    dialog.showMessageBox({ message: 'catch' })
-    console.log(err)
-    data = false
-  }
-
-  mainWindow.webContents.send('fileOpened', { fileName, data, path })
+  openFileHelper(autosaveCurrentPath, true)
 }
 
 // ================================================================================
@@ -139,6 +147,8 @@ const bootstrap = (menuItems, cb) => {
 
     mainWindow.on('closed', () => app.quit())
 
+    initAutosave()
+
     mainWindow.loadURL(`file://${__dirname}/index.html`)
 
     if (process.env.NODE_ENV === 'development') {
@@ -156,7 +166,7 @@ const bootstrap = (menuItems, cb) => {
 
     if (openPathWhenReady) {
       setTimeout(function() {
-        openFile(openPathWhenReady)
+        openFileHelper(openPathWhenReady)
       }, 1000)
     }
 
@@ -167,7 +177,7 @@ const bootstrap = (menuItems, cb) => {
 
   app.on('open-file', (evt, path) => {
     if (app.isReady()) {
-      openFile(path)
+      openFileHelper(path)
     }
 
     else {
@@ -206,6 +216,18 @@ const menu = (mainWindow) => {
       {label: 'Save As...', accelerator: 'Shift+Cmd+S', click: () => mainWindow.webContents.send('menu.saveFileAs')},
       {type: 'separator'},
       {label: 'Rescue Autosave', click: () => mainWindow.webContents.send('menu.openAutosave')},
+      // { label: 'Rescue Autosave', submenu: [
+      //   { label: 'Previous Autosave 1', click: () => mainWindow.webContents.send('menu.openAutosave', 1)},
+      //   { label: 'Previous Autosave 2', click: () => mainWindow.webContents.send('menu.openAutosave', 2)},
+      //   { label: 'Previous Autosave 3', click: () => mainWindow.webContents.send('menu.openAutosave', 3)},
+      //   { label: 'Previous Autosave 4', click: () => mainWindow.webContents.send('menu.openAutosave', 4)},
+      //   { label: 'Previous Autosave 5', click: () => mainWindow.webContents.send('menu.openAutosave', 5)},
+      //   { label: 'Previous Autosave 6', click: () => mainWindow.webContents.send('menu.openAutosave', 6)},
+      //   { label: 'Previous Autosave 7', click: () => mainWindow.webContents.send('menu.openAutosave', 7)},
+      //   { label: 'Previous Autosave 8', click: () => mainWindow.webContents.send('menu.openAutosave', 8)},
+      //   { label: 'Previous Autosave 9', click: () => mainWindow.webContents.send('menu.openAutosave', 9)},
+      //   { label: 'Previous Autosave 10', click: () => mainWindow.webContents.send('menu.openAutosave', 10)},
+      // ]},
     ],
   }
 

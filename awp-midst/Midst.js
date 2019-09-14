@@ -259,14 +259,9 @@ class Midst extends React.Component {
     this.exitTimelineMode()
     this.detectFormatting()
 
-    console.log(this.state.appAutosaveCount)
-
     if (this.state.appAutosaveCount === 5) {
       this.setState({ appAutosaveCount: 0 })
-      console.log('now')
-      fs.writeFile(path.join(__dirname, 'midst-autosave.midst'), JSON.stringify(this.modelMidstFile()), () => {
-        console.log('??')
-      })
+      remote.getGlobal('autosave')(this.modelMidstFile())
     }
 
     else {
@@ -642,6 +637,7 @@ class Midst extends React.Component {
   }
 
   async openAutosave() {
+    alert('Note: The autosave must be saved to your hard disk before proceeding.')
     remote.getGlobal('openAutosave')()
   }
 
@@ -660,8 +656,12 @@ class Midst extends React.Component {
     }
   }
 
-  async saveFileAs () {
+  async saveFileAs (isAutosave) {
     const fileInfo = await remote.getGlobal('saveFileAs')(this.modelMidstFile())
+
+    if (!fileInfo && isAutosave) {
+      this.newFile()
+    }
 
     if (!fileInfo) return
 
@@ -689,6 +689,10 @@ class Midst extends React.Component {
     }, () => {
       this.$editable.html(_.get(_.last(this.state.editorTimelineFrames), 'content'))
       this.$editable.focus()
+
+      if (fileData.isAutosave) {
+        this.saveFileAs(true)
+      }
     })
   }
 
