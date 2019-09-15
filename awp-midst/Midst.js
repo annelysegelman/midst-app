@@ -637,9 +637,9 @@ class Midst extends React.Component {
     remote.getGlobal('openFile')()
   }
 
-  async openAutosave() {
+  async openAutosave(evt, fileName) {
     alert('Note: The autosave must be saved to your hard disk before proceeding.')
-    remote.getGlobal('openAutosave')()
+    remote.getGlobal('openAutosave')(fileName)
   }
 
   async saveFile () {

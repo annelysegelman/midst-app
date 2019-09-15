@@ -3,7 +3,7 @@
 // ================================================================================
 const { basename, join } = require('path')
 const { execSync } = require('child_process')
-const { watch, writeFile, writeFileSync, readFileSync } = require('fs')
+const { watch, readdirSync, writeFileSync, readFileSync } = require('fs')
 const { app, BrowserWindow, dialog, Menu } = require('electron')
 
 // ================================================================================
@@ -100,19 +100,29 @@ global['setOkToCloseWindow'] = (val) => {
 // ================================================================================
 const autosaveBlankPath = join(__dirname, 'midst-autosave.blank.midst')
 const autosaveWorkingPath = join(__dirname, 'midst-autosave.working.midst')
-const autosaveCurrentPath = join(__dirname, 'midst-autosave.current.midst')
+const autosaveCurrentPath = join(__dirname, 'midst-autosave.dated.' + + new Date() + '.midst')
 
 function initAutosave() {
   execSync(`cp ${autosaveWorkingPath} ${autosaveCurrentPath}`)
   execSync(`cp ${autosaveBlankPath} ${autosaveWorkingPath}`)
 }
 
+function collectAutosaveFilesForMenu() {
+  const autosaveMenuItems = []
+  for (const fileName of readdirSync(__dirname)) {
+    if (/midst-autosave\.dated\.[0-9].+\.midst/.test(fileName)) {
+      autosaveMenuItems.push({ label: fileName, click: () => mainWindow.webContents.send('menu.openAutosave', fileName)})
+    }
+  }
+  return autosaveMenuItems
+}
+
 global['saveAutosave'] = (data) => {
   writeFileSync(autosaveWorkingPath, JSON.stringify(data))
 }
 
-global['openAutosave'] = () => {
-  openFileHelper(autosaveCurrentPath, true)
+global['openAutosave'] = (fileName) => {
+  openFileHelper(join(__dirname, fileName), true)
 }
 
 // ================================================================================
@@ -148,6 +158,7 @@ const bootstrap = (menuItems, cb) => {
     mainWindow.on('closed', () => app.quit())
 
     initAutosave()
+    const autosaveMenuItems = collectAutosaveFilesForMenu()
 
     mainWindow.loadURL(`file://${__dirname}/index.html`)
 
@@ -160,7 +171,7 @@ const bootstrap = (menuItems, cb) => {
 
     if (menuItems) {
       Menu.setApplicationMenu(
-        Menu.buildFromTemplate(menuItems(mainWindow))
+        Menu.buildFromTemplate(menuItems(mainWindow, autosaveMenuItems))
       )
     }
 
@@ -189,7 +200,7 @@ const bootstrap = (menuItems, cb) => {
 // ================================================================================
 // Menu
 // ================================================================================
-const menu = (mainWindow) => {
+const menu = (mainWindow, autosaveMenuItems) => {
   const appMenu = {
     label: 'App',
     submenu: [
@@ -215,19 +226,7 @@ const menu = (mainWindow) => {
       {label: 'Save', accelerator: 'Cmd+S', click: () => mainWindow.webContents.send('menu.saveFile')},
       {label: 'Save As...', accelerator: 'Shift+Cmd+S', click: () => mainWindow.webContents.send('menu.saveFileAs')},
       {type: 'separator'},
-      {label: 'Rescue Autosave', click: () => mainWindow.webContents.send('menu.openAutosave')},
-      // { label: 'Rescue Autosave', submenu: [
-      //   { label: 'Previous Autosave 1', click: () => mainWindow.webContents.send('menu.openAutosave', 1)},
-      //   { label: 'Previous Autosave 2', click: () => mainWindow.webContents.send('menu.openAutosave', 2)},
-      //   { label: 'Previous Autosave 3', click: () => mainWindow.webContents.send('menu.openAutosave', 3)},
-      //   { label: 'Previous Autosave 4', click: () => mainWindow.webContents.send('menu.openAutosave', 4)},
-      //   { label: 'Previous Autosave 5', click: () => mainWindow.webContents.send('menu.openAutosave', 5)},
-      //   { label: 'Previous Autosave 6', click: () => mainWindow.webContents.send('menu.openAutosave', 6)},
-      //   { label: 'Previous Autosave 7', click: () => mainWindow.webContents.send('menu.openAutosave', 7)},
-      //   { label: 'Previous Autosave 8', click: () => mainWindow.webContents.send('menu.openAutosave', 8)},
-      //   { label: 'Previous Autosave 9', click: () => mainWindow.webContents.send('menu.openAutosave', 9)},
-      //   { label: 'Previous Autosave 10', click: () => mainWindow.webContents.send('menu.openAutosave', 10)},
-      // ]},
+      { label: 'Rescue Autosave Experimental', submenu: autosaveMenuItems },
     ],
   }
 
