@@ -261,7 +261,8 @@ class Midst extends React.Component {
 
     if (this.state.appAutosaveCount === 5) {
       this.setState({ appAutosaveCount: 0 })
-      remote.getGlobal('autosave')(this.modelMidstFile())
+      // alert('Autosaving...' + JSON.stringify(this.modelMidstFile()))
+      remote.getGlobal('saveAutosave')(this.modelMidstFile())
     }
 
     else {

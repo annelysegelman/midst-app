@@ -38,8 +38,8 @@ global['confirm'] = (message, buttons) => {
 let openPathWhenReady = null
 let okToCloseWindow = false
 
-function openFileHelper(path, addToRecentDocuments = true) {
-  if (addToRecentDocuments) {
+function openFileHelper(path, isAutosave = false) {
+  if (!isAutosave) {
     app.addRecentDocument(path)
   }
 
@@ -108,7 +108,7 @@ function initAutosave() {
 }
 
 global['saveAutosave'] = (data) => {
-  writeFile(join(__dirname, autosaveWorkingPath), JSON.stringify(data), () => {})
+  writeFileSync(autosaveWorkingPath, JSON.stringify(data))
 }
 
 global['openAutosave'] = () => {

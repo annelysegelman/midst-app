@@ -5,10 +5,10 @@ const { existsSync, lstatSync, readFileSync, writeFileSync } = require('fs')
 const srcDir = 'awp-midst'
 const tmpDir = 'tmp'
 const distDir = 'dist'
-const buildTmpDir = tmpDir + '/Midst\\ Beta-darwin-x64'
-const buildDistDir = distDir + '/Midst\\ Beta-darwin-x64'
-const builtApp = buildDistDir + '/Midst\\ Beta.app'
-const plistFile = buildDistDir.replace('Midst\\', 'Midst') + '/Midst Beta.app/Contents/Info.plist'
+const buildTmpDir = tmpDir + '/Midst_Beta-darwin-x64'
+const buildDistDir = distDir + '/Midst_Beta-darwin-x64'
+const builtApp = buildDistDir + '/Midst_Beta.app'
+const plistFile = buildDistDir.replace('Midst\\', 'Midst') + '/Midst_Beta.app/Contents/Info.plist'
 
 const dirtyFiles = [
   'node_modules',
@@ -48,12 +48,12 @@ function build() {
   execSync('yarn init -y', opts)
 
   const packageJson = JSON.parse(readFileSync('tmp/package.json', 'utf8'))
-  packageJson.name = 'Midst Beta'
+  packageJson.name = 'Midst_Beta'
   packageJson.version = '1.0.0'
   writeFileSync('tmp/package.json', JSON.stringify(packageJson))
 
   execSync('yarn add electron@3.1.1 --dev')
-  execSync('electron-packager ../tmp Midst\\ Beta --overwrite --platform=darwin --arch=x64 --icon=icon.icns', opts)
+  execSync('electron-packager ../tmp Midst_Beta --overwrite --platform=darwin --arch=x64 --icon=icon.icns', opts)
   execSync('mkdir ' + distDir)
   execSync('cp -r ' + buildTmpDir + ' ' + buildDistDir)
 
