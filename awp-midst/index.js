@@ -3,7 +3,7 @@
 // ================================================================================
 const { basename, join } = require('path')
 const { execSync } = require('child_process')
-const { watch, readdirSync, writeFileSync, readFileSync } = require('fs')
+const { watch, writeFileSync, readFileSync } = require('fs')
 const { app, BrowserWindow, dialog, Menu } = require('electron')
 
 // ================================================================================
@@ -107,22 +107,12 @@ function initAutosave() {
   execSync(`cp ${autosaveBlankPath} ${autosaveWorkingPath}`)
 }
 
-function collectAutosaveFilesForMenu() {
-  const autosaveMenuItems = []
-  for (const fileName of readdirSync(__dirname)) {
-    if (/midst-autosave\.dated\.[0-9].+\.midst/.test(fileName)) {
-      autosaveMenuItems.push({ label: fileName, click: () => mainWindow.webContents.send('menu.openAutosave', fileName)})
-    }
-  }
-  return autosaveMenuItems
-}
-
 global['saveAutosave'] = (data) => {
   writeFileSync(autosaveWorkingPath, JSON.stringify(data))
 }
 
-global['openAutosave'] = (fileName) => {
-  openFileHelper(join(__dirname, fileName), true)
+global['openAutosave'] = () => {
+  openFileHelper(autosaveCurrentPath, true)
 }
 
 // ================================================================================
@@ -158,7 +148,6 @@ const bootstrap = (menuItems, cb) => {
     mainWindow.on('closed', () => app.quit())
 
     initAutosave()
-    const autosaveMenuItems = collectAutosaveFilesForMenu()
 
     mainWindow.loadURL(`file://${__dirname}/index.html`)
 
@@ -171,7 +160,7 @@ const bootstrap = (menuItems, cb) => {
 
     if (menuItems) {
       Menu.setApplicationMenu(
-        Menu.buildFromTemplate(menuItems(mainWindow, autosaveMenuItems))
+        Menu.buildFromTemplate(menuItems(mainWindow))
       )
     }
 
@@ -200,7 +189,7 @@ const bootstrap = (menuItems, cb) => {
 // ================================================================================
 // Menu
 // ================================================================================
-const menu = (mainWindow, autosaveMenuItems) => {
+const menu = (mainWindow) => {
   const appMenu = {
     label: 'App',
     submenu: [
@@ -226,7 +215,7 @@ const menu = (mainWindow, autosaveMenuItems) => {
       {label: 'Save', accelerator: 'Cmd+S', click: () => mainWindow.webContents.send('menu.saveFile')},
       {label: 'Save As...', accelerator: 'Shift+Cmd+S', click: () => mainWindow.webContents.send('menu.saveFileAs')},
       {type: 'separator'},
-      { label: 'Rescue Autosave Experimental', submenu: autosaveMenuItems },
+      {label: 'Restore Previous Session', click: () => mainWindow.webContents.send('menu.openAutosave')},
     ],
   }
 

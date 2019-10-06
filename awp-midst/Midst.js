@@ -261,7 +261,6 @@ class Midst extends React.Component {
 
     if (this.state.appAutosaveCount === 5) {
       this.setState({ appAutosaveCount: 0 })
-      // alert('Autosaving...' + JSON.stringify(this.modelMidstFile()))
       remote.getGlobal('saveAutosave')(this.modelMidstFile())
     }
 
@@ -637,9 +636,9 @@ class Midst extends React.Component {
     remote.getGlobal('openFile')()
   }
 
-  async openAutosave(evt, fileName) {
-    alert('Note: The autosave must be saved to your hard disk before proceeding.')
-    remote.getGlobal('openAutosave')(fileName)
+  async openAutosave() {
+    this.previousState = Object.assign({}, this.state)
+    remote.getGlobal('openAutosave')()
   }
 
   async saveFile () {
@@ -661,7 +660,7 @@ class Midst extends React.Component {
     const fileInfo = await remote.getGlobal('saveFileAs')(this.modelMidstFile())
 
     if (!fileInfo && isAutosave) {
-      this.newFile()
+      this.setState(this.previousState, () => this.loadEditor())
     }
 
     if (!fileInfo) return
@@ -688,13 +687,30 @@ class Midst extends React.Component {
       editorFontFamily: fileData.data.meta.editorFontFamily || 'Helvetica',
       editorFontSize: fileData.data.meta.editorFontSize || this.defaultFontSize,
     }, () => {
-      this.$editable.html(_.get(_.last(this.state.editorTimelineFrames), 'content'))
-      this.$editable.focus()
+      this.loadEditor()
 
       if (fileData.isAutosave) {
-        this.saveFileAs(true)
+        setTimeout(async () => {
+          const res = await remote.getGlobal('confirm')(
+            'You’ve restored your previous session!\r\n\r\nSave it with a new name to continue.',
+            ['Ok', 'Cancel'],
+          )
+
+          if (res === 1) {
+            this.setState(this.previousState, () => this.loadEditor())
+          }
+
+          else {
+            this.saveFileAs(true)
+          }
+        }, 100)
       }
     })
+  }
+
+  loadEditor() {
+    this.$editable.html(_.get(_.last(this.state.editorTimelineFrames), 'content'))
+    this.$editable.focus()
   }
 
   async quit() {
