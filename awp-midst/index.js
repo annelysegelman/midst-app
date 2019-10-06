@@ -5,6 +5,7 @@ const { basename, join } = require('path')
 const { execSync } = require('child_process')
 const { watch, writeFileSync, readFileSync } = require('fs')
 const { app, BrowserWindow, dialog, Menu } = require('electron')
+const { gzip, ungzip } = require('node-gzip')
 
 // ================================================================================
 // Window
@@ -38,7 +39,7 @@ global['confirm'] = (message, buttons) => {
 let openPathWhenReady = null
 let okToCloseWindow = false
 
-function openFileHelper(path, isAutosave = false) {
+async function openFileHelper(path, isAutosave = false) {
   if (!isAutosave) {
     app.addRecentDocument(path)
   }
@@ -48,6 +49,9 @@ function openFileHelper(path, isAutosave = false) {
   let data
 
   try {
+    const macPath = path.replace(/ /g, '\\ ')
+    execSync(`mv ${macPath} ${macPath + '.gz'}`)
+    execSync(`gunzip ${macPath + '.gz'}`)
     data = JSON.parse(readFileSync(path, 'utf8'))
   }
 
@@ -60,8 +64,11 @@ function openFileHelper(path, isAutosave = false) {
   mainWindow.webContents.send('fileOpened', { fileName, data, path, isAutosave })
 }
 
-global['saveFile'] = (fileAbsPath, fileData) => {
+global['saveFile'] = async (fileAbsPath, fileData) => {
   writeFileSync(fileAbsPath, JSON.stringify(fileData))
+  const macPath = fileAbsPath.replace(/ /g, '\\ ')
+  execSync(`gzip ${macPath}`)
+  execSync(`mv ${macPath + '.gz'} ${macPath}`)
 }
 
 global['saveFileAs'] = (fileData) => {
