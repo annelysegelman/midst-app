@@ -5,7 +5,6 @@ const { basename, join } = require('path')
 const { execSync } = require('child_process')
 const { watch, writeFileSync, readFileSync } = require('fs')
 const { app, BrowserWindow, dialog, Menu } = require('electron')
-const { gzip, ungzip } = require('node-gzip')
 
 // ================================================================================
 // Window
@@ -50,13 +49,19 @@ async function openFileHelper(path, isAutosave = false) {
 
   try {
     const macPath = path.replace(/ /g, '\\ ')
-    execSync(`mv ${macPath} ${macPath + '.gz'}`)
-    execSync(`gunzip ${macPath + '.gz'}`)
-    data = JSON.parse(readFileSync(path, 'utf8'))
+    const workingPath = __dirname + '/working-uncompressed'
+    execSync(`rm -f ${workingPath}`)
+    execSync(`rm -f ${workingPath}.gz`)
+    execSync(`cp ${macPath} ${workingPath}.gz`)
+    execSync(`gunzip ${workingPath}.gz`)
+    data = JSON.parse(readFileSync(workingPath, 'utf8'))
+
+    // Use this line to open an old, uncompressed .midst file
+    // data = JSON.parse(readFileSync(path, 'utf8'))
   }
 
   catch (err) {
-    dialog.showMessageBox({ message: 'catch' })
+    dialog.showMessageBox({ message: err.stderr.toString() })
     console.log(err)
     data = false
   }
