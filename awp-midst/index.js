@@ -2,8 +2,9 @@
 // Imports
 // ================================================================================
 const { basename, join } = require('path')
+const moment = require('moment')
 const { execSync } = require('child_process')
-const { watch, writeFileSync, readFileSync } = require('fs')
+const { watch, writeFileSync, readFileSync, readdirSync } = require('fs')
 const { app, BrowserWindow, dialog, Menu } = require('electron')
 
 // ================================================================================
@@ -114,9 +115,39 @@ const autosaveBlankPath = join(__dirname, 'midst-autosave.blank.midst')
 const autosaveWorkingPath = join(__dirname, 'midst-autosave.working.midst')
 const autosaveCurrentPath = join(__dirname, 'midst-autosave.dated.' + + new Date() + '.midst')
 
+function extractTimestamp(fileName) {
+  const timestamp = fileName
+    .replace('midst-autosave.dated.', '')
+    .replace('.midst', '')
+  return parseInt(timestamp, 10)
+}
+
+function cleanAutosaves() {
+  const files = readdirSync(__dirname).filter((file) => {
+    return /^midst-autosave\.dated\./.test(file)
+  })
+
+  files.sort((a, b) => {
+    a = extractTimestamp(a)
+    b = extractTimestamp(b)
+    return b - a
+  })
+
+  const oldFiles = files.slice(5)
+
+  filesCheck = files.map((file) => {
+    return moment(extractTimestamp(file)).format('MM DD YYYY mm:ss')
+  })
+
+  for (let i = 0; i < oldFiles.length; i++) {
+    execSync(`rm -f ${__dirname}/${oldFiles[i]}`)
+  }
+}
+
 function initAutosave() {
   execSync(`cp ${autosaveWorkingPath} ${autosaveCurrentPath}`)
   execSync(`cp ${autosaveBlankPath} ${autosaveWorkingPath}`)
+  cleanAutosaves()
 }
 
 global['saveAutosave'] = (data) => {
