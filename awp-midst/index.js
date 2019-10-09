@@ -4,7 +4,7 @@
 const { basename, join } = require('path')
 const moment = require('moment')
 const { execSync } = require('child_process')
-const { watch, writeFileSync, readFileSync, readdirSync } = require('fs')
+const { watch, writeFile, writeFileSync, readFileSync, readdirSync } = require('fs')
 const { app, BrowserWindow, dialog, Menu } = require('electron')
 
 // ================================================================================
@@ -151,7 +151,7 @@ function initAutosave() {
 }
 
 global['saveAutosave'] = (data) => {
-  writeFileSync(autosaveWorkingPath, JSON.stringify(data))
+  // writeFileSync(autosaveWorkingPath, JSON.stringify(data))
 }
 
 global['openAutosave'] = () => {

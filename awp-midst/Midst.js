@@ -162,10 +162,29 @@ class Midst extends React.Component {
     this.$app = $('body')
 
     this.$app.on('keydown', this.appOnKeyDown)
+
+    const testFrame = {
+      content: '<p data-line-number=\"0\">a</p>',
+      lineNumber: 0,
+      timestamp: 1552786980462,
+    }
+
+    const testFrames = new Array(100000).fill(testFrame)
+
+    setTimeout(() => {
+      this.setState({
+        editorTimelineFrames: testFrames,
+      }, () => this.loadEditor())
+    }, 2000)
   }
 
-  componentDidUpdate() {
+  // shouldComponentUpdate() {
+  //   console.log(this.state.editorTimelineFrames.length)
+  //   return false
+  // }
 
+  componentDidUpdate() {
+    console.log('it rerendered')
   }
 
   componentWillUnmount() {
@@ -261,7 +280,7 @@ class Midst extends React.Component {
 
     if (this.state.appAutosaveCount === 5) {
       this.setState({ appAutosaveCount: 0 })
-      remote.getGlobal('saveAutosave')(this.modelMidstFile())
+      // remote.getGlobal('saveAutosave')(this.modelMidstFile())
     }
 
     else {
