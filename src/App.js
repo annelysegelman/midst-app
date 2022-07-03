@@ -92,6 +92,7 @@ class App extends React.Component {
       appTitle: "Untitled",
       editorAuthor: "Anonymous",
       editorCachedSelection: [],
+      editorContent: "",
       editorCreatingDraftMarker: false,
       editorDraftMarkers: [],
       editorFontFamily: "Helvetica",
@@ -289,9 +290,9 @@ class App extends React.Component {
     };
   }
 
-  modelTimelineFrame({ content, lineNumber, timestamp }) {
+  modelTimelineFrame({ changes, lineNumber, timestamp }) {
     return {
-      content,
+      changes,
       lineNumber,
       timestamp,
     };
@@ -671,32 +672,40 @@ class App extends React.Component {
     }
   }
 
-  captureTimelineFrame(content) {
-    const { editorTimelineFrames } = this.state;
+  captureTimelineFrame(newContent) {
+    const { editorContent, editorTimelineFrames } = this.state;
     const $emptyLine = $(window.getSelection().anchorNode);
     const $emptyLineRoot = $emptyLine.parents("p");
     const $line = $emptyLineRoot.length ? $emptyLineRoot : $emptyLine;
     const lineNumber = $line.attr("data-line-number");
 
     const nextFrame = this.modelTimelineFrame({
-      changes: compareStrings(this.content, content),
+      changes: compareStrings(editorContent, newContent),
       lineNumber,
       timestamp: +new Date(),
     });
+
+    console.log(editorTimelineFrames.map((f) => f.changes));
 
     this.setState({
       appTimelineMode: false,
       editorTimelineIndex: editorTimelineFrames.length,
       editorTimelineFrames: editorTimelineFrames.concat([nextFrame]),
       editorHasUnsavedChanges: true,
-      content,
+      editorContent: newContent,
     });
   }
 
   setPos(index) {
     this.setState({ editorTimelineIndex: index }, () => {
       if (this.state.editorTimelineFrames[index]) {
-        this.$editable.html(this.state.editorTimelineFrames[index].content);
+        this.$editable.html(
+          reconstruct(
+            "",
+            this.state.editorTimelineFrames.map((f) => f.changes),
+            index
+          )
+        );
       }
     });
     setTimeout(() => {
