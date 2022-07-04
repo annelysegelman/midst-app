@@ -624,41 +624,6 @@ class App extends React.Component {
         editorFormatItalic: document.queryCommandState("italic"),
       });
     });
-
-    // if (this.$editable.text().length < 2) return
-
-    // if (evt) {
-    //   const $target = $(evt.target)
-    //   const $subject = $target.prop('tagName') === 'P'
-    //     ? $target.children().last()
-    //     : $target
-
-    //   this.setState({
-    //     editorFormatBold: this.hasBoldFormatting($subject),
-    //     editorFormatItalic: this.hasItalicFormatting($subject),
-    //   })
-    // }
-
-    // else {
-    //   const $subject = $(window.getSelection().anchorNode)
-    //   const $lineElement = $(window.getSelection().anchorNode).parents('p')
-    //   const lineElementText = $lineElement.text()
-    //   const hasFormatting = this.hasBoldFormatting($subject) || this.hasItalicFormatting($subject)
-
-    //   if (hasFormatting) {
-    //     this.setState({
-    //       editorFormatBold: this.hasBoldFormatting($subject),
-    //       editorFormatItalic: this.hasItalicFormatting($subject),
-    //     })
-    //   }
-
-    //   else if (lineElementText && lineElementText.length) {
-    //     this.setState({
-    //       editorFormatBold: false,
-    //       editorFormatBold: false
-    //     })
-    //   }
-    // }
   }
 
   reflowLineNumbers(force) {
@@ -684,8 +649,6 @@ class App extends React.Component {
       lineNumber,
       timestamp: +new Date(),
     });
-
-    console.log(editorTimelineFrames.map((f) => f.changes));
 
     this.setState({
       appTimelineMode: false,
